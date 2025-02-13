@@ -55,7 +55,7 @@ $config = [
             'url' => env('APP_URL').'/uploads',
             'visibility' => 'public',
         ],
-
+        
         's3_public' => [
             'driver' => 's3',
             'key' => env('PUBLIC_AWS_ACCESS_KEY_ID'),
@@ -63,23 +63,21 @@ $config = [
             'region' => env('PUBLIC_AWS_DEFAULT_REGION'),
             'bucket' => env('PUBLIC_AWS_BUCKET'),
             'url' => env('PUBLIC_AWS_URL'),
-            'root'   => env('PUBLIC_AWS_BUCKET_ROOT'),
-            'visibility' => 'public'
+            'endpoint' => env('PUBLIC_AWS_ENDPOINT'),
+            'root' => env('PUBLIC_AWS_BUCKET_ROOT'),
+            'visibility' => 'public',
         ],
 
         's3_private' => [
-            // This bucket (if different than the 's3' bucket above) can be
-            // configured within AWS to *never* permit public documents
-            // For security reasons, its best to use separate buckets for
-            // public and private documents in S3
             'driver' => 's3',
             'key' => env('PRIVATE_AWS_ACCESS_KEY_ID'),
             'secret' => env('PRIVATE_AWS_SECRET_ACCESS_KEY'),
             'region' => env('PRIVATE_AWS_DEFAULT_REGION'),
             'bucket' => env('PRIVATE_AWS_BUCKET'),
             'url' => env('PRIVATE_AWS_URL'),
-            'root'   => env('PRIVATE_AWS_BUCKET_ROOT'),
-            'visibility' => 'private'
+            'endpoint' => env('PRIVATE_AWS_ENDPOINT'),
+            'root' => env('PRIVATE_AWS_BUCKET_ROOT'),
+            'visibility' => 'private',
         ],
 
         'rackspace' => [
