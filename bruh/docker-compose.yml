@@ -1,0 +1,14 @@
+
+volumes:
+  storage:
+
+services:
+  app:
+    image: v1:latest # locally built image
+    restart: unless-stopped
+    volumes:
+      - storage:/var/lib/snipeit
+    ports:
+      - "${APP_PORT:-8000}:80"
+    env_file:
+      - .env
