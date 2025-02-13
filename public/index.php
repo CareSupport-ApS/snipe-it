@@ -3,9 +3,6 @@
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
-echo "<html><body><h1>Server is running</h1></body></html>";
-exit;
-
 
 define('LARAVEL_START', microtime(true));
 
