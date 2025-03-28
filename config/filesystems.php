@@ -63,6 +63,7 @@ $config = [
             'region' => env('PUBLIC_AWS_DEFAULT_REGION'),
             'bucket' => env('PUBLIC_AWS_BUCKET'),
             'url' => env('PUBLIC_AWS_URL'),
+            'endpoint' => env('PUBLIC_AWS_ENDPOINT'),
             'root'   => env('PUBLIC_AWS_BUCKET_ROOT'),
             'visibility' => 'public'
         ],
@@ -78,6 +79,7 @@ $config = [
             'region' => env('PRIVATE_AWS_DEFAULT_REGION'),
             'bucket' => env('PRIVATE_AWS_BUCKET'),
             'url' => env('PRIVATE_AWS_URL'),
+            'endpoint' => env('PRIVATE_AWS_ENDPOINT'),
             'root'   => env('PRIVATE_AWS_BUCKET_ROOT'),
             'visibility' => 'private'
         ],
