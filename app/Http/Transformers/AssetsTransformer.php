@@ -40,7 +40,6 @@ class AssetsTransformer
             ] : null,
             'byod' => ($asset->byod ? true : false),
             'requestable' => ($asset->requestable ? true : false),
-
             'model_number' => (($asset->model) && ($asset->model->model_number)) ? e($asset->model->model_number) : null,
             'eol' => (($asset->asset_eol_date != '') && ($asset->purchase_date != '')) ? (int) Carbon::parse($asset->asset_eol_date)->diffInMonths($asset->purchase_date, true) . ' months' : null,
             'asset_eol_date' => ($asset->asset_eol_date != '') ? Helper::getFormattedDateObject($asset->asset_eol_date, 'date') : null,
@@ -53,39 +52,51 @@ class AssetsTransformer
             'category' => (($asset->model) && ($asset->model->category)) ? [
                 'id' => (int) $asset->model->category->id,
                 'name'=> e($asset->model->category->name),
+                'tag_color'=> ($asset->model->category->tag_color) ? e($asset->model->category->tag_color) : null,
             ] : null,
             'manufacturer' => (($asset->model) && ($asset->model->manufacturer)) ? [
                 'id' => (int) $asset->model->manufacturer->id,
                 'name'=> e($asset->model->manufacturer->name),
+                'tag_color'=> ($asset->model->manufacturer->tag_color) ? e($asset->model->manufacturer->tag_color) : null,
+            ] : null,
+            'depreciation' => (($asset->model) && ($asset->model->depreciation)) ? [
+                'id' => (int) $asset->model->depreciation->id,
+                'name'=> e($asset->model->depreciation->name),
+                'months'=> (int) $asset->model->depreciation->months,
+                'type'=>  e($asset->model->depreciation->depreciation_type),
+                'minimum'=> ($asset->model->depreciation->depreciation_min) ? (int) $asset->model->depreciation->depreciation_min : null,
             ] : null,
             'supplier' => ($asset->supplier) ? [
                 'id' => (int) $asset->supplier->id,
                 'name'=> e($asset->supplier->name),
+                'tag_color'=> ($asset->supplier->tag_color) ? e($asset->supplier->tag_color) : null,
             ] : null,
             'notes' => ($asset->notes) ? Helper::parseEscapedMarkedownInline($asset->notes) : null,
             'order_number' => ($asset->order_number) ? e($asset->order_number) : null,
             'company' => ($asset->company) ? [
                 'id' => (int) $asset->company->id,
                 'name'=> e($asset->company->name),
+                'tag_color'=> ($asset->company->tag_color) ? e($asset->company->tag_color) : null,
             ] : null,
             'location' => ($asset->location) ? [
                 'id' => (int) $asset->location->id,
                 'name'=> e($asset->location->name),
+                'tag_color'=> ($asset->location->tag_color) ? e($asset->location->tag_color) : null,
             ] : null,
             'rtd_location' => ($asset->defaultLoc) ? [
                 'id' => (int) $asset->defaultLoc->id,
                 'name'=> e($asset->defaultLoc->name),
+                'tag_color'=> ($asset->defaultLoc->tag_color) ? e($asset->defaultLoc->tag_color) : null,
             ] : null,
             'image' => ($asset->getImageUrl()) ? $asset->getImageUrl() : null,
             'qr' => ($setting->qr_code=='1') ? config('app.url').'/uploads/barcodes/qr-'.str_slug($asset->asset_tag).'-'.str_slug($asset->id).'.png' : null,
             'alt_barcode' => ($setting->alt_barcode_enabled=='1') ? config('app.url').'/uploads/barcodes/'.str_slug($setting->alt_barcode).'-'.str_slug($asset->asset_tag).'.png' : null,
             'assigned_to' => $this->transformAssignedTo($asset),
-            'jobtitle' => $asset->assigned ? e($asset->assigned->jobtitle) : null,
             'warranty_months' =>  ($asset->warranty_months > 0) ? e($asset->warranty_months.' '.trans('admin/hardware/form.months')) : null,
             'warranty_expires' => ($asset->warranty_months > 0) ? Helper::getFormattedDateObject($asset->warranty_expires, 'date') : null,
             'created_by' => ($asset->adminuser) ? [
                 'id' => (int) $asset->adminuser->id,
-                'name'=> e($asset->adminuser->present()->fullName()),
+                'name'=> e($asset->adminuser->display_name),
             ] : null,
             'created_at' => Helper::getFormattedDateObject($asset->created_at, 'datetime'),
             'updated_at' => Helper::getFormattedDateObject($asset->updated_at, 'datetime'),
@@ -93,6 +104,7 @@ class AssetsTransformer
             'next_audit_date' => Helper::getFormattedDateObject($asset->next_audit_date, 'date'),
             'deleted_at' => Helper::getFormattedDateObject($asset->deleted_at, 'datetime'),
             'purchase_date' => Helper::getFormattedDateObject($asset->purchase_date, 'date'),
+//            'first_checkout' => Helper::getFormattedDateObject($asset->first_checkout_at, 'datetime'),
             'age' => $asset->purchase_date ? $asset->purchase_date->locale(app()->getLocale())->diffForHumans() : '',
             'last_checkout' => Helper::getFormattedDateObject($asset->last_checkout, 'datetime'),
             'last_checkin' => Helper::getFormattedDateObject($asset->last_checkin, 'datetime'),
@@ -102,7 +114,7 @@ class AssetsTransformer
             'checkout_counter' => (int) $asset->checkout_counter,
             'requests_counter' => (int) $asset->requests_counter,
             'user_can_checkout' => (bool) $asset->availableForCheckout(),
-            'book_value' => Helper::formatCurrencyOutput($asset->getLinearDepreciatedValue()),
+            'book_value' => Helper::formatCurrencyOutput($asset->getDepreciatedValue()),
         ];
 
 
@@ -204,6 +216,7 @@ class AssetsTransformer
                     'last_name'=> ($asset->assigned->last_name) ? e($asset->assigned->last_name) : null,
                     'email'=> ($asset->assigned->email) ? e($asset->assigned->email) : null,
                     'employee_number' =>  ($asset->assigned->employee_num) ? e($asset->assigned->employee_num) : null,
+                    'jobtitle' => $asset->assigned->jobtitle ? e($asset->assigned->jobtitle) : null,
                     'type' => 'user',
                 ] : null;
         }
@@ -280,7 +293,7 @@ class AssetsTransformer
             'id' => (int) $asset->id,
             'image' => ($asset->getImageUrl()) ? $asset->getImageUrl() : null,
             'type' => 'asset',
-            'name' => e($asset->present()->fullName()),
+            'name' => e($asset->display_name),
             'model' => ($asset->model) ? e($asset->model->name) : null,
             'model_number' => (($asset->model) && ($asset->model->model_number)) ? e($asset->model->model_number) : null,
             'asset_tag' => e($asset->asset_tag),

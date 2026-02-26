@@ -69,7 +69,7 @@ return [
         'numeric' => 'The :attribute field must be greater than or equal to :value.',
         'string' => 'The :attribute field must be greater than or equal to :value characters.',
     ],
-    'hex_color' => 'The :attribute field must be a valid hexadecimal color.',
+    'hex_color' => 'The :attribute field must be a valid hexadecimal colour.',
     'image' => 'The :attribute field must be an image.',
     'import_field_empty'    => 'The value for :fieldname cannot be null.',
     'in' => 'The selected :attribute is invalid.',
@@ -166,7 +166,7 @@ return [
     'numbers'              => 'Password must contain at least one number.',
     'case_diff'            => 'Password must use mixed case.',
     'symbols'              => 'Password must contain symbols.',
-    'timezone' => 'The :attribute field must be a valid timezone.',
+    'timezone' => 'The :attribute field must be a valid time zone.',
     'unique' => 'The :attribute has already been taken.',
     'uploaded' => 'The :attribute failed to upload.',
     'uppercase' => 'The :attribute field must be uppercase.',
@@ -174,7 +174,7 @@ return [
     'ulid' => 'The :attribute field must be a valid ULID.',
     'uuid' => 'The :attribute field must be a valid UUID.',
     'fmcs_location' => 'Full multiple company support and location scoping is enabled in the Admin Settings, and the selected location and selected company are not compatible.',
-
+    'is_unique_across_company_and_location' => 'The :attribute must be unique within the selected company and location.',
 
     /*
     |--------------------------------------------------------------------------
@@ -230,7 +230,10 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'serials.*' => 'Serial Number',
+        'asset_tags.*' => 'Asset Tag',
+    ],
 
     /*
     |--------------------------------------------------------------------------

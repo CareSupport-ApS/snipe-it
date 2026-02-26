@@ -14,6 +14,7 @@ class LicenseSeatFactory extends Factory
     {
         return [
             'license_id' => License::factory(),
+            'unreassignable_seat' => false,
         ];
     }
 
@@ -46,6 +47,13 @@ class LicenseSeatFactory extends Factory
     {
         return $this->afterMaking(function (LicenseSeat $seat) {
             $seat->license->update(['reassignable' => false]);
+        });
+    }
+
+    public function requiringAcceptance()
+    {
+        return $this->afterCreating(function ($seat) {
+            $seat->license->category->update(['require_acceptance' => 1]);
         });
     }
 }

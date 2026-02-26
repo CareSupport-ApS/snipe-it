@@ -14,6 +14,7 @@ use Tests\TestCase;
 
 class AccessoryCheckoutTest extends TestCase implements TestsPermissionsRequirement
 {
+
     public function testRequiresPermission()
     {
         $this->actingAsForApi(User::factory()->create())
@@ -91,6 +92,7 @@ class AccessoryCheckoutTest extends TestCase implements TestsPermissionsRequirem
                 'created_by' => $admin->id,
             ])->count(),'Log entry either does not exist or there are more than expected'
         );
+        $this->assertHasTheseActionLogs($accessory, ['create', 'checkout']);
     }
 
     public function testAccessoryCanBeCheckedOutWithQty()
@@ -113,18 +115,17 @@ class AccessoryCheckoutTest extends TestCase implements TestsPermissionsRequirem
 
         $this->assertTrue($accessory->checkouts()->where('assigned_type', User::class)->where('assigned_to', $user->id)->count() > 0);
 
-        $this->assertEquals(
-            1,
-            Actionlog::where([
-                'action_type' => 'checkout',
-                'target_id' => $user->id,
-                'target_type' => User::class,
-                'item_id' => $accessory->id,
-                'item_type' => Accessory::class,
-                'created_by' => $admin->id,
-            ])->count(),
-            'Log entry either does not exist or there are more than expected'
-        );
+        $this->assertDatabaseHas('action_logs', [
+            'action_type' => 'checkout',
+            'target_id' => $user->id,
+            'target_type' => User::class,
+            'item_id' => $accessory->id,
+            'item_type' => Accessory::class,
+            'quantity' => 2,
+            'created_by' => $admin->id,
+        ]);
+
+        $this->assertHasTheseActionLogs($accessory, ['create', 'checkout']);
     }
 
     public function testAccessoryCannotBeCheckedOutToInvalidUser()
@@ -190,5 +191,7 @@ class AccessoryCheckoutTest extends TestCase implements TestsPermissionsRequirem
             ])->count(),
             'Log entry either does not exist or there are more than expected'
         );
+        $this->assertHasTheseActionLogs($accessory, ['create', 'checkout']);
+
     }
 }

@@ -4,14 +4,17 @@ namespace App\Listeners;
 
 use App\Events\CheckoutableCheckedOut;
 use App\Mail\CheckinAccessoryMail;
+use App\Mail\CheckinComponentMail;
 use App\Mail\CheckinLicenseMail;
 use App\Mail\CheckoutAccessoryMail;
 use App\Mail\CheckoutAssetMail;
 use App\Mail\CheckinAssetMail;
+use App\Mail\CheckoutComponentMail;
 use App\Mail\CheckoutConsumableMail;
 use App\Mail\CheckoutLicenseMail;
 use App\Models\Accessory;
 use App\Models\Asset;
+use App\Models\Category;
 use App\Models\CheckoutAcceptance;
 use App\Models\Component;
 use App\Models\Consumable;
@@ -21,9 +24,11 @@ use App\Models\Setting;
 use App\Models\User;
 use App\Notifications\CheckinAccessoryNotification;
 use App\Notifications\CheckinAssetNotification;
+use App\Notifications\CheckinComponentNotification;
 use App\Notifications\CheckinLicenseSeatNotification;
 use App\Notifications\CheckoutAccessoryNotification;
 use App\Notifications\CheckoutAssetNotification;
+use App\Notifications\CheckoutComponentNotification;
 use App\Notifications\CheckoutConsumableNotification;
 use App\Notifications\CheckoutLicenseSeatNotification;
 use GuzzleHttp\Exception\ClientException;
@@ -38,7 +43,7 @@ use Osama\LaravelTeamsNotification\TeamsNotification;
 class CheckoutableListener
 {
     private array $skipNotificationsFor = [
-        Component::class,
+//        Component::class,
     ];
 
     /**
@@ -91,8 +96,19 @@ class CheckoutableListener
 
             if (!empty($to)) {
                 try {
-                    Mail::to(array_flatten($to))->cc(array_flatten($cc))->send($mailable);
+                    $toMail = (clone $mailable)->locale($notifiable->locale);
+                    Mail::to(array_flatten($to))->send($toMail);
                     Log::info('Checkout Mail sent to checkout target');
+                } catch (ClientException $e) {
+                    Log::debug("Exception caught during checkout email: " . $e->getMessage());
+                } catch (Exception $e) {
+                    Log::debug("Exception caught during checkout email: " . $e->getMessage());
+                }
+            }
+            if (!empty($cc)) {
+                try {
+                    $ccMail = (clone $mailable)->locale(Setting::getSettings()->locale);
+                    Mail::to(array_flatten($cc))->send($ccMail);
                 } catch (ClientException $e) {
                     Log::debug("Exception caught during checkout email: " . $e->getMessage());
                 } catch (Exception $e) {
@@ -112,11 +128,18 @@ class CheckoutableListener
                         ->notify($this->getCheckoutNotification($event, $acceptance));
                 }
             } catch (ClientException $e) {
+                $status = optional($e->getResponse()->getStatusCode());
+
                 if (strpos($e->getMessage(), 'channel_not_found') !== false) {
                     Log::warning(Setting::getSettings()->webhook_selected . " notification failed: " . $e->getMessage());
                     return redirect()->back()->with('warning', ucfirst(Setting::getSettings()->webhook_selected) . trans('admin/settings/message.webhook.webhook_channel_not_found'));
                 } else {
-                    Log::error("ClientException caught during checkin notification: " . $e->getMessage());
+                    if ($status >= 500 || $status === null) {
+                        Log::error(Setting::getSettings()->webhook_selected . " notification failed: " . $e->getMessage());
+                    } else {
+                        Log::warning("ClientException caught during checkin notification: " . $e->getMessage());
+                        return redirect()->back()->with('warning', ucfirst(Setting::getSettings()->webhook_selected) . trans('admin/settings/message.webhook.webhook_fail'));
+                    }
                 }
                 return redirect()->back()->with('warning', ucfirst(Setting::getSettings()->webhook_selected) . trans('admin/settings/message.webhook.webhook_fail'));
             } catch (Exception $e) {
@@ -144,7 +167,6 @@ class CheckoutableListener
         $shouldSendEmailToUser = $this->checkoutableCategoryShouldSendEmail($event->checkoutable);
         $shouldSendEmailToAlertAddress = $this->shouldSendEmailToAlertAddress();
         $shouldSendWebhookNotification = $this->shouldSendWebhookNotification();
-
         if (!$shouldSendEmailToUser && !$shouldSendEmailToAlertAddress && !$shouldSendWebhookNotification) {
             return;
         }
@@ -174,15 +196,26 @@ class CheckoutableListener
 
             [$to, $cc] = $this->generateEmailRecipients($shouldSendEmailToUser, $shouldSendEmailToAlertAddress, $notifiable);
 
-            try {
-                if (!empty($to)) {
-                    Mail::to(array_flatten($to))->cc(array_flatten($cc))->send($mailable);
-                    Log::info('Checkin Mail sent to CC addresses');
+            if (!empty($to)) {
+                try {
+                    $toMail = (clone $mailable)->locale($notifiable->locale);
+                    Mail::to(array_flatten($to))->send($toMail);
+                    Log::info('Checkin Mail sent to checkin target');
+                } catch (ClientException $e) {
+                    Log::debug("Exception caught during checkin email: " . $e->getMessage());
+                } catch (Exception $e) {
+                    Log::debug("Exception caught during checkin email: " . $e->getMessage());
                 }
-            } catch (ClientException $e) {
-                Log::debug("Exception caught during checkin email: " . $e->getMessage());
-            } catch (Exception $e) {
-                Log::debug("Exception caught during checkin email: " . $e->getMessage());
+            }
+            if (!empty($cc)) {
+                try {
+                    $ccMail = (clone $mailable)->locale(Setting::getSettings()->locale);
+                    Mail::to(array_flatten($cc))->send($ccMail);
+                } catch (ClientException $e) {
+                    Log::debug("Exception caught during checkin email: " . $e->getMessage());
+                } catch (Exception $e) {
+                    Log::debug("Exception caught during checkin email: " . $e->getMessage());
+                }
             }
         }
 
@@ -198,12 +231,18 @@ class CheckoutableListener
                         ->notify($this->getCheckinNotification($event));
                 }
             } catch (ClientException $e) {
+                $status = optional($e->getResponse()->getStatusCode());
+
                 if (strpos($e->getMessage(), 'channel_not_found') !== false) {
                     Log::warning(Setting::getSettings()->webhook_selected . " notification failed: " . $e->getMessage());
                     return redirect()->back()->with('warning', ucfirst(Setting::getSettings()->webhook_selected) . trans('admin/settings/message.webhook.webhook_channel_not_found'));
                 } else {
-                    Log::error("ClientException caught during checkin notification: " . $e->getMessage());
-                    return redirect()->back()->with('warning', ucfirst(Setting::getSettings()->webhook_selected) . trans('admin/settings/message.webhook.webhook_fail'));
+                    if ($status >= 500 || $status === null) {
+                        Log::error(Setting::getSettings()->webhook_selected . " notification failed: " . $e->getMessage());
+                    } else {
+                        Log::warning("ClientException caught during checkin notification: " . $e->getMessage());
+                        return redirect()->back()->with('warning', ucfirst(Setting::getSettings()->webhook_selected) . trans('admin/settings/message.webhook.webhook_fail'));
+                    }
                 }
             } catch (Exception $e) {
                 Log::warning(ucfirst(Setting::getSettings()->webhook_selected) . ' webhook notification failed:', [
@@ -227,6 +266,7 @@ class CheckoutableListener
         if ($checkedOutToType != "App\Models\User") {
             return null;
         }
+
         if (!$event->checkoutable->requireAcceptance()) {
             return null;
         }
@@ -234,6 +274,19 @@ class CheckoutableListener
         $acceptance = new CheckoutAcceptance;
         $acceptance->checkoutable()->associate($event->checkoutable);
         $acceptance->assignedTo()->associate($event->checkedOutTo);
+
+        $acceptance->qty = 1;
+
+        if (isset($event->checkoutable->checkout_qty)) {
+            $acceptance->qty = $event->checkoutable->checkout_qty;
+        }
+
+        $category = $this->getCategoryFromCheckoutable($event->checkoutable);
+
+        if ($category?->alert_on_response) {
+            $acceptance->alert_on_response_id = auth()->id();
+        }
+        
         $acceptance->save();
 
         return $acceptance;
@@ -259,6 +312,9 @@ class CheckoutableListener
                 break;
             case LicenseSeat::class:
                 $notificationClass = CheckinLicenseSeatNotification::class;
+                break;
+            case Component::class:
+                $notificationClass = CheckinComponentNotification::class;
                 break;
         }
 
@@ -290,6 +346,9 @@ class CheckoutableListener
             case LicenseSeat::class:
                 $notificationClass = CheckoutLicenseSeatNotification::class;
                 break;
+            case Component::class:
+                $notificationClass = CheckoutComponentNotification::class;
+            break;
         }
 
 
@@ -301,6 +360,7 @@ class CheckoutableListener
             Asset::class => CheckoutAssetMail::class,
             LicenseSeat::class => CheckoutLicenseMail::class,
             Consumable::class => CheckoutConsumableMail::class,
+            Component::class => CheckoutComponentMail::class,
         ];
         $mailable= $lookup[get_class($event->checkoutable)];
 
@@ -313,8 +373,8 @@ class CheckoutableListener
             Accessory::class => CheckinAccessoryMail::class,
             Asset::class => CheckinAssetMail::class,
             LicenseSeat::class => CheckinLicenseMail::class,
+            Component::class => CheckinComponentMail::class,
         ];
-
         $mailable= $lookup[get_class($event->checkoutable)];
 
         return new $mailable($event->checkoutable, $event->checkedOutTo, $event->checkedInBy, $event->note);
@@ -358,23 +418,6 @@ class CheckoutableListener
     private function shouldNotSendAnyNotifications($checkoutable): bool
     {
         return in_array(get_class($checkoutable), $this->skipNotificationsFor);
-    }
-
-    private function shouldSendEmailNotifications(Model $checkoutable): bool
-    {
-        //runs a check if the category wants to send checkin/checkout emails to users
-        $category = match (true) {
-            $checkoutable instanceof Asset => $checkoutable->model->category,
-            $checkoutable instanceof Accessory,
-            $checkoutable instanceof Consumable => $checkoutable->category,
-            $checkoutable instanceof LicenseSeat => $checkoutable->license->category,
-            default => null,
-        };
-
-        if (!$category?->checkin_email) {
-            return false;
-        }
-        return true;
     }
 
     private function shouldSendWebhookNotification(): bool
@@ -470,5 +513,16 @@ class CheckoutableListener
         }
 
         return array($to, $cc);
+    }
+
+    private function getCategoryFromCheckoutable(Model $checkoutable): ?Category
+    {
+        return match (true) {
+            $checkoutable instanceof Asset => $checkoutable->model->category,
+            $checkoutable instanceof Accessory,
+                $checkoutable instanceof Consumable,
+                $checkoutable instanceof Component => $checkoutable->category,
+            $checkoutable instanceof LicenseSeat => $checkoutable->license->category,
+        };
     }
 }

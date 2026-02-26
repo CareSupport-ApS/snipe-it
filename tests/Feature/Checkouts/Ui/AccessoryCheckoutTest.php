@@ -81,8 +81,10 @@ class AccessoryCheckoutTest extends TestCase
             'target_type' => User::class,
             'item_id' => $accessory->id,
             'item_type' => Accessory::class,
+            'quantity' => 1,
             'note' => 'oh hi there',
         ]);
+        $this->assertHasTheseActionLogs($accessory, ['create', 'checkout']);
     }
 
     public function testAccessoryCanBeCheckedOutWithQuantity()
@@ -107,8 +109,10 @@ class AccessoryCheckoutTest extends TestCase
             'target_type' => User::class,
             'item_id' => $accessory->id,
             'item_type' => Accessory::class,
+            'quantity' => 3,
             'note' => 'oh hi there',
         ]);
+        $this->assertHasTheseActionLogs($accessory, ['create', 'checkout']);
     }
 
     public function testAccessoryCanBeCheckedOutToLocationWithQuantity()
@@ -133,8 +137,10 @@ class AccessoryCheckoutTest extends TestCase
             'target_type' => Location::class,
             'item_id' => $accessory->id,
             'item_type' => Accessory::class,
+            'quantity' => 3,
             'note' => 'oh hi there',
         ]);
+        $this->assertHasTheseActionLogs($accessory, ['create', 'checkout']);
     }
 
     public function testAccessoryCanBeCheckedOutToAssetWithQuantity()
@@ -159,8 +165,10 @@ class AccessoryCheckoutTest extends TestCase
             'target_type' => Asset::class,
             'item_id' => $accessory->id,
             'item_type' => Accessory::class,
+            'quantity' => 3,
             'note' => 'oh hi there',
         ]);
+        $this->assertHasTheseActionLogs($accessory, ['create', 'checkout']);
     }
 
     public function testUserSentNotificationUponCheckout()
@@ -209,6 +217,7 @@ class AccessoryCheckoutTest extends TestCase
             ])->count(),
             'Log entry either does not exist or there are more than expected'
         );
+        $this->assertHasTheseActionLogs($accessory, ['create', 'checkout']);
     }
 
     public function testAccessoryCheckoutPagePostIsRedirectedIfRedirectSelectionIsIndex()

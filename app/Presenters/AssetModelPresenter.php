@@ -53,7 +53,7 @@ class AssetModelPresenter extends Presenter
             ],
             [
                 'field' => 'manufacturer',
-                'searchable' => false,
+                'searchable' => true,
                 'sortable' => true,
                 'switchable' => true,
                 'title' => trans('general.manufacturer'),
@@ -62,7 +62,7 @@ class AssetModelPresenter extends Presenter
             ],
             [
                 'field' => 'model_number',
-                'searchable' => false,
+                'searchable' => true,
                 'sortable' => true,
                 'switchable' => true,
                 'title' => trans('admin/models/table.modelnumber'),
@@ -89,13 +89,32 @@ class AssetModelPresenter extends Presenter
                 'class' => 'text-right text-padding-number-cell',
                 'footerFormatter' => 'qtySumFormatter',
             ],
-
+            [
+                'field' => 'assets_assigned_count',
+                'searchable' => false,
+                'sortable' => true,
+                'switchable' => true,
+                'title' => trans('general.assigned'),
+                'visible' => true,
+                'class' => 'text-right text-padding-number-cell',
+                'footerFormatter' => 'qtySumFormatter',
+            ],
             [
                 'field' => 'remaining',
                 'searchable' => false,
-                'sortable' => false,
+                'sortable' => true,
                 'switchable' => true,
                 'title' => trans('general.remaining'),
+                'visible' => true,
+                'class' => 'text-right text-padding-number-cell',
+                'footerFormatter' => 'qtySumFormatter',
+            ],
+            [
+                'field' => 'assets_archived_count',
+                'searchable' => false,
+                'sortable' => true,
+                'switchable' => true,
+                'title' => trans('general.archived'),
                 'visible' => true,
                 'class' => 'text-right text-padding-number-cell',
                 'footerFormatter' => 'qtySumFormatter',
@@ -111,7 +130,7 @@ class AssetModelPresenter extends Presenter
             ],
             [
                 'field' => 'category',
-                'searchable' => false,
+                'searchable' => true,
                 'sortable' => true,
                 'switchable' => true,
                 'title' => trans('general.category'),
@@ -141,6 +160,14 @@ class AssetModelPresenter extends Presenter
                 'sortable' => true,
                 'visible' => false,
                 'title' => trans('admin/hardware/general.requestable'),
+                'formatter' => 'trueFalseFormatter',
+            ],
+            [
+                'field' => 'require_serial',
+                'searchable' => false,
+                'sortable' => true,
+                'visible' => false,
+                'title' => trans('admin/hardware/general.require_serial'),
                 'formatter' => 'trueFalseFormatter',
             ],
             [
@@ -273,5 +300,14 @@ class AssetModelPresenter extends Presenter
     public function viewUrl()
     {
         return route('models.show', $this->id);
+    }
+
+    public function formattedNameLink() {
+
+        if (auth()->user()->can('view', ['\App\Models\AssetModel', $this])) {
+            return '<a href="'.route('models.show', e($this->id)).'" class="'. (($this->deleted_at!='') ? 'deleted' : '').'">'.e($this->display_name).'</a>';
+        }
+
+        return '<span class="'. (($this->deleted_at!='') ? 'deleted' : '').'">'.e($this->display_name).'</span>';
     }
 }

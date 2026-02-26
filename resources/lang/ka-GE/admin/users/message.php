@@ -2,11 +2,12 @@
 
 return array(
 
-    'accepted'                  => 'You have successfully accepted this asset.',
-    'declined'                  => 'You have successfully declined this asset.',
+    'accepted'                  => 'You have successfully accepted this item.',
+    'declined'                  => 'You have successfully declined this item.',
     'bulk_manager_warn'	        => 'Your users have been successfully updated, however your manager entry was not saved because the manager you selected was also in the user list to be edited, and users may not be their own manager. Please select your users again, excluding the manager.',
     'user_exists'               => 'User already exists!',
-    'user_not_found'            => 'User does not exist or you do not have permission view them.',
+    'cannot_delete'             => 'User does not exist or you do not have permission to delete them.',
+    'user_not_found'            => 'User does not exist or you do not have permission to view them.',
     'user_login_required'       => 'The login field is required',
     'user_has_no_assets_assigned' => 'No assets currently assigned to user.',
     'user_password_required'    => 'The password is required.',
@@ -65,7 +66,7 @@ return array(
         'error'   => 'File(s) not uploaded. Please try again.',
         'success' => 'File(s) successfully uploaded.',
         'nofiles' => 'You did not select any files for upload',
-        'invalidfiles' => 'One or more of your files is too large or is a filetype that is not allowed. Allowed filetypes are png, gif, jpg, doc, docx, pdf, and txt.',
+        'invalidfiles' => 'ერთი ან რამდენიმე ფაილი ძალიან დიდია ან მისი ფაილის ტიპი არ არის დაუშვებელი. დაუშვებელია მხოლოდ შემდეგი ტიპები: png, gif, jpg, doc, docx, pdf, და txt.',
     ),
 
     'inventorynotification' => array(
