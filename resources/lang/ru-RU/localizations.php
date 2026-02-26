@@ -2,7 +2,7 @@
 
 return [
 
-    'select_language' => 'Выберите язык',
+    'select_language' => 'Select a Language',
     'languages' => [
         'en-US'=> 'Английский, США',
         'en-GB'=> 'Английский, Великобритания',
@@ -41,7 +41,7 @@ return [
         'mi-NZ'=> 'Маори',
         'mn-MN'=> 'Монгольский',
         'nb-NO'=> 'Норвежский Букмол',
-        'om-ET' => 'Оромо (Эфиопия)',
+        'om-ET' => 'Oromo (Ethiopian)',
         //'nn-NO'=> 'Norwegian Nynorsk',
         'fa-IR'=> 'Персидский',
         'pl-PL'=> 'Польский',
@@ -68,7 +68,7 @@ return [
         'zu-ZA'=> 'Зулу',
     ],
 
-    'select_country' => 'Выберите страну',
+    'select_country' => 'Select a Country',
     
     'countries' => [
         'AC'=>'Остров Вознесения',

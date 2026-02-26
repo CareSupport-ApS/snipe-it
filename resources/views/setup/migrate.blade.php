@@ -1,7 +1,7 @@
 @extends('layouts/setup')
 {{-- Page title --}}
 @section('title')
-{{ trans('admin/settings/general.setup_migrations') }}
+{{ trans('general.setup_migrations') }}
 @parent
 @stop
 
@@ -15,6 +15,13 @@
             {{ trans('general.setup_no_migrations') }}
         </div>
     </div>
+    @else
+    <div class="col-md-12">
+        <div class="alert alert-success">
+            <i class="fas fa-check"></i>
+            {{ trans('general.setup_successful_migrations') }}
+        </div>
+    </div>
 
     @endif
 
@@ -24,11 +31,8 @@
 @stop
 
 @section('button')
-
-    <a href="{{ route('setup.user') }}" class="btn btn-primary">
-        {{ trans('general.setup_next') }}:
-        {{ trans('general.setup_create_admin') }}
-        <i class="fa-solid fa-angles-right"></i>
-    </a>
+  <form action="{{ route('setup.user') }}" method="GET">
+    <button class="btn btn-primary">{{ trans('general.setup_migration_create_user') }}</button>
+  </form>
 @parent
 @stop

@@ -18,11 +18,9 @@ return array(
     ),
 
     'delete' => array(
-        'confirm'                => 'Er du sikker på at du vil slette denne kategori?',
-        'error'                  => 'Der opstod et problem under sletning af kategorien. Prøv igen.',
-        'success'                => 'Kategori er slettet.',
-        'bulk_success'           => 'Kategorier er slettet.',
-        'partial_success'        => 'Kategori er slettet. Se yderligere information nedenfor. | :count kategorier er slettet. Se yderligere information nedenfor.',
+        'confirm'   => 'Er du sikker på at du vil slette denne kategori?',
+        'error'   => 'Der opstod et problem under sletning af kategorien. Prøv igen.',
+        'success' => 'Kategorien blev slettet.'
     )
 
 );

@@ -46,12 +46,11 @@ return array(
         'not_enough_seats' => 'Inte tillräckligt med licenssäten tillgängliga för utcheckning',
         'mismatch' => 'Licenssätet som anges matchar inte licensen',
         'unavailable' => 'Detta säte är inte tillgängligt för utcheckning.',
-        'license_is_inactive' => 'This license is expired or terminated.',
     ),
 
     'checkin' => array(
         'error'   => 'Det gick inte att checka in licensen. Vänligen försök igen.',
-        'not_reassignable' => 'Seat has been used',
+        'not_reassignable' => 'Licens ej omfördelningsbar',
         'success' => 'Licens incheckad.'
     ),
 

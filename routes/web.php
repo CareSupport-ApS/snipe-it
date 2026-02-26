@@ -2,13 +2,9 @@
 
 use App\Http\Controllers\Account;
 use App\Http\Controllers\ActionlogController;
-use App\Http\Controllers\Api\ImportController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\BulkCategoriesController;
-use App\Http\Controllers\BulkManufacturersController;
-use App\Http\Controllers\BulkSuppliersController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\DashboardController;
@@ -17,7 +13,7 @@ use App\Http\Controllers\DepreciationsController;
 use App\Http\Controllers\GroupsController;
 use App\Http\Controllers\HealthController;
 use App\Http\Controllers\LabelsController;
-use App\Http\Controllers\UploadedFilesController;
+use App\Http\Controllers\LocationsController;
 use App\Http\Controllers\ManufacturersController;
 use App\Http\Controllers\ModalController;
 use App\Http\Controllers\NotesController;
@@ -25,7 +21,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportTemplatesController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\SetupController;
 use App\Http\Controllers\StatuslabelsController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\ViewAssetsController;
@@ -48,9 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('categories', CategoriesController::class, [
         'parameters' => ['category' => 'category_id'],
     ]);
-
-    Route::post('categories/bulk/delete', [BulkCategoriesController::class, 'destroy'])->name('categories.bulk.delete');
-
+  
     /*
     * Labels
     */
@@ -59,12 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
         [LabelsController::class, 'show']
     )->where('labelName', '.*')->name('labels.show');
 
-    Route::get('/test-email', function () {
-        $mailable = new \App\Mail\CheckoutComponentMail(
 
-        );
-        return $mailable->render(); // dumps HTML
-    });
     /*
     * Manufacturers
     */
@@ -78,14 +66,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('manufacturers', ManufacturersController::class);
 
-    Route::post('manufacturers/bulk/delete', [BulkManufacturersController::class, 'destroy'])->name('manufacturers.bulk.delete');
-
     /*
     * Suppliers
     */
     Route::resource('suppliers', SuppliersController::class);
-
-    Route::post('suppliers/bulk/delete', [BulkSuppliersController::class, 'destroy'])->name('suppliers.bulk.delete');
 
     /*
     * Depreciations
@@ -287,15 +271,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'authorize:superuser
         Route::delete('delete/{filename}',
             [SettingsController::class, 'deleteFile'])->name('settings.backups.destroy');
 
-        Route::post('/',
+        Route::post('/', 
             [SettingsController::class, 'postBackups']
         )->name('settings.backups.create');
 
-        Route::post('/restore/{filename}',
+        Route::post('/restore/{filename}', 
             [SettingsController::class, 'postRestore']
         )->name('settings.backups.restore');
 
-        Route::post('/upload',
+        Route::post('/upload', 
             [SettingsController::class, 'postUploadBackup']
         )->name('settings.backups.upload');
 
@@ -334,24 +318,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'authorize:superuser
 |
 */
 
-Route::group(['prefix' => 'import', 'middleware' => ['auth']], function () {
-
-    Route::get('download/{import}',
-        [
-            UploadedFilesController::class,
-            'downloadImport'
-        ]
-    )->name('imports.download');
-
-    Route::get('/', Importer::class)
-        ->middleware('auth')
-        ->name('imports.index')
-        ->breadcrumbs(fn (Trail $trail) =>
-        $trail->parent('home')
-            ->push(trans('general.import'), route('imports.index')));
-
-});
-
+Route::get('/import', Importer::class)
+    ->middleware('auth')
+    ->name('imports.index')
+    ->breadcrumbs(fn (Trail $trail) =>
+    $trail->parent('home')
+        ->push(trans('general.import'), route('imports.index')));
 
 /*
 |--------------------------------------------------------------------------
@@ -380,7 +352,6 @@ Route::group(['prefix' => 'account', 'middleware' => ['auth']], function () {
         ->name('account.password.index')
         ->breadcrumbs(fn (Trail $trail) =>
         $trail->parent('home')
-            ->push(trans('general.profile'), route('account'))
             ->push(trans('general.changepassword'), route('account.password.index')));
 
     Route::post('password', [ProfileController::class, 'passwordSave'])
@@ -390,7 +361,6 @@ Route::group(['prefix' => 'account', 'middleware' => ['auth']], function () {
         ->name('user.api')
         ->breadcrumbs(fn (Trail $trail) =>
         $trail->parent('home')
-            ->push(trans('general.profile'), route('account'))
             ->push(trans('general.manage_api_keys'), route('user.api')));
 
     // View Assets
@@ -398,16 +368,15 @@ Route::group(['prefix' => 'account', 'middleware' => ['auth']], function () {
         ->name('view-assets')
         ->breadcrumbs(fn (Trail $trail) =>
         $trail->parent('home')
-            ->push(trans('general.profile'), route('account'))
             ->push(trans('general.viewassets'), route('view-assets')));
 
     Route::get('requested', [ViewAssetsController::class, 'getRequestedAssets'])
         ->name('account.requested')
         ->breadcrumbs(fn (Trail $trail) =>
         $trail->parent('home')
-            ->push(trans('general.profile'), route('account'))
             ->push(trans('general.requested_assets_menu'), route('account.requested')));
 
+    // Profile
     Route::get(
         'requestable-assets', [ViewAssetsController::class, 'getRequestableIndex'])
         ->name('requestable-assets')
@@ -425,16 +394,6 @@ Route::group(['prefix' => 'account', 'middleware' => ['auth']], function () {
     Route::post('request/{itemType}/{itemId}/{cancel_by_admin?}/{requestingUser?}', [ViewAssetsController::class, 'getRequestItem'])
         ->name('account/request-item');
 
-    Route::get(
-        'display-sig/{filename}',
-        [ProfileController::class, 'displaySig']
-    )->name('profile.signature.view');
-
-    Route::get(
-        'stored-eula-file/{filename}',
-        [ProfileController::class, 'getStoredEula']
-    )->name('profile.storedeula.download');
-
     // Account Dashboard
     Route::get('/', [ViewAssetsController::class, 'getIndex'])
         ->name('account');
@@ -443,14 +402,12 @@ Route::group(['prefix' => 'account', 'middleware' => ['auth']], function () {
         ->name('account.accept')
         ->breadcrumbs(fn (Trail $trail) =>
         $trail->parent('home')
-            ->push(trans('general.profile'), route('account'))
-            ->push(trans('general.accept_items'), route('account.accept')));
+            ->push(trans('general.accept_assets_menu'), route('account.accept')));
 
     Route::get('accept/{id}', [Account\AcceptanceController::class, 'create'])
         ->name('account.accept.item')
         ->breadcrumbs(fn (Trail $trail, $id) =>
-        $trail->parent('home')
-            ->push(trans('general.profile'), route('account'))
+        $trail->parent('account.accept')
             ->push(trans('general.accept_item'), route('account.accept.item', $id)));
 
     Route::post('accept/{id}', [Account\AcceptanceController::class, 'store'])
@@ -503,18 +460,18 @@ Route::group(['prefix' => 'reports', 'middleware' => ['auth']], function () {
             ->push(trans('general.depreciation_report'), route('reports.audit')));
 
     Route::get(
-        'maintenances', [ReportsController::class, 'getMaintenancesReport'])
-        ->name('ui.reports.maintenances')
+        'asset_maintenances', [ReportsController::class, 'getAssetMaintenancesReport'])
+        ->name('reports/asset_maintenances')
         ->breadcrumbs(fn (Trail $trail) =>
         $trail->parent('home')
-            ->push(trans('general.asset_maintenance_report'), route('ui.reports.maintenances')));
+            ->push(trans('general.asset_maintenance_report'), route('reports/asset_maintenances')));
 
     // Is this still used?
-    Route::get('export/maintenances', [ReportsController::class, 'exportMaintenancesReport'])
-        ->name('reports/export/maintenances')
+    Route::get('export/asset_maintenances', [ReportsController::class, 'exportAssetMaintenancesReport'])
+        ->name('reports/export/asset_maintenances')
         ->breadcrumbs(fn (Trail $trail) =>
         $trail->parent('home')
-            ->push(trans('general.asset_maintenance_report'), route('reports/export/maintenances')));
+            ->push(trans('general.asset_maintenance_report'), route('reports/export/asset_maintenances')));
 
     Route::get('licenses', [ReportsController::class, 'getLicenseReport'])
         ->name('reports/licenses')
@@ -618,24 +575,23 @@ Route::get(
 Route::group(['prefix' => 'setup', 'middleware' => 'web'], function () {
     Route::get(
         'user',
-        [SetupController::class, 'getSetupUser']
+        [SettingsController::class, 'getSetupUser']
     )->name('setup.user');
 
     Route::post(
         'user',
-        [SetupController::class, 'postSaveFirstAdmin']
+        [SettingsController::class, 'postSaveFirstAdmin']
     )->name('setup.user.save');
 
 
-    Route::post(
+    Route::get(
         'migrate',
-        [SetupController::class, 'SetupMigrate']
+        [SettingsController::class, 'getSetupMigrate']
     )->name('setup.migrate');
-
 
     Route::get(
         'done',
-        [SetupController::class, 'getSetupDone']
+        [SettingsController::class, 'getSetupDone']
     )->name('setup.done');
 
     Route::get(
@@ -645,7 +601,7 @@ Route::group(['prefix' => 'setup', 'middleware' => 'web'], function () {
 
     Route::get(
         '/',
-        [SetupController::class, 'getSetupIndex']
+        [SettingsController::class, 'getSetupIndex']
     )->name('setup');
 });
 
@@ -723,39 +679,6 @@ Route::group(['middleware' => 'web'], function () {
         'logout',
         [LoginController::class, 'logout']
     )->name('logout.post');
-
-
-
-    /**
-     * Uploaded files API routes
-     */
-
-    // Get a file
-    Route::get('{object_type}/{id}/files/{file_id}',
-        [
-            UploadedFilesController::class,
-            'show'
-        ]
-    )->name('ui.files.show')
-        ->where(['object_type' => 'assets|audits|maintenances|hardware|models|users|locations|accessories|consumables|licenses|suppliers|components']);
-
-    // Upload files(s)
-    Route::post('{object_type}/{id}/files',
-        [
-            UploadedFilesController::class,
-            'store'
-        ]
-    )->name('ui.files.store')
-        ->where(['object_type' => 'assets|audits|maintenances|hardware|models|users|locations|accessories|consumables|licenses|suppliers|components']);
-
-    // Delete files(s)
-    Route::delete('{object_type}/{id}/files/{file_id}/delete',
-        [
-            UploadedFilesController::class,
-            'destroy'
-        ]
-    )->name('ui.files.destroy')
-        ->where(['object_type' => 'assets|maintenances|hardware|models|users|locations|accessories|consumables|licenses|suppliers|components']);
 });
 
 

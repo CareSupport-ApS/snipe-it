@@ -22,11 +22,9 @@ return array(
     ),
 
     'delete' => array(
-        'confirm' => 'Сигурни ли сте, че искате да изтриете този производител?',
+        'confirm'   => 'Сигурни ли сте, че искате да изтриете този производител?',
         'error'   => 'Възникна проблем при изтриването на проиводителя. Моля, опитайте отново.',
-        'success'                => 'Manufacturer deleted successfully.',
-        'bulk_success'           => 'Manufacturers deleted successfully.',
-        'partial_success'        => 'Manufacturer deleted successfully. See additional information below. | :count manufacturers were deleted successfully. See additional information below.',
+        'success' => 'Производителят е изтрит.'
     )
 
 );

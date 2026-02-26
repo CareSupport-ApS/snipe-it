@@ -1,7 +1,7 @@
 @component('mail::message')
-# {{ trans('mail.hello') }} {{ $target->display_name }},
+# {{ trans('mail.hello') }} {{ $target->present()->fullName() }},
 
-{{ $introduction_line }}
+{{ trans('mail.new_item_checked') }}
 
 
 @component('mail::table')
@@ -27,7 +27,7 @@
 | **{{ trans('mail.additional_notes') }}** | {{ $note }} |
 @endif
 @if ($admin)
-| **{{ trans('general.administrator') }}** | {{ $admin->display_name }} |
+| **{{ trans('general.administrator') }}** | {{ $admin->present()->fullName() }} |
 @endif
 @endcomponent
 

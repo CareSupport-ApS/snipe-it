@@ -22,11 +22,9 @@ return array(
     ),
 
     'delete' => array(
-        'confirm' => 'Uqinisekile ukuthi ufisa ukususa lo menzi?',
+        'confirm'   => 'Uqinisekile ukuthi ufisa ukususa lo menzi?',
         'error'   => 'Kube nenkinga yokususa umenzi. Ngicela uzame futhi.',
-        'success'                => 'Manufacturer deleted successfully.',
-        'bulk_success'           => 'Manufacturers deleted successfully.',
-        'partial_success'        => 'Manufacturer deleted successfully. See additional information below. | :count manufacturers were deleted successfully. See additional information below.',
+        'success' => 'Umkhiqizi ususiwe ngempumelelo.'
     )
 
 );

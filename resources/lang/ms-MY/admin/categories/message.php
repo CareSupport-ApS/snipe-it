@@ -18,11 +18,9 @@ return array(
     ),
 
     'delete' => array(
-        'confirm'                => 'Adakah anda pasti untuk memadam kategori ini?',
-        'error'                  => 'Terdapat ralat untuk menghapuskan kategori ini. Sila cuba lagi.',
-        'success'                => 'Category was deleted successfully.',
-        'bulk_success'           => 'Categories were deleted successfully.',
-        'partial_success'        => 'Category deleted successfully. See additional information below. | :count categories were deleted successfully. See additional information below.',
+        'confirm'   => 'Adakah anda pasti untuk memadam kategori ini?',
+        'error'   => 'Terdapat ralat untuk menghapuskan kategori ini. Sila cuba lagi.',
+        'success' => 'Katergori berjaya dihapuskan.'
     )
 
 );

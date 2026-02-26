@@ -2,7 +2,7 @@
 
 return [
 
-    'undeployable' 		 => 'Die folgenden Assets sind nicht Einsetzbar und wurden aus der Herausgabe entfernt: :asset_tags',
+    'undeployable' 		 => 'The following assets cannot be deployed and have been removed from checkout: :asset_tags',
     'does_not_exist' 	 => 'Asset existiert nicht.',
     'does_not_exist_var' => 'Asset mit Tag :asset_tag nicht gefunden.',
     'no_tag' 	         => 'Kein Asset Tag angegeben.',

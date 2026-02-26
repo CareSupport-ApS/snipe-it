@@ -13,10 +13,8 @@ return array(
     |
     */
 
-    'week_start_select' => '选择星期几',
-    'week_start' => '一周开始于',
-    'today' => '今天',
-    'clear' => '清空',
+    'today' => 'Today',
+    'clear' => 'Clear',
     'days' => [
         'sunday' => '星期日',
         'monday' => '星期一',

@@ -11,6 +11,7 @@ return array(
     'title'					=> 'Ang mga Modelo ng Asset',
     'update'				=> 'I-update ang Modelo ng Asset',
     'view'					=> 'Tingnan ang Modelo ng Asset',
-    'clone'				    => 'I-clone ang Modelo',
-    'edit'				    => 'I-edit ang Modelo',
+    'update'				=> 'I-update ang Modelo ng Asset',
+    'clone'				=> 'I-clone ang Modelo',
+    'edit'				=> 'I-edit ang Modelo',
 );

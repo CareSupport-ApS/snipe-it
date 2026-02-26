@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-{{ trans('admin/users/general.view_user', ['name' => $user->display_name]) }}
+{{ trans('admin/users/general.view_user', ['name' => $user->present()->fullName()]) }}
 @parent
 @stop
 
@@ -45,7 +45,7 @@
             <x-icon type="assets" class="fa-2x" />
             </span>
             <span class="hidden-xs hidden-sm">{{ trans('general.assets') }}
-              {!! ($user->assets()->AssetsForShow()->count() > 0 ) ? '<span class="badge badge-secondary">'.number_format($user->assets()->AssetsForShow()->withoutTrashed()->count()).'</span>' : '' !!}
+              {!! ($user->assets()->AssetsForShow()->count() > 0 ) ? '<badge class="badge badge-secondary">'.number_format($user->assets()->AssetsForShow()->withoutTrashed()->count()).'</badge>' : '' !!}
             </span>
           </a>
         </li>
@@ -56,7 +56,7 @@
             <x-icon type="licenses" class="fa-2x" />
             </span>
             <span class="hidden-xs hidden-sm">{{ trans('general.licenses') }}
-              {!! ($user->licenses->count() > 0 ) ? '<span class="badge badge-secondary">'.number_format($user->licenses->count()).'</span>' : '' !!}
+              {!! ($user->licenses->count() > 0 ) ? '<badge class="badge badge-secondary">'.number_format($user->licenses->count()).'</badge>' : '' !!}
             </span>
           </a>
         </li>
@@ -67,7 +67,7 @@
             <x-icon type="accessories" class="fa-2x" />
             </span> 
             <span class="hidden-xs hidden-sm">{{ trans('general.accessories') }}
-              {!! ($user->accessories->count() > 0 ) ? '<span class="badge badge-secondary">'.number_format($user->accessories->count()).'</span>' : '' !!}
+              {!! ($user->accessories->count() > 0 ) ? '<badge class="badge badge-secondary">'.number_format($user->accessories->count()).'</badge>' : '' !!}
             </span>
           </a>
         </li>
@@ -78,7 +78,7 @@
                 <x-icon type="consumables" class="fa-2x" />
             </span>
             <span class="hidden-xs hidden-sm">{{ trans('general.consumables') }}
-              {!! ($user->consumables->count() > 0 ) ? '<span class="badge badge-secondary">'.number_format($user->consumables->count()).'</span>' : '' !!}
+              {!! ($user->consumables->count() > 0 ) ? '<badge class="badge badge-secondary">'.number_format($user->consumables->count()).'</badge>' : '' !!}
             </span>
           </a>
         </li>
@@ -89,21 +89,10 @@
                 <x-icon type="files" class="fa-2x" />
             </span>
             <span class="hidden-xs hidden-sm">{{ trans('general.file_uploads') }}
-              {!! ($user->uploads->count() > 0 ) ? '<span class="badge badge-secondary">'.number_format($user->uploads->count()).'</span>' : '' !!}
+              {!! ($user->uploads->count() > 0 ) ? '<badge class="badge badge-secondary">'.number_format($user->uploads->count()).'</badge>' : '' !!}
             </span>
           </a>
         </li>
-
-          <li>
-              <a href="#eulas" data-toggle="tab">
-            <span class="hidden-lg hidden-md" aria-hidden="true">
-                <x-icon type="files" class="fa-2x" />
-              </span>
-                  <span class="hidden-xs hidden-sm">{{ trans('general.eula') }}
-                      {!! ($user->eulas->count() > 0 ) ? '<span class="badge badge-secondary">'.number_format($user->eulas->count()).'</span>' : '' !!}
-            </span>
-              </a>
-          </li>
 
         <li>
           <a href="#history" data-toggle="tab">
@@ -121,7 +110,7 @@
                 <x-icon type="locations" class="fa-2x" />
             </span>
             <span class="hidden-xs hidden-sm">{{ trans('admin/users/table.managed_locations') }}
-              {!! ($user->managedLocations->count() > 0 ) ? '<span class="badge badge-secondary">'.number_format($user->managedLocations->count()).'</span>' : '' !!}
+              {!! ($user->managedLocations->count() > 0 ) ? '<badge class="badge badge-secondary">'.number_format($user->managedLocations->count()).'</badge>' : '' !!}
           </a>
         </li>
         @endif
@@ -133,7 +122,7 @@
                       <x-icon type="users" class="fa-2x" />
                     </span>
                       <span class="hidden-xs hidden-sm">{{ trans('admin/users/table.managed_users') }}
-                      {!! ($user->managesUsers->count() > 0 ) ? '<span class="badge badge-secondary">'.number_format($user->managesUsers->count()).'</span>' : '' !!}
+                      {!! ($user->managesUsers->count() > 0 ) ? '<badge class="badge badge-secondary">'.number_format($user->managesUsers->count()).'</badge>' : '' !!}
                   </a>
               </li>
           @endif
@@ -175,6 +164,15 @@
         <div class="tab-pane active" id="details">
           <div class="row">
 
+            @if ($user->deleted_at!='')
+              <div class="col-md-12">
+                <div class="callout callout-warning">
+                  <i class="icon fas fa-exclamation-triangle"></i>
+                  {{ trans('admin/users/message.user_deleted_warning') }}
+                </div>
+              </div>
+            @endif
+
         <div class="info-stack-container">
             <!-- Start button column -->
             <div class="col-md-3 col-xs-12 col-sm-push-9 info-stack">
@@ -190,7 +188,7 @@
 
               </div>
               <div class="col-md-12 text-center">
-                <img src="{{ $user->present()->gravatar() }}"  class=" img-thumbnail hidden-print" style="margin-bottom: 20px;" alt="{{ $user->display_name }}">
+                <img src="{{ $user->present()->gravatar() }}"  class=" img-thumbnail hidden-print" style="margin-bottom: 20px;" alt="{{ $user->present()->fullName() }}">
                </div>
 
               @can('update', $user)
@@ -206,12 +204,12 @@
                 <div class="col-md-12" style="padding-top: 5px;">
 
                 @if($user->allAssignedCount() != '0') 
-                  <a href="{{ route('users.print', $user->id) }}" style="width: 100%;" class="btn btn-sm btn-theme btn-social hidden-print" target="_blank" rel="noopener">
+                  <a href="{{ route('users.print', $user->id) }}" style="width: 100%;" class="btn btn-sm btn-primary btn-social hidden-print" target="_blank" rel="noopener">
                       <x-icon type="print" />
                       {{ trans('admin/users/general.print_assigned') }}
                   </a>
                   @else
-                  <button style="width: 100%;" class="btn btn-sm btn-theme btn-social hidden-print" rel="noopener" disabled title="{{ trans('admin/users/message.user_has_no_assets_assigned') }}">
+                  <button style="width: 100%;" class="btn btn-sm btn-primary btn-social hidden-print" rel="noopener" disabled title="{{ trans('admin/users/message.user_has_no_assets_assigned') }}">
                       <x-icon type="print" />
                       {{ trans('admin/users/general.print_assigned') }}</button>
                 @endif
@@ -223,7 +221,7 @@
                   @if(!empty($user->email) && ($user->allAssignedCount() != '0'))
                     <form action="{{ route('users.email',['userId'=> $user->id]) }}" method="POST">
                       {{ csrf_field() }}
-                      <button class="btn-block btn btn-sm btn-theme btn-social hidden-print" rel="noopener">
+                      <button class="btn-block btn btn-sm btn-primary btn-social hidden-print" rel="noopener">
                           <x-icon type="email" />
                           {{ trans('admin/users/general.email_assigned') }}
                       </button>
@@ -243,7 +241,7 @@
                 @endcan
 
                 @can('update', $user)
-                  @if ((($user->deleted_at=='')) && ($user->activated == '1') && ($user->ldap_import == '0'))
+                  @if (($user->activated == '1') && ($user->ldap_import == '0'))
                   <div class="col-md-12" style="padding-top: 5px;">
                     @if (($user->email != '') && ($user->activated=='1'))
                       <form action="{{ route('users.password',['userId'=> $user->id]) }}" method="POST">
@@ -273,35 +271,29 @@
                 @endcan
 
 
-            @can('update', $user)
+            @can('delete', $user)
                   @if ($user->deleted_at=='')
                     <div class="col-md-12" style="padding-top: 30px;">
-                        @if (($user->isDeletable()) && ($user->id!=auth()->user()->id))
-                            <a href="" class="delete-asset btn-block btn btn-sm btn-danger btn-social hidden-print" data-toggle="modal" data-title="{{ trans('general.delete') }}" data-content="{{ trans('general.sure_to_delete_var', ['item' => $user->display_name]) }}" data-icon="fa-trash" data-target="#dataConfirmModal" onClick="return false;" >
+                        @if ($user->isDeletable())
+                            <a href="#" class="btn-block delete-asset btn btn-sm btn-danger btn-social hidden-print" data-toggle="modal" data-title="{{ trans('general.delete') }}" data-content="{{ trans('general.sure_to_delete_var', ['item' => $user->present()->fullName]) }}" data-target="#dataConfirmModal">
                                 <x-icon type="delete" />
                                 {{ trans('button.delete')}}
                             </a>
-                        @elseif ($user->id == auth()->user()->id)
-                            <button class="btn-block btn btn-sm btn-danger btn-social hidden-print disabled" data-tooltip="true" data-title="{{ trans('tooltips.disabled_assoc.user_self') }}">
-                                <x-icon type="delete" />
-                                {{ trans('button.delete')}}
-                            </button>
-                        @else
-                            <button class="btn-block btn btn-sm btn-danger btn-social hidden-print disabled" data-tooltip="true" data-title="{{ trans('tooltips.disabled_assoc.user') }}">
+                            @else
+                            <button class="btn-block btn btn-sm btn-danger btn-social hidden-print disabled">
                                 <x-icon type="delete" />
                                 {{ trans('button.delete')}}
                             </button>
                         @endif
                     </div>
                     <div class="col-md-12" style="padding-top: 5px;">
-
                       <form action="{{ route('users/bulkedit') }}" method="POST">
                         <!-- CSRF Token -->
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         <input type="hidden" name="bulk_actions" value="delete" />
 
                         <input type="hidden" name="ids[{{ $user->id }}]" value="{{ $user->id }}" />
-                        <button class="btn btn-block btn-sm btn-danger btn-social hidden-print" data-tooltip="true" data-title="{{ trans('tooltips.checkin_all.user') }}">
+                        <button class="btn btn-block btn-sm btn-danger btn-social hidden-print">
                             <x-icon type="checkin-and-delete" />
                             {{ trans('button.checkin_and_delete') }}
                         </button>
@@ -336,12 +328,33 @@
                         {{ trans('admin/users/table.name') }}
                       </div>
                       <div class="col-md-9">
-                        {{ $user->first_name }} {{ $user->last_name }}
+                        {{ $user->present()->fullName() }}
                       </div>
 
                   </div>
 
 
+
+                   <!-- company -->
+                    @if (!is_null($user->company))
+                    <div class="row">
+
+                      <div class="col-md-3">
+                        {{ trans('general.company') }}
+                      </div>
+                      <div class="col-md-9">
+                          @can('view', 'App\Models\Company')
+                            <a href="{{ route('companies.show', $user->company->id) }}">
+                                {{ $user->company->name }}
+                            </a>
+                              @else
+                              {{ $user->company->name }}
+                            @endcan
+                      </div>
+
+                    </div>
+
+                    @endif
 
                     <!-- username -->
                     <div class="row">
@@ -361,19 +374,6 @@
                       </div>
 
                     </div>
-
-                   <!-- display name -->
-                   @if ($user->display_name)
-                   <div class="row">
-
-                       <div class="col-md-3">
-                           {{ trans('admin/users/table.display_name') }}
-                       </div>
-                       <div class="col-md-9">
-                           {{ $user->getRawOriginal('display_name') }}
-                       </div>
-                   </div>
-                   @endif
 
                     <!-- address -->
                     @if (($user->address) || ($user->city) || ($user->state) || ($user->country))
@@ -403,20 +403,6 @@
                     </div>
                     @endif
 
-                   <!-- company -->
-                   @if (!is_null($user->company))
-                       <div class="row">
-
-                           <div class="col-md-3">
-                               {{ trans('general.company') }}
-                           </div>
-                           <div class="col-md-9">
-                               {!!  $user->company->present()->formattedNameLink !!}
-                           </div>
-
-                       </div>
-
-                   @endif
 
                      <!-- groups -->
                      <div class="row">
@@ -426,19 +412,17 @@
                         <div class="col-md-9">
                           @if ($user->groups->count() > 0)
                             @foreach ($user->groups as $group)
+
                               @can('superadmin')
                                   <a href="{{ route('groups.show', $group->id) }}" class="label label-default">{{ $group->name }}</a>
                               @else
                               {{ $group->name }}
                               @endcan
+
                             @endforeach
                           @else
                               --
                           @endif
-
-                              @if ($user->hasIndividualPermissions())
-                                  <span class="text-warning"><x-icon type="warning" /> {{ trans('admin/users/general.individual_override') }}</span>
-                              @endif
                         </div>
                       </div>
 
@@ -503,7 +487,7 @@
                         </div>
                         <div class="col-md-9">
                           <a href="{{ route('users.show', $user->manager->id) }}">
-                            {{ $user->manager->display_name }}
+                            {{ $user->manager->getFullNameAttribute() }}
                           </a>
                         </div>
 
@@ -552,19 +536,6 @@
                       </div>
                     @endif
 
-                   @if ($user->mobile)
-                       <!-- phone -->
-                       <div class="row">
-                           <div class="col-md-3">
-                               {{ trans('admin/users/table.mobile') }}
-                           </div>
-                           <div class="col-md-9">
-                               <a href="tel:{{ $user->mobile }}" data-tooltip="true" title="{{ trans('general.call') }}">
-                                   <x-icon type="mobile" />
-                                   {{ $user->mobile }}</a>
-                           </div>
-                       </div>
-                   @endif
                     @if ($user->userloc)
                      <!-- location -->
                      <div class="row">
@@ -572,10 +543,20 @@
                         {{ trans('admin/users/table.location') }}
                       </div>
                       <div class="col-md-9">
-                          {!!  $user->userloc->present()->formattedNameLink !!}
+                        {{ link_to_route('locations.show', $user->userloc->name, [$user->userloc->id]) }}
                       </div>
                     </div>
                     @endif
+
+                    <!-- last login -->
+                    <div class="row">
+                      <div class="col-md-3">
+                        {{ trans('general.last_login') }}
+                      </div>
+                      <div class="col-md-9">
+                        {{ \App\Helpers\Helper::getFormattedDateObject($user->last_login, 'datetime', false) }}
+                      </div>
+                    </div>
 
 
                     @if ($user->department)
@@ -586,7 +567,7 @@
                         </div>
                         <div class="col-md-9">
                           <a href="{{ route('departments.show', $user->department) }}">
-                              {!!  $user->department->present()->formattedNameLink !!}
+                            {{ $user->department->name }}
                           </a>
                         </div>
                       </div>
@@ -604,17 +585,6 @@
                       @endif
                     @endif
 
-
-                   <!-- last login -->
-                   <div class="row">
-                       <div class="col-md-3">
-                           {{ trans('general.last_login') }}
-                       </div>
-                       <div class="col-md-9">
-                           {{ \App\Helpers\Helper::getFormattedDateObject($user->last_login, 'datetime', false) }}
-                       </div>
-                   </div>
-                   
                     @if ($user->created_at)
                     <!-- created at -->
                     <div class="row">
@@ -627,7 +597,7 @@
                           @if ($user->createdBy)
                               -
                               @if ($user->createdBy->deleted_at=='')
-                                  <a href="{{ route('users.show', ['user' => $user->created_by]) }}">{{ $user->createdBy->display_name }}</a>
+                                  <a href="{{ route('users.show', ['user' => $user->created_by]) }}">{{ $user->createdBy->present()->fullName }}</a>
                               @else
                                   <del>{{ $user->createdBy->present()->fullName }}</del>
                               @endif
@@ -835,37 +805,58 @@
 
             @include('partials.asset-bulk-actions')
 
+            <div class="table table-responsive">
+
             <table
+                    data-click-to-select="true"
                     data-columns="{{ \App\Presenters\AssetPresenter::dataTableLayout() }}"
-                    data-show-columns-search="true"
                     data-cookie-id-table="userAssetsListingTable"
+                    data-pagination="true"
                     data-id-table="userAssetsListingTable"
+                    data-search="true"
+                    data-search-highlight="true"
+                    data-show-print="true"
                     data-side-pagination="server"
+                    data-show-columns="true"
+                    data-show-fullscreen="true"
+                    data-show-export="true"
                     data-show-footer="true"
+                    data-show-refresh="true"
+                    data-sort-order="asc"
                     data-sort-name="name"
                     data-toolbar="#assetsBulkEditToolbar"
                     data-bulk-button-id="#bulkAssetEditButton"
                     data-bulk-form-id="#assetsBulkForm"
                     id="userAssetsListingTable"
-                    data-buttons="assetButtons"
                     class="table table-striped snipe-table"
                     data-url="{{ route('api.assets.index',['assigned_to' => e($user->id), 'assigned_type' => 'App\Models\User']) }}"
                     data-export-options='{
-                "fileName": "export-{{ str_slug($user->username) }}-assets-{{ date('Y-m-d') }}",
+                "fileName": "export-{{ str_slug($user->present()->fullName()) }}-assets-{{ date('Y-m-d') }}",
                 "ignoreColumn": ["actions","image","change","checkbox","checkincheckout","icon"]
                 }'>
             </table>
+          </div>
         </div><!-- /asset -->
 
         <div class="tab-pane" id="licenses">
 
+
+          <div class="table-responsive">
             <table
                     data-cookie-id-table="userLicenseTable"
                     data-id-table="userLicenseTable"
                     id="userLicenseTable"
-                    data-buttons="licenseButtons"
+                    data-search="true"
+                    data-search-highlight="true"
+                    data-show-print="true"
+                    data-pagination="true"
                     data-side-pagination="client"
+                    data-show-columns="true"
+                    data-show-fullscreen="true"
+                    data-show-export="true"
                     data-show-footer="true"
+                    data-show-refresh="true"
+                    data-sort-order="asc"
                     data-sort-name="name"
                     class="table table-striped snipe-table table-hover"
                     data-export-options='{
@@ -907,22 +898,33 @@
                   </td>
                   <td class="hidden-print col-md-2">
                     @can('update', $license)
-                      <a href="{{ route('licenses.checkin', $license->pivot->id, ['backto'=>'user']) }}" class="btn bg-purple btn-sm hidden-print">{{ trans('general.checkin') }}</a>
+                      <a href="{{ route('licenses.checkin', $license->pivot->id, ['backto'=>'user']) }}" class="btn btn-primary btn-sm hidden-print">{{ trans('general.checkin') }}</a>
                      @endcan
                   </td>
                 </tr>
                 @endforeach
               </tbody>
           </table>
+          </div>
         </div><!-- /licenses-tab -->
 
         <div class="tab-pane" id="accessories">
+          <div class="table-responsive">
             <table
                     data-cookie-id-table="userAccessoryTable"
                     data-id-table="userAccessoryTable"
                     id="userAccessoryTable"
-                    data-buttons="accessoryButtons"
+                    data-search="true"
+                    data-search-highlight="true"
+                    data-show-print="true"
+                    data-pagination="true"
                     data-side-pagination="client"
+                    data-show-columns="true"
+                    data-show-fullscreen="true"
+                    data-show-export="true"
+                    data-show-footer="true"
+                    data-show-refresh="true"
+                    data-sort-order="asc"
                     data-sort-name="name"
                     class="table table-striped snipe-table table-hover"
                     data-export-options='{
@@ -931,21 +933,19 @@
                     }'>
               <thead>
                 <tr>
-                    <th>{{ trans('general.id') }}</th>
-                    <th>{{ trans('general.name') }}</th>
-                    <th>{{ trans('general.date') }}</th>
-                    <th data-fieldname="note">{{ trans('general.notes') }}</th>
-                    <th data-footer-formatter="sumFormatter" data-fieldname="purchase_cost">{{ trans('general.unit_cost') }}</th>
-                    <th class="hidden-print">{{ trans('general.action') }}</th>
+                    <th class="col-md-1">{{ trans('general.id') }}</th>
+                    <th class="col-md-4">{{ trans('general.name') }}</th>
+                    <th class-="col-md-5" data-fieldname="note">{{ trans('general.notes') }}</th>
+                    <th class="col-md-1" data-footer-formatter="sumFormatter" data-fieldname="purchase_cost">{{ trans('general.purchase_cost') }}</th>
+                    <th class="col-md-1 hidden-print">{{ trans('general.action') }}</th>
                 </tr>
               </thead>
               <tbody>
                   @foreach ($user->accessories as $accessory)
                   <tr>
                       <td>{{ $accessory->pivot->id }}</td>
-                      <td>{!! $accessory->present()->nameUrl() !!}</td>
-                      <td>{{ Helper::getFormattedDateObject($accessory->pivot->created_at, 'datetime',  false) }}</td>
-                      <td>{{ $accessory->pivot->note }}</td>
+                      <td>{!!$accessory->present()->nameUrl()!!}</td>
+                      <td>{!! $accessory->pivot->note !!}</td>
                       <td>
                       {!! Helper::formatCurrencyOutput($accessory->purchase_cost) !!}
                       </td>
@@ -958,16 +958,26 @@
                   @endforeach
               </tbody>
             </table>
+          </div>
         </div><!-- /accessories-tab -->
 
         <div class="tab-pane" id="consumables">
+          <div class="table-responsive">
             <table
                     data-cookie-id-table="userConsumableTable"
                     data-id-table="userConsumableTable"
                     id="userConsumableTable"
-                    data-buttons="consumableButtons"
+                    data-search="true"
+                    data-search-highlight="true"
+                    data-show-print="true"
+                    data-pagination="true"
                     data-side-pagination="client"
+                    data-show-columns="true"
+                    data-show-fullscreen="true"
+                    data-show-export="true"
                     data-show-footer="true"
+                    data-show-refresh="true"
+                    data-sort-order="asc"
                     data-sort-name="name"
                     class="table table-striped snipe-table table-hover"
                     data-export-options='{
@@ -977,7 +987,7 @@
               <thead>
                 <tr>
                   <th class="col-md-3">{{ trans('general.name') }}</th>
-                  <th class="col-md-2" data-footer-formatter="sumFormatter" data-fieldname="purchase_cost">{{ trans('general.unit_cost') }}</th>
+                  <th class="col-md-2" data-footer-formatter="sumFormatter" data-fieldname="purchase_cost">{{ trans('general.purchase_cost') }}</th>
                   <th class="col-md-2">{{ trans('general.date') }}</th>
                     <th class="col-md-5">{{ trans('general.notes') }}</th>
                 </tr>
@@ -995,61 +1005,69 @@
                 @endforeach
               </tbody>
           </table>
+          </div>
         </div><!-- /consumables-tab -->
 
         <div class="tab-pane" id="files">
           <div class="row">
 
             <div class="col-md-12 col-sm-12">
-                <x-filestable object_type="users" :object="$user" />
+                <x-filestable
+                        filepath="private_uploads/users/"
+                        showfile_routename="show/userfile"
+                        deletefile_routename="userfile.destroy"
+                        :object="$user" />
             </div>
           </div> <!--/ROW-->
         </div><!--/FILES-->
 
-          <div class="tab-pane" id="eulas">
-              <table
-                      data-toolbar="#userEULAToolbar"
-                      data-cookie-id-table="userEULATable"
-                      data-id-table="userEULATable"
-                      id="userEULATable"
-                      data-side-pagination="client"
-                      data-show-footer="true"
-                      data-show-refresh="false"
-                      data-sort-order="asc"
-                      data-sort-name="name"
-                      class="table table-striped snipe-table table-hover"
-                      data-url="{{ route('api.user.eulas', $user) }}"
-                      data-export-options='{
-                    "fileName": "export-eula-{{ str_slug($user->username) }}-{{ date('Y-m-d') }}",
-                    "ignoreColumn": ["actions","image","change","checkbox","checkincheckout","delete","purchasecost", "icon"]
-                    }'>
-                  <thead>
-                  <tr>
-                      <th data-visible="true" data-field="icon" style="width: 40px;" class="hidden-xs" data-formatter="iconFormatter">{{ trans('admin/hardware/table.icon') }}</th>
-                      <th data-visible="true" data-field="item.name">{{ trans('general.item') }}</th>
-                      <th data-visible="true" data-field="created_at" data-sortable="true" data-formatter="dateDisplayFormatter">{{ trans('general.accepted_date') }}</th>
-                      <th data-field="note">{{ trans('general.notes') }}</th>
-                      <th data-field="url" data-formatter="fileDownloadButtonsFormatter">{{ trans('general.download') }}</th>
-                  </tr>
-                  </thead>
-              </table>
-          </div><!-- /eulas-tab -->
-
         <div class="tab-pane" id="history">
-              <table
-                      data-columns="{{ \App\Presenters\HistoryPresenter::dataTableLayout() }}"
-                      class="table table-striped snipe-table"
-                      data-cookie-id-table="UserHistoryTable"
-                      data-id-table="UserHistoryTable"
-                      id="UserHistoryTable"
-                      data-side-pagination="server"
-                      data-sort-order="desc"
-                      data-export-options='{
-                       "fileName": "export-{{ str_slug($user->name) }}-history-{{ date('Y-m-d') }}",
-                       "ignoreColumn": ["actions","image","change","checkbox","checkincheckout","icon"]
-                     }'
-                      data-url="{{ route('api.activity.index', ['item_id' => $user->id, 'item_type' => User::class]) }}">
-              </table>
+          <div class="table-responsive">
+
+
+            <table
+                    data-click-to-select="true"
+                    data-cookie-id-table="usersHistoryTable"
+                    data-pagination="true"
+                    data-id-table="usersHistoryTable"
+                    data-search="true"
+                    data-search-highlight="true"
+                    data-show-print="true"
+                    data-side-pagination="server"
+                    data-show-columns="true"
+                    data-show-fullscreen="true"
+                    data-show-export="true"
+                    data-show-refresh="true"
+                    data-sort-order="desc"
+                    id="usersHistoryTable"
+                    class="table table-striped snipe-table"
+                    data-url="{{ route('api.activity.index', ['target_id' => $user->id, 'target_type' => 'user']) }}"
+                    data-export-options='{
+                "fileName": "export-{{ str_slug($user->present()->fullName ) }}-history-{{ date('Y-m-d') }}",
+                "ignoreColumn": ["actions","image","change","checkbox","checkincheckout","icon"]
+                }'>
+              <thead>
+              <tr>
+                <th data-field="icon" style="width: 40px;" class="hidden-xs" data-formatter="iconFormatter">Icon</th>
+                <th data-field="created_at" data-formatter="dateDisplayFormatter" data-sortable="true">{{ trans('general.date') }}</th>
+                  <th data-field="item" data-formatter="polymorphicItemFormatter">{{ trans('general.item') }}</th>
+                  <th data-field="action_type">{{ trans('general.action') }}</th>
+                  <th data-field="target" data-formatter="polymorphicItemFormatter">{{ trans('general.target') }}</th>
+                  <th data-field="note">{{ trans('general.notes') }}</th>
+                  @if  ($snipeSettings->require_accept_signature=='1')
+                      <th data-field="signature_file" data-visible="false"  data-formatter="imageFormatter">{{ trans('general.signature') }}</th>
+                  @endif
+                  <th data-field="item.serial" data-visible="false">{{ trans('admin/hardware/table.serial') }}</th>
+                  <th data-field="admin" data-formatter="usersLinkObjFormatter">{{ trans('general.created_by') }}</th>
+                  <th data-field="remote_ip" data-visible="false" data-sortable="true">{{ trans('admin/settings/general.login_ip') }}</th>
+                  <th data-field="user_agent" data-visible="false" data-sortable="true">{{ trans('admin/settings/general.login_user_agent') }}</th>
+                  <th data-field="action_source" data-visible="false" data-sortable="true">{{ trans('general.action_source') }}</th>
+
+              </tr>
+              </thead>
+            </table>
+
+          </div>
         </div><!-- /.tab-pane -->
 
         <div class="tab-pane" id="managed-locations">
@@ -1060,13 +1078,22 @@
             <table
                     data-columns="{{ \App\Presenters\LocationPresenter::dataTableLayout() }}"
                     data-cookie-id-table="locationTable"
+                    data-click-to-select="true"
+                    data-pagination="true"
                     data-id-table="locationTable"
                     data-toolbar="#locationsBulkEditToolbar"
                     data-bulk-button-id="#bulkLocationsEditButton"
                     data-bulk-form-id="#locationsBulkForm"
+                    data-search="true"
+                    data-search-highlight="true"
+                    data-show-print="true"
                     data-side-pagination="server"
+                    data-show-columns="true"
+                    data-show-fullscreen="true"
+                    data-show-export="true"
+                    data-show-refresh="true"
+                    data-sort-order="asc"
                     id="locationTable"
-                    data-buttons="locationButtons"
                     class="table table-striped snipe-table"
                     data-url="{{ route('api.locations.index', ['manager_id' => $user->id]) }}"
                     data-export-options='{
@@ -1081,16 +1108,26 @@
 
               @include('partials.users-bulk-actions')
 
+
               <table
                       data-columns="{{ \App\Presenters\UserPresenter::dataTableLayout() }}"
                       data-cookie-id-table="managedUsersTable"
+                      data-click-to-select="true"
+                      data-pagination="true"
                       data-id-table="managedUsersTable"
                       data-toolbar="#usersBulkEditToolbar"
                       data-bulk-button-id="#bulkUserEditButton"
                       data-bulk-form-id="#usersBulkForm"
+                      data-search="true"
+                      data-search-highlight="true"
+                      data-show-print="true"
                       data-side-pagination="server"
+                      data-show-columns="true"
+                      data-show-fullscreen="true"
+                      data-show-export="true"
+                      data-show-refresh="true"
+                      data-sort-order="asc"
                       id="managedUsersTable"
-                      data-buttons="userButtons"
                       class="table table-striped snipe-table"
                       data-url="{{ route('api.users.index', ['manager_id' => $user->id]) }}"
                       data-export-options='{
@@ -1118,6 +1155,12 @@
 <script nonce="{{ csrf_token() }}">
 $(function () {
 
+$('#dataConfirmModal').on('show.bs.modal', function (event) {
+    var content = $(event.relatedTarget).data('content');
+    var title = $(event.relatedTarget).data('title');
+    $(this).find(".modal-body").text(content);
+    $(this).find(".modal-header").text(title);
+ });
 
 
   $("#two_factor_reset").click(function(){

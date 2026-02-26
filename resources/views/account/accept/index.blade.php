@@ -15,10 +15,15 @@
       <div class="box-body">
         <!-- checked out Accessories table -->
 
+        <div class="table-responsive">
           <table
                   data-cookie-id-table="pendingAcceptances"
+                  data-pagination="true"
                   data-id-table="pendingAcceptances"
+                  data-search="true"
                   data-side-pagination="client"
+                  data-show-columns="true"
+                  data-show-export="true"
                   data-show-refresh="false"
                   data-sort-order="asc"
                   id="pendingAcceptances"
@@ -30,10 +35,6 @@
             <thead>
               <tr>
                 <th>{{ trans('general.name')}}</th>
-                  <th>{{ trans('general.type')}}</th>
-                  <th>{{ trans('general.category')}}</th>
-                  <th>{{ trans('general.qty') }}</th>
-                <th>{{ trans('general.serial_number')}}</th>
                 <th>{{ trans('table.actions')}}</th>
               </tr>
             </thead>
@@ -42,11 +43,7 @@
               <tr>
                 @if ($acceptance->checkoutable)
                 <td>{{ ($acceptance->checkoutable) ? $acceptance->checkoutable->present()->name : '' }}</td>
-                <td>{{ $acceptance->checkoutable_item_type }}</td>
-                <td>{{ $acceptance->checkoutable_category_name ?? '' }}</td>
-                <td>{{ $acceptance->qty ?? '1' }}</td>
-                <td>{{ ($acceptance->checkoutable) ? $acceptance->checkoutable->serial : '' }}</td>
-                <td><a href="{{ route('account.accept.item', $acceptance) }}" class="btn btn-theme btn-sm">{{ trans('general.accept_decline') }}</a></td>
+                <td><a href="{{ route('account.accept.item', $acceptance) }}" class="btn btn-default btn-sm">{{ trans('general.accept_decline') }}</a></td>
                 @else
                 <td> ----- </td>
                 <td> {{ trans('general.error_user_company_accept_view') }} </td>
@@ -56,6 +53,8 @@
             </tbody>
           </table>
         </div>
+
+       </div> <!-- .box-body-->
     </div><!--.box.box-default-->
   </div> <!-- .col-md-12-->
 </div> <!-- .row-->

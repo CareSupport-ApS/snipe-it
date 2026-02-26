@@ -2,16 +2,15 @@
 
 namespace App\Livewire;
 
-use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class CategoryEditForm extends Component
 {
-    public bool $alertOnResponse;
-
     public $defaultEulaText;
 
     public $eulaText;
+
+    public $originalSendCheckInEmailValue;
 
     public bool $requireAcceptance;
 
@@ -19,19 +18,35 @@ class CategoryEditForm extends Component
 
     public bool $useDefaultEula;
 
+    public function mount()
+    {
+        $this->originalSendCheckInEmailValue = $this->sendCheckInEmail;
+
+        if ($this->eulaText || $this->useDefaultEula) {
+            $this->sendCheckInEmail = 1;
+        }
+    }
+
     public function render()
     {
         return view('livewire.category-edit-form');
     }
 
-    #[Computed]
-    public function emailWillBeSendDueToEula(): bool
+    public function updated($property, $value)
+    {
+        if (! in_array($property, ['eulaText', 'useDefaultEula'])) {
+            return;
+        }
+
+        $this->sendCheckInEmail = $this->eulaText || $this->useDefaultEula ? 1 : $this->originalSendCheckInEmailValue;
+    }
+
+    public function getShouldDisplayEmailMessageProperty(): bool
     {
         return $this->eulaText || $this->useDefaultEula;
     }
 
-    #[Computed]
-    public function emailMessage(): string
+    public function getEmailMessageProperty(): string
     {
         if ($this->useDefaultEula) {
             return trans('admin/categories/general.email_will_be_sent_due_to_global_eula');
@@ -40,9 +55,13 @@ class CategoryEditForm extends Component
         return trans('admin/categories/general.email_will_be_sent_due_to_category_eula');
     }
 
-    #[Computed]
-    public function eulaTextDisabled()
+    public function getEulaTextDisabledProperty()
     {
         return (bool)$this->useDefaultEula;
+    }
+
+    public function getSendCheckInEmailDisabledProperty()
+    {
+        return $this->eulaText || $this->useDefaultEula;
     }
 }

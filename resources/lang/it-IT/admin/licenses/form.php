@@ -16,7 +16,7 @@ return array(
     'seats'             => 'Licenze',
     'termination_date'  => 'Data di estinzione',
     'to_email'          => 'Licenza Email',
-    'to_name'           => 'Autorizzato da',
+    'to_name'           => 'Licenza Nome',
     'update'            => 'Aggiornamento Licenze',
     'checkout_help'     => 'Devi assegnare una Licenza a un Bene o a una persona. Puoi selezionarli entrambi, ma in tal caso l\'assegnatario del Bene deve corrispondere alla persona a cui stai assegnando la licenza.'
 );

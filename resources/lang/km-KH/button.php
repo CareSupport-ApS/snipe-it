@@ -22,7 +22,6 @@ return [
     'add_maintenance'           => 'បន្ថែមការថែទាំ',
     'append'                    => 'បន្ថែម',
     'new'                       => 'ថ្មី',
-    'show_hide_info'            => 'Show/Hide More Information',
     'var' => [
         'clone'     => 'ក្លូន៖ item_type',
         'edit'      => 'កែសម្រួល៖ item_type',

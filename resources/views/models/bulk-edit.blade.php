@@ -2,10 +2,15 @@
 
 {{-- Page title --}}
 @section('title')
-    {{ trans('general.bluk_edit') }}
+    Bulk Edit
     @parent
 @stop
 
+
+@section('header_right')
+    <a href="{{ URL::previous() }}" class="btn btn-sm btn-primary pull-right">
+        {{ trans('general.back') }}</a>
+@stop
 
 {{-- Page content --}}
 @section('content')
@@ -24,21 +29,22 @@
                         </div>
 
 
-                        <table class="table table-striped">
-                            @foreach ($models as $model)
+                        <table class="table">
+                            <tbody>
+                        @foreach ($models as $model)
 
-                                <tr>
-                                        <td>
-                                            <i class="fa {!!  (($model->assets_count > 0 ) ? 'fa-warning text-warning fa-fw' : 'fa-check fa-fw text-success') !!}"></i>
-                                            {{ $model->display_name }}
+                            <tr{!!  (($model->assets_count > 0 ) ? ' class="warning"' : ' class="success"') !!}>
+                                    <td>
+                                        <i class="fa {!!  (($model->assets_count > 0 ) ? 'fa-warning info' : 'fa-check success') !!}"></i>
+                                        {{ $model->display_name }}
 
-                                                @if ($model->model_number)
-                                                    ({{ $model->model_number }})
-                                                @endif
-                                            </td>
-                                            <td>{{ $model->assets_count }} assets
+                                            @if ($model->model_number)
+                                                ({{ $model->model_number }})
+                                            @endif
                                         </td>
-                                </tr>
+                                        <td>{{ $model->assets_count }} assets
+                                    </td>
+                            </tr>
 
                         @endforeach
                         </table>
@@ -85,21 +91,7 @@
                             </div>
 
                             @include ('partials.forms.edit.minimum_quantity')
-                            <!-- require serial boolean -->
-                            <div class="form-group">
-                                <label for="require_serial" class="col-md-3 control-label">
-                                    {{ trans('admin/hardware/general.require_serial') }}
-                                </label>
 
-                                <div class="col-md-9">
-                                    <div class="form-inline" style="display: flex; align-items: center; gap: 8px;">
-                                        <input type="checkbox" name="require_serial" value="1" id="require_serial" aria-label="require_serial" />
-                                        <x-form.tooltip>
-                                            {{ trans('admin/hardware/general.require_serial_help') }}
-                                        </x-form.tooltip>
-                                    </div>
-                                </div>
-                            </div>
 
                             <!-- requestable -->
                                 <div class="form-group{{ $errors->has('requestable') ? ' has-error' : '' }}">
@@ -130,7 +122,7 @@
 
                     <div class="box-footer text-right">
                         <a class="btn btn-link pull-left" href="{{ URL::previous() }}" method="post" enctype="multipart/form-data">{{ trans('button.cancel') }}</a>
-                        <button type="submit" class="btn btn-success" id="submit-button"><x-icon type="checkmark" /> {{ trans('general.save') }}</button>
+                        <button type="submit" class="btn btn-success" id="submit-button"><x-icon type="checkmark" /> {{ trans('general.update') }}</button>
                     </div><!-- /.box-footer -->
                 </div> <!--/.box.box-default-->
             </form>

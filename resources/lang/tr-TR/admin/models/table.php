@@ -11,6 +11,7 @@ return array(
     'title'					=> 'Demirbaş Modelleri',
     'update'				=> 'Demirbaş Modeli Güncelle',
     'view'					=> 'Demirbaş Modeli Görüntüle',
-    'clone'				    => 'Modeli Kopyala',
-    'edit'				    => 'Modeli Düzenle',
+    'update'				=> 'Demirbaş Modeli Güncelle',
+    'clone'				=> 'Modeli Kopyala',
+    'edit'				=> 'Modeli Düzenle',
 );

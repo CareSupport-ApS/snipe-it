@@ -22,11 +22,9 @@ return array(
     ),
 
     'delete' => array(
-        'confirm' => 'Дали сте сигурни дека сакате да го избришете овој производител?',
+        'confirm'   => 'Дали сте сигурни дека сакате да го избришете овој производител?',
         'error'   => 'Имаше проблем со бришење на производителот. Обидете се повторно.',
-        'success'                => 'Manufacturer deleted successfully.',
-        'bulk_success'           => 'Manufacturers deleted successfully.',
-        'partial_success'        => 'Manufacturer deleted successfully. See additional information below. | :count manufacturers were deleted successfully. See additional information below.',
+        'success' => 'Производителот е избришан.'
     )
 
 );

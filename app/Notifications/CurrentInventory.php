@@ -5,9 +5,7 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Symfony\Component\Mime\Email;
 
-#[AllowDynamicProperties]
 class CurrentInventory extends Notification
 {
     use Queueable;
@@ -47,12 +45,7 @@ class CurrentInventory extends Notification
                 'licenses'  => $this->user->licenses,
                 'consumables'  => $this->user->consumables,
             ])
-            ->subject(trans('mail.inventory_report'))
-            ->withSymfonyMessage(function (Email $message) {
-                $message->getHeaders()->addTextHeader(
-                    'X-System-Sender', 'Snipe-IT'
-                );
-            });
+            ->subject(trans('mail.inventory_report'));
 
         return $message;
     }

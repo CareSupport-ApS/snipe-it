@@ -41,7 +41,7 @@ return [
         'mi-NZ'=> 'Maorí',
         'mn-MN'=> 'Mongol',
         'nb-NO'=> 'Noruego Bokmål',
-        'om-ET' => 'Oromo (Etiopía)',
+        'om-ET' => 'Oromo (Ethiopian)',
         //'nn-NO'=> 'Norwegian Nynorsk',
         'fa-IR'=> 'Persa',
         'pl-PL'=> 'Polaco',

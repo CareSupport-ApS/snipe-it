@@ -3,7 +3,6 @@
 namespace App\Presenters;
 
 use App\Models\SnipeModel;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 abstract class Presenter
 {
@@ -19,35 +18,6 @@ abstract class Presenter
     public function __construct(SnipeModel $model)
     {
         $this->model = $model;
-    }
-
-    public function displayAddress() {
-        $address = '';
-        if ($this->model->address) {
-            $address .= e($this->model->address)."\n";
-        }
-
-        if ($this->model->address2) {
-            $address .= e($this->model->address2)."\n";
-        }
-
-        if ($this->model->city) {
-            $address .= e($this->model->city).', ';
-        }
-
-        if ($this->model->state) {
-            $address .= e($this->model->state).' ';
-        }
-
-        if ($this->model->zip) {
-            $address .= e($this->model->zip).' ';
-        }
-
-        if ($this->model->country) {
-            $address .= e($this->model->country).' ';
-        }
-
-        return $address;
     }
 
     // Convenience functions for datatables stuff
@@ -99,7 +69,10 @@ abstract class Presenter
         return '';
     }
 
-
+    public function name()
+    {
+        return $this->model->name;
+    }
 
     public function __get($property)
     {
@@ -107,13 +80,11 @@ abstract class Presenter
             return $this->{$property}();
         }
 
-        return $this->model->{$property};
+        return e($this->model->{$property});
     }
 
     public function __call($method, $args)
     {
         return $this->model->$method($args);
     }
-
-
 }

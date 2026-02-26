@@ -4,7 +4,7 @@ return array(
     'create'    => 'Vállalat létrehozása',
     'email'     => 'A cég email címe',
     'title'     => 'Társág',
-    'phone'     => 'Vállalat ',
+    'phone'     => 'Company Phone',
     'update'    => 'Társaság frissítése',
     'name'      => 'A cég neve',
     'id'        => 'ID',

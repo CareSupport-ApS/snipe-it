@@ -5,9 +5,7 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Symfony\Component\Mime\Email;
 
-#[AllowDynamicProperties]
 class ExpiringAssetsNotification extends Notification
 {
     use Queueable;
@@ -53,12 +51,7 @@ class ExpiringAssetsNotification extends Notification
                 'assets'  => $this->assets,
                 'threshold'  => $this->threshold,
             ])
-            ->subject('⏰'.trans('mail.Expiring_Assets_Report'))
-            ->withSymfonyMessage(function (Email $message) {
-                $message->getHeaders()->addTextHeader(
-                    'X-System-Sender', 'Snipe-IT'
-                );
-            });
+            ->subject(trans('mail.Expiring_Assets_Report'));
 
         return $message;
     }

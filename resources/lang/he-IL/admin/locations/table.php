@@ -12,8 +12,7 @@ return [
     'create'                    => 'צור מיקום',
     'update'                    => 'עדכן מיקום',
     'print_assigned'            => 'להדפיס הקצאה',
-    'print_inventory'           => 'Print Inventory',
-    'print_all_assigned'        => 'Print Inventory and Assigned',
+    'print_all_assigned'        => 'להדפיס את כל ההקצאות',
     'name'                      => 'שם מיקום',
     'address'                   => 'כתובת',
     'address2'                   => 'שורת כתובת 2',
@@ -40,5 +39,5 @@ return [
     'signed_by_finance_auditor' => 'אושר על ידי (מפקח הכספים):',
     'signed_by_location_manager' => 'אושר על ידי (מנהל המיקום):',
     'signed_by'                 => 'אושר על ידי:',
-    'clone'  					=> 'שכפל מיקום',
+    'clone'  					=> 'Clone Location',
 ];

@@ -67,7 +67,6 @@ for dir in \
   'data/uploads/consumables' \
   'data/uploads/departments' \
   'data/uploads/locations' \
-  'data/uploads/maintenances' \
   'data/uploads/manufacturers' \
   'data/uploads/models' \
   'data/uploads/suppliers' \

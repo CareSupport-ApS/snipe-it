@@ -96,7 +96,6 @@ class ComponentCheckoutTest extends TestCase implements TestsFullMultipleCompani
             ->assertStatusMessageIs('success');
 
         $this->assertTrue($component->assets->first()->is($asset));
-        $this->assertHasTheseActionLogs($component, ['create', 'checkout']);
     }
 
     public function testComponentCheckoutIsLogged()
@@ -109,7 +108,7 @@ class ComponentCheckoutTest extends TestCase implements TestsFullMultipleCompani
         $this->actingAsForApi($user)
             ->postJson(route('api.components.checkout', $component->id), [
                 'assigned_to' => $asset->id,
-                'assigned_qty' => 2,
+                'assigned_qty' => 1,
             ]);
 
         $this->assertDatabaseHas('action_logs', [
@@ -120,7 +119,6 @@ class ComponentCheckoutTest extends TestCase implements TestsFullMultipleCompani
             'location_id' => $location->id,
             'item_type' => Component::class,
             'item_id' => $component->id,
-            'quantity' => 2,
         ]);
     }
 

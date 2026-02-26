@@ -2,12 +2,11 @@
 
 return array(
 
-    'accepted'                  => 'You have successfully accepted this item.',
-    'declined'                  => 'You have successfully declined this item.',
+    'accepted'                  => 'Du har akseptert eiendelen.',
+    'declined'                  => 'Du har avvist eiendelen.',
     'bulk_manager_warn'	        => 'Brukerne er oppdatert, men lederen ble ikke lagret fordi lederen du valgte også i brukerlisten for redigering og brukere kan ikke være sin egen leder. Velg brukerne igjen, unntatt lederen.',
     'user_exists'               => 'Bruker finnes allerede!',
-    'cannot_delete'             => 'User does not exist or you do not have permission to delete them.',
-    'user_not_found'            => 'Brukeren finnes ikke, eller du har ikke tillatelse til å se dem.',
+    'user_not_found'            => 'User does not exist or you do not have permission view them.',
     'user_login_required'       => 'Login-feltet er påkrevd',
     'user_has_no_assets_assigned' => 'Ingen eiendeler er tilordnet brukeren for øyeblikket.',
     'user_password_required'    => 'Passord er påkrevd.',

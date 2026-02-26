@@ -11,6 +11,7 @@ return array(
     'title'					=> 'Eszközmodellek',
     'update'				=> 'Eszközmodell frissítése',
     'view'					=> 'Eszközmodell megtekintése',
-    'clone'				    => 'Modell klónozása',
-    'edit'				    => 'Modell szerkesztése',
+    'update'				=> 'Eszközmodell frissítése',
+    'clone'				=> 'Modell klónozása',
+    'edit'				=> 'Modell szerkesztése',
 );

@@ -1,7 +1,7 @@
 <?php
 
     return [
-        'select_type'            => 'Оберіть тип обслуговування',
+        'select_type'            => 'Select Maintenance Type',
         'asset_maintenance_type' => 'Тип обслуговування активів',
         'title'                  => 'Назва',
         'start_date'             => 'Дата початку',

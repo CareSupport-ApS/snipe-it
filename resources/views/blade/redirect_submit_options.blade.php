@@ -4,7 +4,6 @@
     'button_label',
     'disabled_select' => false,
     'options' => [],
-    'id' => 'submit_button',
 ])
 
 <div class="box-footer">
@@ -27,7 +26,7 @@
                 </select>
                 @endif
 
-                <button type="submit" id="{{ $id }}" class="btn btn-success pull-right{{ ($disabled_select ? ' disabled' : '') }}" style="margin-left:5px; border-radius: 3px;"{!! ($disabled_select ? ' data-tooltip="true" title="'.trans('admin/hardware/general.edit').'" disabled' : '') !!}>
+                <button type="submit" class="btn btn-primary pull-right{{ ($disabled_select ? ' disabled' : '') }}" style="margin-left:5px; border-radius: 3px;"{!! ($disabled_select ? ' data-tooltip="true" title="'.trans('admin/hardware/general.edit').'" disabled' : '') !!}>
                     <x-icon type="checkmark" />
                     {{ $button_label }}
                 </button>

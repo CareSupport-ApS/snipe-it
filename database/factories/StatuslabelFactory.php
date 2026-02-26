@@ -23,15 +23,15 @@ class StatuslabelFactory extends Factory
     public function definition()
     {
         return [
-            'archived' => 0,
+            'name'      => $this->faker->sentence(),
             'created_at' => $this->faker->dateTime(),
+            'updated_at' => $this->faker->dateTime(),
             'created_by' => User::factory()->superuser(),
             'deleted_at' => null,
             'deployable' => 0,
-            'name'      => $this->faker->sentence(),
-            'notes' => '',
             'pending' => 0,
-            'updated_at' => $this->faker->dateTime(),
+            'archived' => 0,
+            'notes' => '',
         ];
     }
 

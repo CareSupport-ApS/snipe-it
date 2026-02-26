@@ -18,11 +18,9 @@ return array(
     ),
 
     'delete' => array(
-        'confirm'                => 'Bu kategoriyi silmek istediğinize emin misiniz?',
-        'error'                  => 'Bu kategoriyi silerken bir hata ile karşılaşıldı. Lütfen tekrar deneyin.',
-        'success'                => 'Category was deleted successfully.',
-        'bulk_success'           => 'Categories were deleted successfully.',
-        'partial_success'        => 'Category deleted successfully. See additional information below. | :count categories were deleted successfully. See additional information below.',
+        'confirm'   => 'Bu kategoriyi silmek istediğinize emin misiniz?',
+        'error'   => 'Bu kategoriyi silerken bir hata ile karşılaşıldı. Lütfen tekrar deneyin.',
+        'success' => 'Kategori silindi.'
     )
 
 );

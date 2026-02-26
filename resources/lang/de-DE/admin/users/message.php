@@ -3,11 +3,10 @@
 return array(
 
     'accepted'                  => 'Sie haben diesen Gegenstand erfolgreich angenommen.',
-    'declined'                  => 'Sie haben diesen Gegenstand erfolgreich abgelehnt.',
+    'declined'                  => 'Sie haben diesen Gegenstand abgelehnt.',
     'bulk_manager_warn'	        => 'Benutzer erfolgreich geändert. Vorgesetzter sollte auch bearbeitet werden und konnte nicht angepasst werden, weil er sich nicht selbst als Vorgesetzter eingetragen haben kann. Bitte Benutzer ohne den Vorgesetzten nochmal bearbeiten.',
     'user_exists'               => 'Benutzer existiert bereits!',
-    'cannot_delete'             => 'User does not exist or you do not have permission to delete them.',
-    'user_not_found'            => 'Benutzer existiert nicht oder Sie haben keine Berechtigung, ihn anzusehen.',
+    'user_not_found'            => 'Der Benutzer existiert nicht oder Sie sind nicht berechtigt, ihn anzuzeigen.',
     'user_login_required'       => 'Das Loginfeld ist erforderlich',
     'user_has_no_assets_assigned' => 'Derzeit sind keine Assets dem Benutzer zugewiesen.',
     'user_password_required'    => 'Das Passswortfeld ist erforderlich.',

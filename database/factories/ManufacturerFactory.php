@@ -23,13 +23,12 @@ class ManufacturerFactory extends Factory
     public function definition()
     {
         return [
-            'created_by' => User::factory()->superuser(),
             'name' => $this->faker->unique()->company(),
-            'notes'   => 'Created by DB seeder',
-            'support_email' => $this->faker->safeEmail(),
+            'created_by' => User::factory()->superuser(),
             'support_phone' => $this->faker->phoneNumber(),
-            'tag_color' => $this->faker->hexColor(),
             'url' => $this->faker->url(),
+            'support_email' => $this->faker->safeEmail(),
+            'notes'   => 'Created by DB seeder',
         ];
     }
 

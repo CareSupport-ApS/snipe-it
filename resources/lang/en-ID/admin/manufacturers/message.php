@@ -22,11 +22,9 @@ return array(
     ),
 
     'delete' => array(
-        'confirm' => 'Anda yakin ingin menghapus produsen ini?',
+        'confirm'   => 'Anda yakin ingin menghapus produsen ini?',
         'error'   => 'Terjadi masalah saat menghapus produsen. Silahkan coba lagi.',
-        'success'                => 'Manufacturer deleted successfully.',
-        'bulk_success'           => 'Manufacturers deleted successfully.',
-        'partial_success'        => 'Manufacturer deleted successfully. See additional information below. | :count manufacturers were deleted successfully. See additional information below.',
+        'success' => 'Produsen berhasil dihapus.'
     )
 
 );

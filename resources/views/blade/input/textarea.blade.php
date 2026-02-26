@@ -1,6 +1,6 @@
 @props([
     'value' => '',
-    'rows' => 5,
+    'rows' => 10,
 ])
 
 <textarea

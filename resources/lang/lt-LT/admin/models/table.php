@@ -11,6 +11,7 @@ return array(
     'title'					=> 'Turto modeliai',
     'update'				=> 'Atnaujinti turto modelį',
     'view'					=> 'Peržiūrėti turto modelį',
-    'clone'				    => 'Klonuoti modelį',
-    'edit'				    => 'Redaguoti modelį',
+    'update'				=> 'Atnaujinti turto modelį',
+    'clone'				=> 'Klonuoti modelį',
+    'edit'				=> 'Redaguoti modelį',
 );

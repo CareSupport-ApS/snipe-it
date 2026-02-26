@@ -5,7 +5,7 @@ return array(
     'id'                        => 'ID',
     'name'                      => 'Department Name',
     'manager'                   => 'Manager',
-    'location'                  => 'ლოკაცია',
+    'location'                  => 'Location',
     'create'                    => 'Create Department',
     'update'                    => 'Update Department',
     );

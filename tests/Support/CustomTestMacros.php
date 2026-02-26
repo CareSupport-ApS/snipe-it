@@ -21,19 +21,13 @@ trait CustomTestMacros
 
         TestResponse::macro(
             'assertResponseContainsInRows',
-            function (iterable|Model $models, string $property = 'name') use ($guardAgainstNullProperty) {
-                if ($models instanceof Model) {
-                    $models = [$models];
-                }
+            function (Model $model, string $property = 'name') use ($guardAgainstNullProperty) {
+                $guardAgainstNullProperty($model, $property);
 
-                foreach ($models as $model) {
-                    $guardAgainstNullProperty($model, $property);
-
-                    Assert::assertTrue(
-                        collect($this['rows'])->pluck($property)->contains(e($model->{$property})),
-                        "Response did not contain the expected value: {$model->{$property}}"
-                    );
-                }
+                Assert::assertTrue(
+                    collect($this['rows'])->pluck($property)->contains(e($model->{$property})),
+                    "Response did not contain the expected value: {$model->{$property}}"
+                );
 
                 return $this;
             }

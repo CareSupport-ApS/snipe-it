@@ -57,7 +57,6 @@ class ConsumableCheckoutTest extends TestCase
             ]);
 
         $this->assertTrue($user->consumables->contains($consumable));
-        $this->assertHasTheseActionLogs($consumable, ['create', 'checkout']);
     }
 
     public function testUserSentNotificationUponCheckout()
@@ -150,29 +149,4 @@ class ConsumableCheckoutTest extends TestCase
             ->assertRedirect(route('users.show', $user));
     }
 
-    public function test_quantity_stored_in_action_log()
-    {
-        $consumable = Consumable::factory()->create(['qty' => 3]);
-        $user = User::factory()->create();
-
-        $admin = User::factory()->admin()->create();
-
-        $this->actingAs($admin)
-            ->from(route('components.index'))
-            ->post(route('consumables.checkout.store', $consumable), [
-                'assigned_to' => $user->id,
-                'redirect_option' => 'target',
-                'checkout_qty' => 2,
-            ]);
-
-        $this->assertDatabaseHas('action_logs', [
-            'action_type' => 'checkout',
-            'target_id' => $user->id,
-            'target_type' => User::class,
-            'item_id' => $consumable->id,
-            'item_type' => Consumable::class,
-            'quantity' => 2,
-            'created_by' => $admin->id,
-        ]);
-    }
 }

@@ -10,214 +10,361 @@
 @stop
 
 @section('header_right')
-    <i class="fa-regular fa-2x fa-square-caret-right pull-right" id="expand-info-panel-button" data-tooltip="true" title="{{ trans('button.show_hide_info') }}"></i>
-@endsection
+    <a href="{{ route('suppliers.edit', $supplier->id) }}" class="btn btn-default pull-right">
+        {{ trans('admin/suppliers/table.update') }}</a>
+
+    <a href="{{ route('suppliers.index') }}" class="btn btn-primary text-right" style="margin-right: 10px;">{{ trans('general.back') }}</a>
+
+@stop
+
 
 {{-- Page content --}}
 @section('content')
-    <x-container columns="2">
-        <x-page-column class="col-md-9 main-panel">
-            <x-tabs>
-                <x-slot:tabnav>
 
-                    <x-tabs.asset-tab count="{{ $supplier->assets()->AssetsForShow()->count() }}" class="active" />
-                    <x-tabs.license-tab count="{{ $supplier->licenses->count() }}" class="active" />
-                    <x-tabs.accessory-tab count="{{ $supplier->accessories->count() }}" />
-                    <x-tabs.consumable-tab count="{{ $supplier->consumables->count() }}" />
-                    <x-tabs.component-tab count="{{ $supplier->components->count() }}" />
+  <div class="row">
+    <div class="col-md-9">
 
-                    @can('view', \App\Models\AssetMaintenance::class)
-                        <x-tabs.nav-item
-                                name="maintenances"
-                                icon="fa-solid fa-screwdriver-wrench"
-                                label="{{ trans('general.maintenances') }}"
-                                count="{{ $supplier->maintenances->count() }}"
-                        />
-                    @endcan
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs hidden-print">
+          
+          <li class="active">
+            <a href="#assets" data-toggle="tab">
 
-                <x-tabs.nav-item
-                    name="files"
-                    icon="fa-solid fa-file-contract fa-fw"
-                    label="{{ trans('general.files') }}"
-                    count="{{ $supplier->uploads()->count() }}"
-                />
+                <span class="hidden-lg hidden-md">
+                    <x-icon type="assets" class="fa-2x" />
+                </span>
+                <span class="hidden-xs hidden-sm">
+                    {{ trans('general.assets') }}
+                    {!! ($supplier->assets()->AssetsForShow()->count() > 0 ) ? '<badge class="badge badge-secondary">'.number_format($supplier->assets()->AssetsForShow()->count()).'</badge>' : '' !!}
+               </span>
 
-                @can('update', $supplier)
-                    <x-tabs.nav-item-upload />
-                @endcan
+            </a>
+          </li>
 
-                </x-slot:tabnav>
+          <li>
+            <a href="#accessories" data-toggle="tab">
+                    <span class="hidden-lg hidden-md">
+                        <x-icon type="accessories" class="fa-2x" />
+                    </span>
+              <span class="hidden-xs hidden-sm">
+                          {{ trans('general.accessories') }}
+                          {!! ($supplier->accessories->count() > 0 ) ? '<badge class="badge badge-secondary">'.number_format($supplier->accessories->count()).'</badge>' : '' !!}
+                    </span>
+            </a>
+          </li>
 
+          <li>
+            <a href="#licenses" data-toggle="tab">
+                    <span class="hidden-lg hidden-md">
+                        <x-icon type="licenses" class="fa-2x" />
+                    </span>
+              <span class="hidden-xs hidden-sm">
+                          {{ trans('general.licenses') }}
+                          {!! ($supplier->licenses->count() > 0 ) ? '<badge class="badge badge-secondary">'.number_format($supplier->licenses->count()).'</badge>' : '' !!}
+                    </span>
+            </a>
+          </li>
 
+            <li>
+                <a href="#components" data-toggle="tab">
+                    <span class="hidden-lg hidden-md">
+                        <x-icon type="components" class="fa-2x" />
+                    </span>
+                    <span class="hidden-xs hidden-sm">
+                          {{ trans('general.components') }}
+                        {!! ($supplier->components->count() > 0 ) ? '<badge class="badge badge-secondary">'.number_format($supplier->components->count()).'</badge>' : '' !!}
+                    </span>
+                </a>
+            </li>
 
-                <x-slot:tabpanes>
+            <li>
+                <a href="#consumables" data-toggle="tab">
+                    <span class="hidden-lg hidden-md">
+                        <x-icon type="consumables" class="fa-2x" />
+                    </span>
+                    <span class="hidden-xs hidden-sm">
+                          {{ trans('general.consumables') }}
+                        {!! ($supplier->consumables->count() > 0 ) ? '<badge class="badge badge-secondary">'.number_format($supplier->consumables->count()).'</badge>' : '' !!}
+                    </span>
+                </a>
+            </li>
 
-                    <!-- start assets tab pane -->
-                    @can('view', \App\Models\Asset::class)
-                        <x-tabs.pane name="assets" class="in active">
-                            <x-slot:header>
-                                {{ trans('general.assets') }}
-                            </x-slot:header>
-
-                            <x-slot:bulkactions>
-                                <x-table.bulk-assets />
-                            </x-slot:bulkactions>
-
-                            <x-slot:content>
-                                <x-table
-                                        show_column_search="true"
-                                        show_advanced_search="true"
-                                        buttons="assetButtons"
-                                        api_url="{{ route('api.assets.index', ['supplier_id' => $supplier->id, 'itemtype' => 'assets']) }}"
-                                        :presenter="\App\Presenters\AssetPresenter::dataTableLayout()"
-                                        export_filename="export-{{ str_slug($supplier->name) }}-assets-{{ date('Y-m-d') }}"
-                                />
-                            </x-slot:content>
-
-                        </x-tabs.pane>
-                    @endcan
-                    <!-- end assets tab pane -->
-
-                    <!-- start licenses tab pane -->
-                    @can('view', \App\Models\License::class)
-                        <x-tabs.pane name="licenses">
-                            <x-slot:header>
-                                {{ trans('general.licenses') }}
-                            </x-slot:header>
-
-                            <x-slot:content>
-                                <x-table
-                                        show_advanced_search="true"
-                                        buttons="licenseButtons"
-                                        api_url="{{ route('api.licenses.index', ['supplier_id' => $supplier->id]) }}"
-                                        :presenter="\App\Presenters\LicensePresenter::dataTableLayout()"
-                                        export_filename="export-{{ str_slug($supplier->name) }}-licenses-{{ date('Y-m-d') }}"
-                                />
-                            </x-slot:content>
-
-                        </x-tabs.pane>
-                    @endcan
-                    <!-- end licenses tab pane -->
-
-                    <!-- start accessories tab pane -->
-                    @can('view', \App\Models\Accessory::class)
-                        <x-tabs.pane name="accessories">
-                            <x-slot:header>
-                                {{ trans('general.accessories') }}
-                            </x-slot:header>
-
-                            <x-slot:content>
-                                <x-table
-                                        show_column_search="true"
-                                        buttons="accessoryButtons"
-                                        api_url="{{ route('api.accessories.index', ['supplier_id' => $supplier->id]) }}"
-                                        :presenter="\App\Presenters\AccessoryPresenter::dataTableLayout()"
-                                        export_filename="export-{{ str_slug($supplier->name) }}-accessories-{{ date('Y-m-d') }}"
-                                />
-                            </x-slot:content>
-
-                        </x-tabs.pane>
-                    @endcan
-                    <!-- end accessories tab pane -->
+          <li>
+            <a href="#maintenances" data-toggle="tab">
+                    <span class="hidden-lg hidden-md">
+                        <x-icon type="maintenances" class="fa-2x" />
+                    </span>
+              <span class="hidden-xs hidden-sm">
+                        {{ trans('admin/asset_maintenances/general.asset_maintenances') }}
+                        {!! ($supplier->asset_maintenances->count() > 0 ) ? '<badge class="badge badge-secondary">'.number_format($supplier->asset_maintenances->count()).'</badge>' : '' !!}
+                    </span>
+            </a>
+          </li>
+        </ul>
 
 
-                    <!-- start components tab pane -->
-                    @can('view', \App\Models\Component::class)
-                        <x-tabs.pane name="components">
-                            <x-slot:header>
-                                {{ trans('general.components') }}
-                            </x-slot:header>
-
-                            <x-slot:content>
-                                <x-table
-                                        show_advanced_search="true"
-                                        buttons="componentButtons"
-                                        api_url="{{ route('api.components.index', ['supplier_id' => $supplier->id]) }}"
-                                        :presenter="\App\Presenters\ComponentPresenter::dataTableLayout()"
-                                        export_filename="export-{{ str_slug($supplier->name) }}-components-{{ date('Y-m-d') }}"
-                                />
-                            </x-slot:content>
-                        </x-tabs.pane>
-                    @endcan
-                    <!-- end components tab pane -->
-
-                    <!-- start consumables tab pane -->
-                    @can('view', \App\Models\Consumable::class)
-                        <x-tabs.pane name="consumables">
-                            <x-slot:header>
-                                {{ trans('general.consumables') }}
-                            </x-slot:header>
-
-                            <x-slot:content>
-                                <x-table
-                                        show_advanced_search="true"
-                                        buttons="consumableButtons"
-                                        api_url="{{ route('api.consumables.index', ['supplier_id' => $supplier->id]) }}"
-                                        :presenter="\App\Presenters\ConsumablePresenter::dataTableLayout()"
-                                        export_filename="export-{{ str_slug($supplier->name) }}-consumables-{{ date('Y-m-d') }}"
-                                />
-                            </x-slot:content>
-                        </x-tabs.pane>
-                    @endcan
-                    <!-- end consumables tab pane -->
+        <div class="tab-content">
 
 
-                    <!-- start consumables tab pane -->
-                    @can('view', \App\Models\Asset::class)
-                        <x-tabs.pane name="maintenances">
-                            <x-slot:header>
-                                {{ trans('admin/maintenances/general.maintenances') }}
-                            </x-slot:header>
+          <div class="tab-pane active" id="assets">
+            <h2 class="box-title">{{ trans('general.assets') }}</h2>
 
-                            <x-slot:content>
-                                <x-table
-                                        buttons="maintenanceButtons"
-                                        api_url="{{ route('api.maintenances.index', ['supplier_id' => $supplier->id]) }}"
-                                        :presenter="\App\Presenters\MaintenancesPresenter::dataTableLayout()"
-                                        export_filename="export-{{ str_slug($supplier->name) }}-maintenances-{{ date('Y-m-d') }}"
-                                />
-                            </x-slot:content>
-                        </x-tabs.pane>
-                    @endcan
-                    <!-- end consumables tab pane -->
+            <div class="table table-responsive">
+              @include('partials.asset-bulk-actions')
+              <table
+                      data-cookie-id-table="suppliersAssetsTable"
+                      data-columns="{{ \App\Presenters\AssetPresenter::dataTableLayout() }}"
+                      data-pagination="true"
+                      data-id-table="suppliersAssetsTable"
+                      data-search="true"
+                      data-search-highlight="true"
+                      data-show-print="true"
+                      data-show-footer="true"
+                      data-side-pagination="server"
+                      data-show-columns="true"
+                      data-show-export="true"
+                      data-show-refresh="true"
+                      data-show-fullscreen="true"
+                      data-sort-order="asc"
+                      data-toolbar="#assetsBulkEditToolbar"
+                      data-bulk-button-id="#bulkAssetEditButton"
+                      data-bulk-form-id="#assetsBulkForm"
+                      data-click-to-select="true"
+                      id="suppliersAssetsTable"
+                      class="table table-striped snipe-table"
+                      data-url="{{route('api.assets.index', ['supplier_id' => $supplier->id]) }}"
+                      data-export-options='{
+                              "fileName": "export-suppliers-{{ str_slug($supplier->name) }}-assets-{{ date('Y-m-d') }}",
+                              "ignoreColumn": ["actions","image","change","checkbox","checkincheckout","icon"]
+                              }'>
+              </table>
 
-                    <!-- start files tab pane -->
-                    <x-tabs.pane name="files">
-                        <x-slot:header>
-                            {{ trans('general.files') }}
-                        </x-slot:header>
-                        <x-slot:content>
-                            <x-filestable object_type="suppliers" :object="$supplier" />
-                        </x-slot:content>
-                    </x-tabs.pane>
-                    <!-- end files tab pane -->
-
-                </x-slot:tabpanes>
-
-            </x-tabs>
-        </x-page-column>
-        <x-page-column class="col-md-3">
-
-            <x-box>
-                <x-box.info-panel :infoPanelObj="$supplier" img_path="{{ app('suppliers_upload_url') }}">
-
-                    <x-slot:before_list>
-
-                        <x-button.wide-edit :item="$supplier" :route="route('suppliers.edit', $supplier->id)" />
-                        <x-button.wide-delete :item="$supplier" />
-
-                    </x-slot:before_list>
-
-                </x-box.info-panel>
-            </x-box>
-        </x-page-column>
-
-    </x-container>
+            </div><!-- /.table-responsive -->
+          </div><!-- /.tab-pane -->
 
 
-  @can('update', \App\Models\Supplier::class)
-      @include ('modals.upload-file', ['item_type' => 'supplier', 'item_id' => $supplier->id])
-  @endcan
+
+          <div class="tab-pane" id="accessories">
+            <h2 class="box-title">{{ trans('general.accessories') }}</h2>
+            <div class="table table-responsive">
+              <table
+                      data-columns="{{ \App\Presenters\AccessoryPresenter::dataTableLayout() }}"
+                      data-cookie-id-table="accessoriesListingTable"
+                      data-pagination="true"
+                      data-id-table="accessoriesListingTable"
+                      data-search="true"
+                      data-search-highlight="true"
+                      data-show-print="true"
+                      data-side-pagination="server"
+                      data-show-columns="true"
+                      data-show-fullscreen="true"
+                      data-show-export="true"
+                      data-show-refresh="true"
+                      data-sort-order="asc"
+                      id="accessoriesListingTable"
+                      class="table table-striped snipe-table"
+                      data-url="{{route('api.accessories.index', ['supplier_id' => $supplier->id]) }}"
+                      data-export-options='{
+                              "fileName": "export-suppliers-{{ str_slug($supplier->name) }}-accessories-{{ date('Y-m-d') }}",
+                              "ignoreColumn": ["actions","image","change","checkbox","checkincheckout","icon"]
+                              }'>
+              </table>
+            </div><!-- /.table-responsive -->
+          </div><!-- /.tab-pane -->
+
+
+          <div class="tab-pane" id="licenses">
+            <h2 class="box-title">{{ trans('general.licenses') }}</h2>
+
+            <div class="table table-responsive">
+              <table
+                      data-columns="{{ \App\Presenters\LicensePresenter::dataTableLayout() }}"
+                      data-cookie-id-table="licensesListingTable"
+                      data-pagination="true"
+                      data-id-table="licensesListingTable"
+                      data-search="true"
+                      data-search-highlight="true"
+                      data-show-print="true"
+                      data-side-pagination="server"
+                      data-show-columns="true"
+                      data-show-fullscreen="true"
+                      data-show-export="true"
+                      data-show-refresh="true"
+                      data-sort-order="asc"
+                      id="licensesListingTable"
+                      class="table table-striped snipe-table"
+                      data-url="{{route('api.licenses.index', ['supplier_id' => $supplier->id]) }}"
+                      data-export-options='{
+                              "fileName": "export-suppliers-{{ str_slug($supplier->name) }}-licenses-{{ date('Y-m-d') }}",
+                              "ignoreColumn": ["actions","image","change","checkbox","checkincheckout","icon"]
+                              }'>
+              </table>
+
+            </div><!-- /.table-responsive -->
+          </div><!-- /.tab-pane -->
+
+            <div class="tab-pane" id="components">
+                <h2 class="box-title">{{ trans('general.components') }}</h2>
+                <div class="table table-responsive">
+                    <table
+                            data-columns="{{ \App\Presenters\ComponentPresenter::dataTableLayout() }}"
+                            data-cookie-id-table="componentsListingTable"
+                            data-pagination="true"
+                            data-id-table="componentsListingTable"
+                            data-search="true"
+                            data-search-highlight="true"
+                            data-show-print="true"
+                            data-side-pagination="server"
+                            data-show-columns="true"
+                            data-show-fullscreen="true"
+                            data-show-export="true"
+                            data-show-refresh="true"
+                            data-sort-order="asc"
+                            id="accessoriesListingTable"
+                            class="table table-striped snipe-table"
+                            data-url="{{route('api.components.index', ['supplier_id' => $supplier->id]) }}"
+                            data-export-options='{
+                              "fileName": "export-suppliers-{{ str_slug($supplier->name) }}-components-{{ date('Y-m-d') }}",
+                              "ignoreColumn": ["actions","image","change","checkbox","checkincheckout","icon"]
+                              }'>
+                    </table>
+                </div><!-- /.table-responsive -->
+            </div><!-- /.tab-pane -->
+
+            <div class="tab-pane" id="consumables">
+            <h2 class="box-title">{{ trans('general.consumables') }}</h2>
+            <div class="table table-responsive">
+                <table
+                        data-columns="{{ \App\Presenters\ConsumablePresenter::dataTableLayout() }}"
+                        data-cookie-id-table="consumablesListingTable"
+                        data-pagination="true"
+                        data-id-table="consumablesListingTable"
+                        data-search="true"
+                        data-search-highlight="true"
+                        data-show-print="true"
+                        data-side-pagination="server"
+                        data-show-columns="true"
+                        data-show-fullscreen="true"
+                        data-show-export="true"
+                        data-show-refresh="true"
+                        data-sort-order="asc"
+                        id="accessoriesListingTable"
+                        class="table table-striped snipe-table"
+                        data-url="{{route('api.consumables.index', ['supplier_id' => $supplier->id]) }}"
+                        data-export-options='{
+                              "fileName": "export-suppliers-{{ str_slug($supplier->name) }}-consumables-{{ date('Y-m-d') }}",
+                              "ignoreColumn": ["actions","image","change","checkbox","checkincheckout","icon"]
+                              }'>
+                </table>
+            </div><!-- /.table-responsive -->
+        </div><!-- /.tab-pane -->
+
+
+          <div class="tab-pane" id="maintenances">
+            <h2 class="box-title">{{ trans('admin/asset_maintenances/general.asset_maintenances') }}</h2>
+            <div class="table table-responsive">
+
+              <table
+                      data-columns="{{ \App\Presenters\AssetMaintenancesPresenter::dataTableLayout() }}"
+                      data-cookie-id-table="maintenancesTable"
+                      data-pagination="true"
+                      data-id-table="maintenancesTable"
+                      data-search="true"
+                      data-search-highlight="true"
+                      data-show-print="true"
+                      data-side-pagination="server"
+                      data-show-columns="true"
+                      data-show-fullscreen="true"
+                      data-show-export="true"
+                      data-show-refresh="true"
+                      data-sort-order="asc"
+                      id="maintenancesTable"
+                      class="table table-striped snipe-table"
+                      data-url="{{ route('api.maintenances.index', ['supplier_id' => $supplier->id])}}"
+                      data-export-options='{
+                              "fileName": "export-suppliers-{{ str_slug($supplier->name) }}-maintenances-{{ date('Y-m-d') }}",
+                              "ignoreColumn": ["actions","image","change","checkbox","checkincheckout","icon"]
+                              }'>
+
+              </table>
+            </div><!-- /.table-responsive -->
+          </div><!-- /.tab-pane -->
+
+        </div><!--/.col-md-9-->
+      </div><!--/.col-md-9-->
+    </div><!--/.col-md-9-->
+
+      <!-- side address column -->
+      <div class="col-md-3">
+
+
+      @if (($supplier->address!='') && ($supplier->state!='') && ($supplier->country!='') && (config('services.google.maps_api_key')))
+              <div class="col-md-12 text-center" style="padding-bottom: 20px;">
+                  <img src="https://maps.googleapis.com/maps/api/staticmap?markers={{ urlencode($supplier->address.','.$supplier->city.' '.$supplier->state.' '.$supplier->country.' '.$supplier->zip) }}&size=500x300&maptype=roadmap&key={{ config('services.google.maps_api_key') }}" class="img-responsive img-thumbnail" alt="Map">
+              </div>
+          @endif
+
+
+          <ul class="list-unstyled" style="line-height: 25px; padding-bottom: 20px; padding-top: 20px;">
+              @if ($supplier->contact!='')
+                  <li><x-icon type="user" /> {{ $supplier->contact }}</li>
+              @endif
+              @if ($supplier->phone!='')
+                  <li><i class="fas fa-phone"></i>
+                      <a href="tel:{{ $supplier->phone }}">{{ $supplier->phone }}</a>
+                  </li>
+              @endif
+              @if ($supplier->fax!='')
+                  <li><i class="fas fa-print"></i> {{ $supplier->fax }}</li>
+              @endif
+
+              @if ($supplier->email!='')
+                  <li>
+                      <i class="far fa-envelope"></i>
+                      <a href="mailto:{{ $supplier->email }}">
+                          {{ $supplier->email }}
+                      </a>
+                  </li>
+              @endif
+
+              @if ($supplier->url!='')
+                  <li>
+                      <i class="fas fa-globe-americas"></i>
+                      <a href="{{ $supplier->url }}" target="_new">{{ $supplier->url }}</a>
+                  </li>
+              @endif
+
+              @if ($supplier->address!='')
+                  <li><br>
+                      {{ $supplier->address }}
+
+                      @if ($supplier->address2)
+                          <br>
+                          {{ $supplier->address2 }}
+                      @endif
+                      @if (($supplier->city) || ($supplier->state))
+                          <br>
+                          {{ $supplier->city }} {{ strtoupper($supplier->state) }} {{ $supplier->zip }} {{ strtoupper($supplier->country) }}
+                      @endif
+                  </li>
+              @endif
+
+              @if ($supplier->notes!='')
+                  <li><i class="fa fa-comment"></i> {!! nl2br(Helper::parseEscapedMarkedownInline($supplier->notes)) !!}</li>
+              @endif
+
+          </ul>
+          @if ($supplier->image!='')
+              <div class="col-md-12 text-center" style="padding-bottom: 20px;">
+                  <img src="{{ Storage::disk('public')->url(app('suppliers_upload_url').e($supplier->image)) }}" class="img-responsive img-thumbnail" alt="{{ $supplier->name }}">
+              </div>
+          @endif
+
+      </div> <!--/col-md-3-->
+
+  </div>
+  </div>
+
 @stop
 
 @section('moar_scripts')

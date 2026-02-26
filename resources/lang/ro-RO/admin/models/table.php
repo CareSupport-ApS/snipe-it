@@ -11,6 +11,7 @@ return array(
     'title'					=> 'Model activ',
     'update'				=> 'Actualizeaza model activ',
     'view'					=> 'Vezi modelul de activ',
-    'clone'				    => 'Cloneaza model',
-    'edit'				    => 'Editeaza model',
+    'update'				=> 'Actualizeaza model activ',
+    'clone'				=> 'Cloneaza model',
+    'edit'				=> 'Editeaza model',
 );

@@ -11,6 +11,7 @@ return array(
     'title'					=> 'Model Harta',
     'update'				=> 'Kemaskini Model Harta',
     'view'					=> 'Papar Model Harta',
-    'clone'				    => 'Pendua Model',
-    'edit'				    => 'Kemaskini Model',
+    'update'				=> 'Kemaskini Model Harta',
+    'clone'				=> 'Pendua Model',
+    'edit'				=> 'Kemaskini Model',
 );

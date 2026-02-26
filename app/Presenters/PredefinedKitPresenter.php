@@ -295,12 +295,7 @@ class PredefinedKitPresenter extends Presenter
      */
     public function nameUrl()
     {
-        if (auth()->user()->can('view', ['\App\Models\PredefinedKit', $this])) {
-            return (string)link_to_route('kits.show', e($this->display_name), $this->id);
-        } else {
-            return e($this->display_name);
-        }
-
+        return (string) link_to_route('kits.show', $this->name, $this->id);
     }
 
     /**

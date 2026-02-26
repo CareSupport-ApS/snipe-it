@@ -2,12 +2,11 @@
 
 return array(
 
-    'accepted'                  => 'You have successfully accepted this item.',
-    'declined'                  => 'You have successfully declined this item.',
+    'accepted'                  => 'Jūs esat veiksmīgi pieņēmuši šo aktīvu.',
+    'declined'                  => 'Jūs esat veiksmīgi atteicies no šī īpašuma.',
     'bulk_manager_warn'	        => 'Jūsu lietotāji ir veiksmīgi atjaunināti, taču jūsu pārvaldnieka ieraksts netika saglabāts, jo izvēlētā pārvaldnieks bija arī rediģējamo lietotāju sarakstā, un lietotāji, iespējams, nav viņu īpašnieks. Lūdzu, vēlreiz atlasiet savus lietotājus, izņemot pārvaldnieku.',
     'user_exists'               => 'Lietotājs jau eksistē!',
-    'cannot_delete'             => 'User does not exist or you do not have permission to delete them.',
-    'user_not_found'            => 'User does not exist or you do not have permission to view them.',
+    'user_not_found'            => 'User does not exist or you do not have permission view them.',
     'user_login_required'       => 'Ievades lauks ir nepieciešams',
     'user_has_no_assets_assigned' => 'No assets currently assigned to user.',
     'user_password_required'    => 'Parole ir nepieciešama.',

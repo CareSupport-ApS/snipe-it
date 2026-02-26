@@ -11,6 +11,7 @@ return array(
     'title'					=> 'Model Ased',
     'update'				=> 'Diweddaru Model Ased',
     'view'					=> 'Gweld Model Ased',
-    'clone'				    => 'Dyblygu Model',
-    'edit'				    => 'Newid Model',
+    'update'				=> 'Diweddaru Model Ased',
+    'clone'				=> 'Dyblygu Model',
+    'edit'				=> 'Newid Model',
 );

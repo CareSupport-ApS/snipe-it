@@ -2,7 +2,7 @@
 
 return array(
 
-    'invalid_category_type' => 'A kategóriának fogyóeszköz típusúnak kell lennie.',
+    'invalid_category_type' => 'The category must be a consumable category.',
     'does_not_exist' => 'A fogyóeszköz nem létezik.',
 
     'create' => array(

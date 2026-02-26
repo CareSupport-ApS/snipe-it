@@ -3,23 +3,24 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SendUpcomingAuditMail extends BaseMailable
+class SendUpcomingAuditMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($params, $threshold, $total)
+    public function __construct($params, $threshold)
     {
         $this->assets = $params;
         $this->threshold = $threshold;
-        $this->total = $total;
     }
 
     /**
@@ -31,7 +32,7 @@ class SendUpcomingAuditMail extends BaseMailable
 
         return new Envelope(
             from: $from,
-            subject: trans_choice('mail.upcoming-audits', $this->total, ['count' => $this->total, 'threshold' => $this->threshold]),
+            subject: trans_choice('mail.upcoming-audits', $this->assets->count(), ['count' => $this->assets->count(), 'threshold' => $this->threshold]),
         );
     }
 
@@ -48,7 +49,6 @@ class SendUpcomingAuditMail extends BaseMailable
             with:  [
                 'assets'  => $this->assets,
                 'threshold'  => $this->threshold,
-                'total'  => $this->total,
             ],
         );
     }

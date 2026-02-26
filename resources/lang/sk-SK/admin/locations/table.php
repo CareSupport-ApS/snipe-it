@@ -12,8 +12,7 @@ return [
     'create'                    => 'Vytvoriť lokalitu',
     'update'                    => 'Upraviť lokalitu',
     'print_assigned'            => 'Vytlačiť priradené',
-    'print_inventory'           => 'Vytlačiť inventár',
-    'print_all_assigned'        => 'Vytlačiť inventár a priradenie',
+    'print_all_assigned'        => 'Vytlačiť všetky priradené',
     'name'                      => 'Názov lokality',
     'address'                   => 'Adresa',
     'address2'                   => 'Adresa 2. riadok',
@@ -40,5 +39,5 @@ return [
     'signed_by_finance_auditor' => 'Podpísané (Finančný auditor):',
     'signed_by_location_manager' => 'Podpísané (Manažér lokality):',
     'signed_by'                 => 'Odpísal:',
-    'clone'  					=> 'Duplikovať lokalitu',
+    'clone'  					=> 'Clone Location',
 ];

@@ -13,10 +13,8 @@ return array(
     |
     */
 
-    'week_start_select' => 'Select Day of Week',
-    'week_start' => 'Day the Week Starts On',
     'today' => 'Today',
-    'clear' => 'Limpar',
+    'clear' => 'Clear',
     'days' => [
         'sunday' => 'Sunday',
         'monday' => 'Monday',

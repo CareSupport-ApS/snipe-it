@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\MaintenancesController;
+use App\Http\Controllers\AssetMaintenancesController;
 use App\Http\Controllers\Assets\AssetsController;
 use App\Http\Controllers\Assets\BulkAssetsController;
 use App\Http\Controllers\Assets\AssetCheckoutController;
 use App\Http\Controllers\Assets\AssetCheckinController;
+use App\Http\Controllers\Assets\AssetFilesController;
 use App\Models\Setting;
 use Tabuna\Breadcrumbs\Trail;
 use Illuminate\Support\Facades\Route;
@@ -140,18 +141,27 @@ Route::group(
             [AssetsController::class, 'getRestore']
         )->name('restore/hardware')->withTrashed();
 
+        Route::post('{asset}/upload',
+            [AssetFilesController::class, 'store']
+        )->name('upload/asset')->withTrashed();
+
+        Route::get('{asset}/showfile/{fileId}/{download?}',
+            [AssetFilesController::class, 'show']
+        )->name('show/assetfile')->withTrashed();
+
+        Route::delete('{asset}/showfile/{fileId}/delete',
+            [AssetFilesController::class, 'destroy']
+        )->name('delete/assetfile')->withTrashed();
+
         Route::post(
             'bulkedit',
             [BulkAssetsController::class, 'edit']
-        )->name('hardware.bulkedit.show')
-        ->breadcrumbs(fn (Trail $trail) =>
-        $trail->parent('hardware.index')
-            ->push(trans('general.bulk_delete'), route('hardware.index')));
+        )->name('hardware/bulkedit');
 
         Route::post(
             'bulkdelete',
             [BulkAssetsController::class, 'destroy']
-        )->name('hardware.bulkdelete.store');
+        )->name('hardware/bulkdelete');
 
         Route::post(
             'bulkrestore',
@@ -185,11 +195,10 @@ Route::resource('hardware',
 
 // Asset Maintenances
 Route::resource('maintenances',
-    MaintenancesController::class,
-    ['middleware' => ['auth']
-    ])->parameters(['maintenance' => 'maintenance', 'asset' => 'asset_id']);
+    AssetMaintenancesController::class, [
+        'parameters' => ['maintenance' => 'maintenance', 'asset' => 'asset_id'],
+    ]);
 
 Route::get('ht/{any?}',
-    [AssetsController::class, 'getAssetByTag'])
-    ->where('any', '.*')
-    ->name('ht/assetTag');
+    [AssetsController::class, 'getAssetByTag']
+)->where('any', '.*')->name('ht/assetTag');

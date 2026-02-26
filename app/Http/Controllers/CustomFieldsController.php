@@ -112,9 +112,9 @@ class CustomFieldsController extends Controller
 
 
         if ($request->filled('custom_format')) {
-            $field->format = $request->input('custom_format');
+            $field->format = $request->get('custom_format');
         } else {
-            $field->format = $request->input('format');
+            $field->format = $request->get('format');
         }
 
         if ($field->save()) {
@@ -144,8 +144,9 @@ class CustomFieldsController extends Controller
      */
     public function deleteFieldFromFieldset($field_id, $fieldset_id) : RedirectResponse
     {
-        $this->authorize('update', CustomField::class);
         $field = CustomField::find($field_id);
+
+        $this->authorize('update', $field);
 
         // Check that the field exists - this is mostly related to the demo, where we 
         // rewrite the data every x minutes, so it's possible someone might be disassociating 
@@ -156,12 +157,11 @@ class CustomFieldsController extends Controller
             return redirect()->route('fieldsets.show', ['fieldset' => $fieldset_id])
                 ->with('success', trans('admin/custom_fields/message.field.delete.success'));
             } else {
-                return redirect()->back()->with('error', trans('admin/custom_fields/message.field.delete.error'))
-                    ->withInput();
+                return redirect()->back()->withErrors(['message' => "Field is in use and cannot be deleted."]);
             }
         }
 
-        return redirect()->back()->with('error', trans('admin/custom_fields/message.field.delete.error'));
+        return redirect()->back()->withErrors(['message' => "Error deleting field from fieldset"]);
 
        
     }
@@ -172,16 +172,20 @@ class CustomFieldsController extends Controller
      * @author [Brady Wetherington] [<uberbrady@gmail.com>]
      * @since [v1.8]
      */
-    public function destroy(CustomField $field) : RedirectResponse
+    public function destroy($field_id) : RedirectResponse
     {
-        $this->authorize('delete', CustomField::class);
+        if ($field = CustomField::find($field_id)) {
+            $this->authorize('delete', $field);
 
-        if (($field->fieldset) && ($field->fieldset->count() > 0)) {
-            return redirect()->back()->with('error', trans('admin/custom_fields/message.field.delete.in_use'));
+            if (($field->fieldset) && ($field->fieldset->count() > 0)) {
+                return redirect()->back()->withErrors(['message' => 'Field is in-use']);
+            }
+            $field->delete();
+            return redirect()->route("fields.index")
+                ->with("success", trans('admin/custom_fields/message.field.delete.success'));
         }
-        $field->delete();
-        return redirect()->route("fields.index")
-            ->with("success", trans('admin/custom_fields/message.field.delete.success'));
+
+        return redirect()->back()->withErrors(['message' => 'Field does not exist']);
     }
 
 
@@ -194,7 +198,7 @@ class CustomFieldsController extends Controller
      */
     public function edit(Request $request, CustomField $field) : View | RedirectResponse
     {
-        $this->authorize('update', CustomField::class);
+        $this->authorize('update', $field);
         $fieldsets = CustomFieldset::get();
         $customFormat = '';
         if ((stripos($field->format, 'regex') === 0) && ($field->format !== CustomField::PREDEFINED_FORMATS['MAC'])) {
@@ -224,35 +228,35 @@ class CustomFieldsController extends Controller
      */
     public function update(CustomFieldRequest $request, CustomField $field) : RedirectResponse
     {
-        $this->authorize('update', CustomField::class);
-        $show_in_email = $request->input("show_in_email", 0);
-        $display_in_user_view = $request->input("display_in_user_view", 0);
+        $this->authorize('update', $field);
+        $show_in_email = $request->get("show_in_email", 0);
+        $display_in_user_view = $request->get("display_in_user_view", 0);
 
         // Override the display settings if the field is encrypted
-        if ($request->input("field_encrypted") == '1') {
+        if ($request->get("field_encrypted") == '1') {
             $show_in_email = '0';
             $display_in_user_view = '0';
         }
         
-        $field->name          = trim($request->input("name"));
-        $field->element       = $request->input("element");
-        $field->field_values  = $request->input("field_values");
+        $field->name          = trim($request->get("name"));
+        $field->element       = $request->get("element");
+        $field->field_values  = $request->get("field_values");
         $field->created_by       = auth()->id();
-        $field->help_text     = $request->input("help_text");
+        $field->help_text     = $request->get("help_text");
         $field->show_in_email = $show_in_email;
-        $field->is_unique     = $request->input("is_unique", 0);
+        $field->is_unique     = $request->get("is_unique", 0);
         $field->display_in_user_view = $display_in_user_view;
-        $field->auto_add_to_fieldsets = $request->input("auto_add_to_fieldsets", 0);
-        $field->show_in_listview = $request->input("show_in_listview", 0);
-        $field->show_in_requestable_list = $request->input("show_in_requestable_list", 0);
-        $field->display_checkin = $request->input("display_checkin", 0);
-        $field->display_checkout = $request->input("display_checkout", 0);
-        $field->display_audit = $request->input("display_audit", 0);
+        $field->auto_add_to_fieldsets = $request->get("auto_add_to_fieldsets", 0);
+        $field->show_in_listview = $request->get("show_in_listview", 0);
+        $field->show_in_requestable_list = $request->get("show_in_requestable_list", 0);
+        $field->display_checkin = $request->get("display_checkin", 0);
+        $field->display_checkout = $request->get("display_checkout", 0);
+        $field->display_audit = $request->get("display_audit", 0);
 
-        if ($request->input('format') == 'CUSTOM REGEX') {
-            $field->format = $request->input('custom_format');
+        if ($request->get('format') == 'CUSTOM REGEX') {
+            $field->format = $request->get('custom_format');
         } else {
-            $field->format = $request->input('format');
+            $field->format = $request->get('format');
         }
 
         if ($field->element == 'checkbox' || $field->element == 'radio'){
@@ -260,6 +264,7 @@ class CustomFieldsController extends Controller
         }
 
         if ($field->save()) {
+
 
             // Sync fields with fieldsets
             $fieldset_array = $request->input('associate_fieldsets');

@@ -16,7 +16,6 @@ class IconHelper
             case 'clone':
                 return 'far fa-clone';
             case 'delete':
-            case 'upload deleted':
                 return 'fas fa-trash';
             case 'create':
                 return 'fa-solid fa-plus';
@@ -36,28 +35,20 @@ class IconHelper
                 return 'fa-solid fa-user';
             case 'users':
                 return 'fas fa-users';
-            case 'supplier':
-                return 'fa-solid fa-store';
             case 'restore':
                 return 'fa-solid fa-trash-arrow-up';
             case 'external-link':
                 return 'fa fa-external-link';
-            case 'link':
-                return 'fa fa-link';
             case 'email':
                 return 'fa-regular fa-envelope';
             case 'phone':
                 return 'fa-solid fa-phone';
-            case 'fax':
-                return 'fa-solid fa-fax';
-            case 'mobile':
-                return 'fas fa-mobile-screen-button';
             case 'long-arrow-right':
                 return 'fas fa-long-arrow-alt-right';
             case 'download':
                 return 'fas fa-download';
             case 'checkmark':
-                return 'fas fa-check';
+                return 'fas fa-check icon-white';
             case 'x':
                 return 'fas fa-times';
             case 'logout':
@@ -89,11 +80,8 @@ class IconHelper
             case 'licenses':
             case 'license':
                 return 'far fa-save';
-            case 'requests':
             case 'requestable':
-            case 'request':
-            case 'requested':
-                return 'fa-solid fa-bell-concierge';
+                return 'fas fa-laptop';
             case 'reports':
                 return 'fas fa-chart-bar';
             case 'heart':
@@ -136,12 +124,9 @@ class IconHelper
                 return 'fa-regular fa-clipboard';
             case 'paperclip':
                 return 'fas fa-paperclip';
-            case 'contact-card':
-                return 'fa-regular fa-id-card';
             case 'files':
                 return 'fa-regular fa-file';
             case 'more-info':
-            case 'support':
                 return 'far fa-life-ring';
             case 'calendar':
                 return 'fas fa-calendar';
@@ -152,7 +137,7 @@ class IconHelper
             case 'more-files':
                 return 'fa-solid fa-laptop-file';
             case 'maintenances':
-                return 'fa-solid fa-screwdriver-wrench';
+                return 'fas fa-wrench';
             case 'seats':
                 return 'far fa-list-alt';
             case 'globe-us':
@@ -166,7 +151,6 @@ class IconHelper
             case 'location':
                 return 'fas fa-map-marker-alt';
             case 'superadmin':
-            case 'admin':
                 return 'fas fa-crown';
             case 'print':
                 return 'fa-solid fa-print';
@@ -207,60 +191,6 @@ class IconHelper
             case 'note':
             case 'notes':
                 return 'fas fa-sticky-note';
-            case 'tip':
-                return 'fa-solid fa-lightbulb';
-            case 'highlight':
-                return 'fa-solid fa-highlighter';
-            case 'manager':
-                return 'fa-solid fa-building-user';
-            case 'company':
-                return 'fa-regular fa-building';
-            case 'parent':
-                return 'fa-solid fa-building-flag';
-            case 'number':
-                return 'fa-solid fa-hashtag';
-            case 'depreciation':
-                return 'fa-solid fa-arrows-down-to-line';
-            case 'depreciation-calendar':
-            case 'expiration':
-            case 'terminates':
-                return 'fa-regular fa-calendar-xmark';
-            case 'manufacturer':
-                return 'fa-solid fa-industry';
-            case 'fieldset' :
-                return 'fa-regular fa-rectangle-list';
-            case 'deleted-date':
-                return 'fa-solid fa-calendar-xmark';
-            case 'eol':
-                return 'fa-regular fa-calendar-days';
-            case 'category':
-                return 'fa-solid fa-icons';
-            case 'cost':
-                return 'fa-solid fa-money-bills';
-            case 'available':
-                return 'fa-solid fa-box';
-            case 'checkedout':
-                return 'fa-solid fa-box-open';
-            case 'purchase_order':
-                return 'fa-solid fa-file-invoice-dollar';
-            case 'order':
-                return 'fa-solid fa-file-invoice';
-            case 'checkout-all':
-                return 'fa-solid fa-arrows-down-to-people';
-            case 'square-right':
-                return 'fa-regular fa-square-caret-right';
-            case 'square-left':
-                return 'fa-regular fa-square-caret-left';
-            case 'square':
-                return 'fa-solid fa-square';
-            case 'models':
-            case 'model':
-                return 'fa-solid fa-boxes-stacked';
-            case 'min-qty':
-                return 'fa-solid fa-chart-pie';
-
-
-
         }
     }
 }

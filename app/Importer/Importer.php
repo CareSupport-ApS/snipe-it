@@ -72,7 +72,6 @@ abstract class Importer
         'termination_date' => 'termination date',
         'warranty_months' => 'warranty',
         'full_name' => 'full name',
-        'display_name' => 'display name',
         'email' => 'email',
         'username' => 'username',
         'address' => 'address',
@@ -89,11 +88,9 @@ abstract class Importer
         'department' => 'department',
         'manager_name' => 'manager full name',
         'manager_username' => 'manager username',
-        'manager_employee_num' => 'manager employee number',
         'min_amt' => 'minimum quantity',
         'remote' => 'remote',
         'vip' => 'vip',
-        'tag_color' => 'tag color',
     ];
     /**
      * Map of item fields->csv names
@@ -135,7 +132,7 @@ abstract class Importer
         } else {
             $this->csv = Reader::createFromString($file);
         }
-        $this->tempPassword = '*** NO PASSWORD - IMPORTED VIA CSV ***';
+        $this->tempPassword = substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 40);
     }
 
     // Cached Values for import lookups
@@ -301,7 +298,6 @@ abstract class Importer
             'full_name' => $this->findCsvMatch($row, 'full_name'),
             'first_name' => $this->findCsvMatch($row, 'first_name'),
             'last_name' => $this->findCsvMatch($row, 'last_name'),
-            'display_name' => $this->findCsvMatch($row, 'display_name'),
             'email'     => $this->findCsvMatch($row, 'email'),
             'manager_id'=>  '',
             'department_id' =>  '',
@@ -372,7 +368,6 @@ abstract class Importer
         $user->first_name = $user_array['first_name'];
         $user->last_name = $user_array['last_name'];
         $user->username = $user_array['username'];
-        $user->display_name = $user_array['display_name'] ?? null;
         $user->email = $user_array['email'];
         $user->manager_id = $user_array['manager_id'] ?? null;
         $user->department_id = $user_array['department_id'] ?? null;

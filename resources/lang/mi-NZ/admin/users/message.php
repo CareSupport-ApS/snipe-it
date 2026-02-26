@@ -2,12 +2,11 @@
 
 return array(
 
-    'accepted'                  => 'You have successfully accepted this item.',
-    'declined'                  => 'You have successfully declined this item.',
+    'accepted'                  => 'Kua whakaaetia e koe tenei taonga.',
+    'declined'                  => 'Kua paopao angitu koe ki tenei taonga.',
     'bulk_manager_warn'	        => 'Kua angitu te whakahoutia o nga kaiwhakamahi, heoi kihai i tohua to tautuhinga kaiwhakahaere no te mea ko te kaiwhakahaere i tohua e koe i roto i te rarangi kaiwhakamahi kia whakatikaia, kaore ano hoki nga kaiwhakamahi i to ratou ake kaiwhakahaere. Tēnā koa tīpako anō i ō kaiwhakamahi, kaore i te kaiwhakahaere.',
     'user_exists'               => 'Kua noho kē te Kaiwhakamahi!',
-    'cannot_delete'             => 'User does not exist or you do not have permission to delete them.',
-    'user_not_found'            => 'User does not exist or you do not have permission to view them.',
+    'user_not_found'            => 'User does not exist or you do not have permission view them.',
     'user_login_required'       => 'Kei te hiahiatia te mara takiuru',
     'user_has_no_assets_assigned' => 'No assets currently assigned to user.',
     'user_password_required'    => 'Kei te hiahiatia te kupuhipa.',

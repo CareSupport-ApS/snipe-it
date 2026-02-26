@@ -42,7 +42,10 @@
 <div class="form-group{{ $errors->has('color') ? ' has-error' : '' }}">
     <label for="color" class="col-md-3 control-label">{{ trans('admin/statuslabels/table.color') }}</label>
     <div class="col-md-9">
-        <x-input.colorpicker :item="$item" id="color" :value="old('color', ($item->color ?? '#f4f4f4'))" name="color" id="color" />
+        <div class="input-group color">
+            <input class="form-control col-md-10" maxlength="20" name="color" type="text" id="color" value="{{ old('color', $item->color) }}">
+            <div class="input-group-addon"><i></i></div>
+        </div><!-- /.input group -->
         {!! $errors->first('color', '<span class="alert-msg" aria-hidden="true">:message</span>') !!}
     </div>
 </div>
@@ -72,3 +75,17 @@
 
 @stop
 
+@section('moar_scripts')
+    <!-- bootstrap color picker -->
+    <script nonce="{{ csrf_token() }}">
+
+        $(function() {
+            $('.color').colorpicker({
+                color: `{{ old('color', $item->color) ?: '#AA3399' }}`,
+                format: 'hex'
+            });
+        });
+
+    </script>
+
+@stop

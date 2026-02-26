@@ -106,7 +106,7 @@ class HistoryPresenter extends Presenter
                 'switchable' => true,
                 'title' => trans('general.file_name'),
                 'visible' => true,
-                'formatter' => 'fileNameFormatter',
+                'formatter' => 'fileUploadNameFormatter',
             ],
             [
                 'field' => 'file_download',
@@ -115,14 +115,7 @@ class HistoryPresenter extends Presenter
                 'switchable' => true,
                 'title' => trans('general.download'),
                 'visible' => true,
-                'formatter' => 'fileDownloadButtonsFormatter',
-            ],
-            [
-                'field' => 'quantity',
-                'searchable' => false,
-                'sortable' => true,
-                'visible' => true,
-                'title' => trans('general.quantity'),
+                'formatter' => 'fileUploadFormatter',
             ],
             [
                 'field' => 'note',

@@ -76,7 +76,7 @@ class BulkDeleteAssetsTest extends TestCase
         $id_array = $assets->pluck('id')->toArray();
 
         $response = $this->actingAs($user)
-            ->from(route('hardware.bulkdelete.store'))
+            ->from(route('hardware/bulkedit'))
             ->post('/hardware/bulkdelete', [
             'ids'          => $id_array,
             'bulk_actions' => 'delete',
@@ -84,7 +84,6 @@ class BulkDeleteAssetsTest extends TestCase
 
         Asset::findMany($id_array)->each(function (Asset $asset)  {
             $this->assertNotNull($asset->deleted_at);
-            $this->assertHasTheseActionLogs($asset, ['create', 'delete']);
         });
 
         $this->followRedirects($response)->assertSee('alert-success');
@@ -94,35 +93,26 @@ class BulkDeleteAssetsTest extends TestCase
     {
         $user = User::factory()->viewAssets()->deleteAssets()->editAssets()->create();
         $asset = Asset::factory()->deleted()->create();
-        $this->assertNotNull($asset);
 
         $asset->refresh();
-        $id_array = [$asset->id];
-        $this->assertEquals(1, count($id_array));
+        $id_array = $asset->pluck('id')->toArray();
 
-        $test_ran = false;
         // Check that the assets are deleted
-        Asset::whereIn('id', $id_array)->withTrashed()->each(function (Asset $asset) use (&$test_ran) {
-            $test_ran = true;
-            $this->assertNotNull($asset->deleted_at);
+        Asset::findMany($id_array)->each(function (Asset $asset)  {
+            $this->assertNull($asset->deleted_at);
         });
-        $this->assertTrue($test_ran, "Test never actually ran!");
 
         $response = $this->actingAs($user)
-            ->from(route('hardware.bulkdelete.store'))
+            ->from(route('hardware/bulkedit'))
             ->post(route('hardware/bulkrestore'), [
                 'ids'          => [$asset->id],
             ])->assertStatus(302);
 
         $this->followRedirects($response)->assertSee('alert-success');
 
-        $test_ran = false;
-        Asset::findMany($id_array)->each(function (Asset $asset) use (&$test_ran) {
-            $test_ran = true;
+        Asset::findMany($id_array)->each(function (Asset $asset)  {
             $this->assertNull($asset->deleted_at);
-            $this->assertHasTheseActionLogs($asset, ['create',/* 'delete',*/ 'restore'/*, 'fart'*/]); //SHIT
         });
-        $this->assertTrue($test_ran, "Test never actually ran!");
     }
 
 
@@ -132,7 +122,7 @@ class BulkDeleteAssetsTest extends TestCase
         $asset = Asset::factory()->create();
 
         $this->actingAs($user)
-            ->from(route('hardware.bulkdelete.store'))
+            ->from(route('hardware/bulkedit'))
             ->post('/hardware/bulkdelete', [
                 'ids'          => [$asset->id],
                 'bulk_actions' => 'delete',
@@ -159,7 +149,7 @@ class BulkDeleteAssetsTest extends TestCase
         $asset = Asset::factory()->deleted()->create();
 
         $this->actingAs($user)
-            ->from(route('hardware.bulkdelete.store'))
+            ->from(route('hardware/bulkedit'))
             ->post(route('hardware/bulkrestore'), [
                 'ids'          => [$asset->id],
                 'bulk_actions' => 'restore',
@@ -186,7 +176,7 @@ class BulkDeleteAssetsTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
-                ->from(route('hardware.bulkdelete.store'))
+                ->from(route('hardware/bulkedit'))
                 ->post('/hardware/bulkdelete', [
                     'ids'          => [$asset->id],
                     'bulk_actions' => 'delete',

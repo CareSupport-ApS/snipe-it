@@ -1,12 +1,10 @@
 @if (($model) && ($model->fieldset) && $model->fieldset->displayAnyFieldsInForm($show_custom_fields_type ?? ''))
     <div class="col-md-12 col-sm-12">
 
-    <fieldset name="custom-fields">
-        <x-form.legend
-                help_text="{!! trans('admin/custom_fields/general.general_help_text') !!}">
-
+    <fieldset name="custom-fields" class="bottom-padded">
+        <legend class="highlight">
             {{ trans('admin/custom_fields/general.custom_fields') }}
-        </x-form.legend>
+        </legend>
 
   @foreach($model->fieldset->fields as $field)
     @if (!isset($show_custom_fields_type) || ($field->displayFieldInCurrentForm($show_custom_fields_type)))

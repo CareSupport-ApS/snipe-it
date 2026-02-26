@@ -11,6 +11,7 @@ return array(
     'title'					=> 'Múnlaí Sócmhainne',
     'update'				=> 'Nuashonraigh an tSamhail Sócmhainní',
     'view'					=> 'Féach ar an tSamhail Sócmhainne',
-    'clone'				    => 'Samhail Clón',
-    'edit'				    => 'Modúl a Athrú',
+    'update'				=> 'Nuashonraigh an tSamhail Sócmhainní',
+    'clone'				=> 'Samhail Clón',
+    'edit'				=> 'Modúl a Athrú',
 );

@@ -14,11 +14,17 @@
             <div class="box-body">
                     <table
                             data-cookie-id-table="licensesReport"
+                            data-pagination="true"
                             data-id-table="licensesReport"
+                            data-search="true"
+                            data-search-highlight="true"
+                            data-show-print="true"
                             data-side-pagination="client"
+                            data-show-columns="true"
+                            data-show-export="true"
+                            data-show-refresh="true"
                             data-sort-order="asc"
                             id="licensesReport"
-                            data-advanced-search="false"
                             class="table table-striped snipe-table"
                             data-export-options='{
                         "fileName": "license-report-{{ date('Y-m-d') }}",
@@ -32,7 +38,6 @@
                                 <th class="col-sm-1">{{ trans('admin/licenses/form.seats') }}</th>
                                 <th class="col-sm-1">{{ trans('admin/licenses/form.remaining_seats') }}</th>
                                 <th class="col-sm-1">{{ trans('admin/licenses/form.expiration') }}</th>
-                                <th class="col-sm-1">{{ trans('admin/licenses/form.termination_date') }}</th>
                                 <th class="col-sm-1">{{ trans('general.purchase_date') }}</th>
                                 <th class="col-sm-1 text-right" class="col-sm-1">{{ trans('general.purchase_cost') }}</th>
                                 <th class="col-sm-1">{{ trans('general.depreciation') }}</th>
@@ -55,13 +60,7 @@
                                 </td>
                                 <td>{{ $license->seats }}</td>
                                 <td>{{ $license->remaincount() }}</td>
-                                <td>{{ $license->expires_formatted_date }}</td>
-                                <td>{{ $license->terminates_formatted_date }}
-                                    @if ($license->isTerminated())
-                                        <span class="text-danger">
-                                        <x-icon type="warning" class="text-warning" />
-                                        </span>
-                                    @endif</td>
+                                <td>{{ $license->expiration_date }}</td>
                                 <td>{{ $license->purchase_date }}</td>
                                 <td class="text-right">
                                     {{ $snipeSettings->default_currency }}{{ Helper::formatCurrencyOutput($license->purchase_cost) }}

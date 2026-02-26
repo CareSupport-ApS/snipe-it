@@ -24,11 +24,9 @@ return array(
     ),
 
     'delete' => array(
-        'confirm' => 'آیا شما مطمئن هستید که میخواهید این تولید کننده را حذف کنید؟',
+        'confirm'   => 'آیا شما مطمئن هستید که میخواهید این تولید کننده را حذف کنید؟',
         'error'   => 'مسئله ای در حذف سازنده وجود دارد. لطفا دوباره تلاش کنید.',
-        'success'                => 'Manufacturer deleted successfully.',
-        'bulk_success'           => 'Manufacturers deleted successfully.',
-        'partial_success'        => 'Manufacturer deleted successfully. See additional information below. | :count manufacturers were deleted successfully. See additional information below.',
+        'success' => 'تولید کننده با موفقیت حذف شد.'
     )
 
 );

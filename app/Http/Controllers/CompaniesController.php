@@ -60,7 +60,6 @@ final class CompaniesController extends Controller
         $company->phone = $request->input('phone');
         $company->fax = $request->input('fax');
         $company->email = $request->input('email');
-        $company->tag_color = $request->input('tag_color');
         $company->notes = $request->input('notes');
         $company->created_by = auth()->id();
 
@@ -103,7 +102,6 @@ final class CompaniesController extends Controller
         $company->phone = $request->input('phone');
         $company->fax = $request->input('fax');
         $company->email = $request->input('email');
-        $company->tag_color = $request->input('tag_color');
         $company->notes = $request->input('notes');
 
         $company = $request->handleImages($company);
@@ -125,12 +123,10 @@ final class CompaniesController extends Controller
      */
     public function destroy($companyId) : RedirectResponse
     {
-
         if (is_null($company = Company::find($companyId))) {
             return redirect()->route('companies.index')
                 ->with('error', trans('admin/companies/message.not_found'));
         }
-
 
         $this->authorize('delete', $company);
         if (! $company->isDeletable()) {

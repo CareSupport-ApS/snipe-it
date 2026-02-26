@@ -22,11 +22,9 @@ return array(
     ),
 
     'delete' => array(
-        'confirm' => 'Apakah Anda yakin untuk menghapus produsen ini?',
+        'confirm'   => 'Apakah Anda yakin untuk menghapus produsen ini?',
         'error'   => 'Terdapat kesalahan pada saat penghapusan produsen. Silahkan coba kembali.',
-        'success'                => 'Produsen berhasil dihapus.',
-        'bulk_success'           => 'Beberapa produsen berhasil dihapus.',
-        'partial_success'        => 'Produsen berhasil dihapus. Lihat informasi tambahan di bawah. | :count produsen berhasil dihapus. Lihat informasi tambahan di bawah.',
+        'success' => 'Produsen sukses di hapus.'
     )
 
 );

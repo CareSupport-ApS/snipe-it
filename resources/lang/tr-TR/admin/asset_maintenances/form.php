@@ -1,7 +1,7 @@
 <?php
 
     return [
-        'select_type'            => 'Bakım Türü Seçin',
+        'select_type'            => 'Select Maintenance Type',
         'asset_maintenance_type' => 'Varlık Bakım Türü',
         'title'                  => 'Başlık',
         'start_date'             => 'Başlangıç Tarihi',

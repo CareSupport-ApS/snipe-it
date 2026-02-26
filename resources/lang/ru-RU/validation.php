@@ -31,7 +31,7 @@ return [
         'numeric' => 'Поле :attribute должно быть между :min и :max.',
         'string' => 'Поле :attribute должно содержать от :min до :max символов.',
     ],
-    'valid_regex' => 'Регулярное выражение является недопустимым.',
+    'valid_regex' => 'The regular expression is invalid.',
     'boolean' => 'Поле :attribute должно быть true или false.',
     'can' => 'Поле :attribute содержит недопустимое значение.',
     'confirmed' => 'Подтверждение поля :attribute не совпадает.',
@@ -173,8 +173,8 @@ return [
     'url' => 'Поле :attribute должно быть действительным URL-адресом.',
     'ulid' => 'Поле :attribute должно быть корректным значением UUID.',
     'uuid' => 'Поле :attribute должно быть корректным значением UUID.',
-    'fmcs_location' => 'Полная поддержка и определение местоположения нескольких компаний включены в настройках администратора, а выбранное местоположение и выбранная компания не совместимы.',
-    'is_unique_across_company_and_location' => 'The :attribute must be unique within the selected company and location.',
+    'fmcs_location' => 'Full multiple company support and location scoping is enabled in the Admin Settings, and the selected location and selected company are not compatible.',
+
 
     /*
     |--------------------------------------------------------------------------
@@ -216,7 +216,7 @@ return [
             'not_in' =>         '<code>sAMAccountName</code> (mixed case) will likely not work. You should use <code>samaccountname</code> (lowercase) instead.'
         ],
         'ldap_auth_filter_query' => ['not_in' => '<code>uid=samaccountname</code> is probably not a valid auth filter. You probably want <code>uid=</code> '],
-        'ldap_filter' => ['regex' => 'Это значение, вероятно, не должно быть заключено в скобки.'],
+        'ldap_filter' => ['regex' => 'This value should probably not be wrapped in parentheses.'],
 
         ],
     /*
@@ -230,10 +230,7 @@ return [
     |
     */
 
-    'attributes' => [
-        'serials.*' => 'Серийный номер',
-        'asset_tags.*' => 'Тег актива',
-    ],
+    'attributes' => [],
 
     /*
     |--------------------------------------------------------------------------

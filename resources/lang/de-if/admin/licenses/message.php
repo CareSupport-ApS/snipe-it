@@ -46,12 +46,11 @@ return array(
         'not_enough_seats' => 'Nicht genügend Lizenz-Plätze zur Herausgabe verfügbar',
         'mismatch' => 'Die bereitgestellte Lizenzplatzierung entspricht nicht der Lizenz',
         'unavailable' => 'Dieser Platz ist nicht zur Ausleihe verfügbar.',
-        'license_is_inactive' => 'Diese Lizenz ist abgelaufen oder beendet.',
     ),
 
     'checkin' => array(
         'error'   => 'Lizenz wurde nicht zurückgenommen, bitte versuche es erneut.',
-        'not_reassignable' => 'Platz wurde verwendet',
+        'not_reassignable' => 'Lizenz nicht neu zuweisbar',
         'success' => 'Die Lizenz wurde erfolgreich zurückgenommen'
     ),
 

@@ -55,6 +55,7 @@
 
 
                                     <fieldset name="login" aria-label="login">
+                                        <legend></legend>
 
                                         <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
                                             <label for="username">

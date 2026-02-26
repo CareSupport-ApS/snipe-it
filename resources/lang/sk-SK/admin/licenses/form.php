@@ -16,7 +16,7 @@ return array(
     'seats'             => 'Sídla',
     'termination_date'  => 'Platná do',
     'to_email'          => 'Registrovaná na mail',
-    'to_name'           => 'Registrované na',
+    'to_name'           => 'Registrovaná na meno',
     'update'            => 'Upraviť licenciu',
     'checkout_help'     => 'Musíte priradiť licenciu majetku alebo osobe. Môžete vybrať oboje ale majiteľ majetku sa musí zhodovať s osobou, ktorej je licencia priradená.'
 );

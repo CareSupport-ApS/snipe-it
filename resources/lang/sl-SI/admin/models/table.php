@@ -11,6 +11,7 @@ return array(
     'title'					=> 'Modeli sredstva',
     'update'				=> 'Posodobi model sredstva',
     'view'					=> 'Oglej si model sredstva',
-    'clone'				    => 'Kloniraj model',
-    'edit'				    => 'Uredi model',
+    'update'				=> 'Posodobi model sredstva',
+    'clone'				=> 'Kloniraj model',
+    'edit'				=> 'Uredi model',
 );

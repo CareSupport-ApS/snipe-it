@@ -5,7 +5,7 @@ return [
     'manage'                    => 'Gestire',
     'field'		                => 'Campo',
     'about_fieldsets_title'		=> 'Fileldsets',
-    'about_fieldsets_text'		=> 'I set di campi consentono di creare gruppi di campi personalizzati che vengono spesso riutilizzati per modelli di beni specifici.',
+    'about_fieldsets_text'		=> 'I set di campi consentono di creare gruppi di campi personalizzati che vengono riutilizzati frequentemente per tipi di modelli di asset specifici.',
     'custom_format'             => 'Formato Regex personalizzato...',
     'encrypt_field'      	        => 'Crittografare il valore di questo campo nel database',
     'encrypt_field_help'      => 'ATTENZIONE: Se il campo viene crittografato non sarà possibile cercarlo.',
@@ -33,7 +33,7 @@ return [
     'create_fieldset_title' => 'Crea un nuovo campo',
     'create_field'            => 'Nuovo campo personalizzato',
     'create_field_title' => 'Crea un nuovo campo personalizzato',
-    'value_encrypted'      	        => 'Il valore di questo campo viene crittografato nel database. Solo gli utenti con i giusti permessi saranno in grado di visualizzare il valore in chiaro',
+    'value_encrypted'      	        => 'Il valore di questo campo viene crittografato nel database. Solo gli utenti amministratori saranno in grado di visualizzare il valore decrittografato',
     'show_in_email'     => 'Includere il valore di questo campo nelle e-mail di assegnazione inviate all\'utente? I campi crittografati non possono essere inclusi nelle e-mail',
     'show_in_email_short' => 'Includi nelle email',
     'help_text' => 'Testo guida',
@@ -67,5 +67,4 @@ return [
         'checkbox' => 'Casella di spunta',
         'radio' => 'Pulsanti di opzione',
     ],
-    'general_help_text' => 'I campi personalizzati memorizzano informazioni aggiuntive non coperte dai campi predefiniti del Bene. <a href="https://snipe-it.readme.io/docs/custom-fields#/"><i class="fa fa-external-link"></i></a>.',
 ];

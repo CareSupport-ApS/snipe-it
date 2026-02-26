@@ -5,7 +5,7 @@ return array(
     'field' => array(
         'invalid'   => 'Takové pole neexistuje.',
         'already_added'   => 'Takové pole již existuje',
-        'none_selected'   => 'Žádné pole nebylo označeno',
+        'none_selected'   => 'No field selected',
 
         'create' => array(
             'error'   => 'Pole se nepodařilo přidat, pokuste se o to znovu.',

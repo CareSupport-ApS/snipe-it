@@ -11,6 +11,7 @@ return array(
     'title'					=> 'Mudelid',
     'update'				=> 'Uuenda mudelit',
     'view'					=> 'Vaata mudelit',
-    'clone'				    => 'Klooni mudel',
-    'edit'				    => 'Muuda mudelit',
+    'update'				=> 'Uuenda mudelit',
+    'clone'				=> 'Klooni mudel',
+    'edit'				=> 'Muuda mudelit',
 );

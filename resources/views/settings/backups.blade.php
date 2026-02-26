@@ -66,7 +66,9 @@
             <table
                     data-cookie="true"
                     data-cookie-id-table="system-backups"
+                    data-pagination="true"
                     data-id-table="system-backups"
+                    data-search="true"
                     data-side-pagination="client"
                     data-sort-order="desc"
                     data-sort-name="modified_display"
@@ -150,7 +152,7 @@
       <div class="box-body">
 
         <p>
-          {!! trans('admin/settings/general.backups_path', ['path'=> 'storage/app/backups']) !!}
+          {!! trans('admin/settings/general.backups_path', ['path'=> 'storage/app/backup']) !!}
         </p>
 
         @if (config('app.lock_passwords')===true)

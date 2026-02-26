@@ -53,17 +53,7 @@ class AccessoriesController extends Controller
                 'company_id',
                 'notes',
                 'checkouts_count',
-                'order_number',
                 'qty',
-                // These are *relationships* so we wouldn't normally include them in this array,
-                // since they would normally create a `column not found` error,
-                // BUT we account for them in the ordering switch down at the end of this method
-                // DO NOT ADD ANYTHING TO THIS LIST WITHOUT CHECKING THE ORDERING SWITCH BELOW!
-                'company',
-                'location',
-                'category',
-                'supplier',
-                'manufacturer',
             ];
 
 
@@ -71,29 +61,12 @@ class AccessoriesController extends Controller
             ->with('category', 'company', 'manufacturer', 'checkouts', 'location', 'supplier', 'adminuser')
             ->withCount('checkouts as checkouts_count');
 
-        $filter = [];
-
-        if ($request->filled('filter')) {
-            $filter = json_decode($request->input('filter'), true);
-            $filter = array_filter($filter, function ($key) use ($allowed_columns) {
-                return in_array($key, $allowed_columns);
-            }, ARRAY_FILTER_USE_KEY);
-
+        if ($request->filled('search')) {
+            $accessories = $accessories->TextSearch($request->input('search'));
         }
-
-        if ((! is_null($filter)) && (count($filter)) > 0) {
-            $accessories->ByFilter($filter);
-        } elseif ($request->filled('search')) {
-            $accessories->TextSearch($request->input('search'));
-        }
-
 
         if ($request->filled('company_id')) {
             $accessories->where('accessories.company_id', '=', $request->input('company_id'));
-        }
-
-        if ($request->filled('order_number')) {
-            $accessories->where('accessories.order_number', '=', $request->input('order_number'));
         }
 
         if ($request->filled('category_id')) {
@@ -315,49 +288,32 @@ class AccessoriesController extends Controller
                 'note' => $request->input('note'),
             ]);
 
-
             $accessory_checkout->created_by = auth()->id();
             $accessory_checkout->save();
-
-            $payload = [
-                'accessory_id' => $accessory->id,
-                'assigned_to' => $target->id,
-                'assigned_type' => $target::class,
-                'note' => $request->input('note'),
-                'created_by' => auth()->id(),
-                'pivot' => $accessory_checkout->id,
-            ];
         }
 
         // Set this value to be able to pass the qty through to the event
-        event(new CheckoutableCheckedOut(
-            $accessory,
-            $target,
-            auth()->user(),
-            $request->input('note'),
-            [],
-            $accessory->checkout_qty,
-        ));
+        event(new CheckoutableCheckedOut($accessory, $target, auth()->user(), $request->input('note')));
 
-        return response()->json(Helper::formatStandardApiResponse('success', $payload, trans('admin/accessories/message.checkout.success')));
+        return response()->json(Helper::formatStandardApiResponse('success', null, trans('admin/accessories/message.checkout.success')));
 
     }
 
     /**
      * Check in the item so that it can be checked out again to someone else
      *
+     * @uses Accessory::checkin_email() to determine if an email can and should be sent
+     * @author [A. Gianotto] [<snipe@snipe.net>]
      * @param Request $request
      * @param int $accessoryUserId
      * @param string $backto
-     * @return JsonResponse
-     * @uses Accessory::checkin_email() to determine if an email can and should be sent
-     * @author [A. Gianotto] [<snipe@snipe.net>]
+     * @return \Illuminate\Http\RedirectResponse
      * @internal param int $accessoryId
      */
     public function checkin(Request $request, $accessoryUserId = null)
     {
         if (is_null($accessory_checkout = AccessoryCheckout::find($accessoryUserId))) {
-            return response()->json(Helper::formatStandardApiResponse('error', null, trans('admin/accessories/message.does_not_exist', ['id' => $accessoryUserId])));
+            return response()->json(Helper::formatStandardApiResponse('error', null, trans('admin/accessories/message.does_not_exist')));
         }
 
         $accessory = Accessory::find($accessory_checkout->accessory_id);
@@ -371,14 +327,7 @@ class AccessoriesController extends Controller
                 $user = User::find($accessory_checkout->assigned_to);
             }
 
-            $payload = [
-                'accessory_id' => $accessory->id,
-                'note' => $request->input('note'),
-                'created_by' => auth()->id(),
-                'pivot' => $accessory_checkout->id,
-            ];
-
-            return response()->json(Helper::formatStandardApiResponse('success', $payload,  trans('admin/accessories/message.checkin.success')));
+            return response()->json(Helper::formatStandardApiResponse('success', null,  trans('admin/accessories/message.checkin.success')));
         }
 
         return response()->json(Helper::formatStandardApiResponse('error', null, trans('admin/accessories/message.checkin.error')));
@@ -401,7 +350,7 @@ class AccessoriesController extends Controller
         ]);
 
         if ($request->filled('search')) {
-            $accessories = $accessories->where('accessories.name', 'LIKE', '%'.$request->input('search').'%');
+            $accessories = $accessories->where('accessories.name', 'LIKE', '%'.$request->get('search').'%');
         }
 
         $accessories = $accessories->orderBy('name', 'ASC')->paginate(50);

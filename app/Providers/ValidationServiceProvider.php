@@ -283,35 +283,40 @@ class ValidationServiceProvider extends ServiceProvider
             }
         });
 
-        /**
-         * Check that the 'name' field is unique in the table while within both company_id and location_id
-         * This is only used by Departments right now, but could be used elsewhere in the future.
-         */
-        Validator::extend('is_unique_across_company_and_location', function ($attribute, $value, $parameters, $validator) {
+        Validator::extend('is_unique_department', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
-            $table = array_get($parameters, 0);
 
-            $count = DB::table($table)->select($attribute)
-                ->where($attribute, $value)
-                ->whereNull('deleted_at');
+            if (
+                array_key_exists('location_id', $data) && $data['location_id'] !== null &&
+                array_key_exists('company_id', $data) && $data['company_id'] !== null
+            ) {
+                //for updating existing departments
+                if(array_key_exists('id', $data) && $data['id'] !== null){
+                    $count = Department::where('name', $data['name'])
+                        ->where('location_id', $data['location_id'])
+                        ->where('company_id', $data['company_id'])
+                        ->whereNotNull('company_id')
+                        ->whereNotNull('location_id')
+                        ->where('id', '!=', $data['id'])
+                        ->count('name');
 
-            if (array_key_exists('id', $data) && $data['id'] !== null) {
-                $count = $count->where('id', '!=', $data['id']);
+                    return $count < 1;
+                }else // for entering in new departments
+                {
+                $count = Department::where('name', $data['name'])
+                    ->where('location_id', $data['location_id'])
+                    ->where('company_id', $data['company_id'])
+                    ->whereNotNull('company_id')
+                    ->whereNotNull('location_id')
+                    ->count('name');
+
+                return $count < 1;
             }
-
-            if (array_key_exists('location_id', $data) && $data['location_id'] !== null) {
-                $count = $count->where('location_id', $data['location_id']);
-            }
-
-            if (array_key_exists('company_id', $data) && $data['company_id'] !== null) {
-                $count = $count->where('company_id', $data['company_id']);
-            }
-
-            $count = $count->count('name');
-            return $count < 1;
-
+        }
+            else {
+                return true;
+        }
         });
-
 
         Validator::extend('not_array', function ($attribute, $value, $parameters, $validator) {
             return !is_array($value);
@@ -357,7 +362,7 @@ class ValidationServiceProvider extends ServiceProvider
                 $company_id = array_get($validator->getData(), 'company_id');
                 $location = Location::find($value);
 
-                if (($location) && ($company_id != $location->company_id)) {
+                if ($company_id != $location->company_id) {
                     return false;
                 }
             }

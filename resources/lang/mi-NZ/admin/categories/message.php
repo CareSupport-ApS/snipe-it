@@ -18,11 +18,9 @@ return array(
     ),
 
     'delete' => array(
-        'confirm'                => 'Kei te hiahia koe ki te muku i tenei kāwai?',
-        'error'                  => 'He raruraru kei te whakakore i te kāwai. Tena ngana ano.',
-        'success'                => 'Category was deleted successfully.',
-        'bulk_success'           => 'Categories were deleted successfully.',
-        'partial_success'        => 'Category deleted successfully. See additional information below. | :count categories were deleted successfully. See additional information below.',
+        'confirm'   => 'Kei te hiahia koe ki te muku i tenei kāwai?',
+        'error'   => 'He raruraru kei te whakakore i te kāwai. Tena ngana ano.',
+        'success' => 'Kua mukua te kāwai.'
     )
 
 );

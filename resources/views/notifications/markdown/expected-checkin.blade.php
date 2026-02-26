@@ -1,21 +1,14 @@
 @component('mail::message')
 # {{ trans('mail.hello') }},
 
-@if ($expected_checkin_date > now())
 {{ trans('mail.Expected_Checkin_Date', ['date' => $date]) }}
-@else
-{{ trans('mail.Expected_Checkin_Date_Past', ['date' => $date]) }}
-@endif
 
 @if ((isset($asset)) && ($asset!=''))
-<strong>{{ trans('mail.asset_name') }}:</strong> {{ $asset }}
-
+{{ trans('mail.asset_name') }} {{ $asset }}
 @endif
-<strong>{{ trans('mail.asset_tag') }}:</strong> {{ $asset_tag }}
-
+{{ trans('mail.asset_tag') }} {{ $asset_tag }}
 @if (isset($serial))
-<strong>{{ trans('mail.serial') }}:</strong> {{ $serial }}
-
+{{ trans('mail.serial') }}: {{ $serial }}
 @endif
 
 **[{{ trans('mail.your_assets') }}]({{ route('view-assets') }})**

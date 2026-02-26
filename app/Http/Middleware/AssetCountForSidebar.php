@@ -34,7 +34,10 @@ class AssetCountForSidebar
         }
 
         try {
-            $total_assets = Asset::AssetsForShow()->count();
+            $total_assets = Asset::count();
+            if ($settings->show_archived_in_list != '1') {
+                $total_assets -= Asset::Archived()->count();
+            }
             view()->share('total_assets', $total_assets);
         } catch (\Exception $e) {
             Log::debug($e);

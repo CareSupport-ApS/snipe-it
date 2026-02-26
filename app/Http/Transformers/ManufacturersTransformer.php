@@ -37,11 +37,10 @@ class ManufacturersTransformer
                 'consumables_count' => (int) $manufacturer->consumables_count,
                 'accessories_count' => (int) $manufacturer->accessories_count,
                 'components_count' => (int) $manufacturer->components_count,
-                'tag_color' => $manufacturer->tag_color ? e($manufacturer->tag_color) : null,
                 'notes' => Helper::parseEscapedMarkedownInline($manufacturer->notes),
                 'created_by' => ($manufacturer->adminuser) ? [
                     'id' => (int) $manufacturer->adminuser->id,
-                    'name'=> e($manufacturer->adminuser->display_name),
+                    'name'=> e($manufacturer->adminuser->present()->fullName()),
                 ] : null,
                 'created_at' => Helper::getFormattedDateObject($manufacturer->created_at, 'datetime'),
                 'updated_at' => Helper::getFormattedDateObject($manufacturer->updated_at, 'datetime'),

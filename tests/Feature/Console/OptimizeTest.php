@@ -11,7 +11,6 @@ class OptimizeTest extends TestCase
         $this->beforeApplicationDestroyed(function () {
             $this->artisan('config:clear');
             $this->artisan('route:clear');
-            $this->artisan('view:clear');
         });
 
         $this->artisan('optimize')->assertSuccessful();

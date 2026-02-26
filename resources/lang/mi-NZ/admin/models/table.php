@@ -11,6 +11,7 @@ return array(
     'title'					=> 'Ngā Ahua Ahua',
     'update'				=> 'Whakahouhia te tauira Ahua',
     'view'					=> 'Tirohia te Ahua Tahua',
-    'clone'				    => 'He tauira tauira',
-    'edit'				    => 'Whakatikahia te tauira',
+    'update'				=> 'Whakahouhia te tauira Ahua',
+    'clone'				=> 'He tauira tauira',
+    'edit'				=> 'Whakatikahia te tauira',
 );

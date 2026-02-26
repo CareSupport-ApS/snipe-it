@@ -1,12 +1,12 @@
 <?php
 
     return [
-        'asset_maintenances' => 'Serwis środka',
-        'edit'               => 'Edytuj okno serwisowe środka',
-        'delete'             => 'Usuń okno serwisowe środka',
-        'view'               => 'Zobacz szczegóły serwisu środka',
+        'asset_maintenances' => 'Konserwacja aktywa',
+        'edit'               => 'Edytuj konserwacje aktywa',
+        'delete'             => 'Usuń konserwacje aktywa',
+        'view'               => 'Zobacz szczegóły konserwacji aktywa',
         'repair'             => 'Naprawa',
-        'maintenance'        => 'Serwis',
+        'maintenance'        => 'Konserwacja',
         'upgrade'            => 'Uaktualnienie',
         'calibration'        => 'Kalibracja',
         'software_support'   => 'Wsparcie oprogramowania',

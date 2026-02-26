@@ -2,10 +2,10 @@
 
 return array(
 
-    'actions'	 	        => 'ක්‍රියාවන්',
-    'action' 		        => 'ක්‍රියාව',
+    'actions'	 	        => 'Actions',
+    'action' 		        => 'Action',
     'by'      		        => 'By',
-    'item' 			        => 'අයිතමය',
-    'no_matching_records'   => 'ගැළපෙන වාර්තා හමු නොවීය',
+    'item' 			        => 'Item',
+    'no_matching_records'   => 'No matching records found',
 
 );

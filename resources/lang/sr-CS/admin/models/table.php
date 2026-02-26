@@ -11,6 +11,7 @@ return array(
     'title'					=> 'Modeli imovine',
     'update'				=> 'Ažuriraj model imovine',
     'view'					=> 'Prikaz modela imovine',
-    'clone'				    => 'Kloniraj model',
-    'edit'				    => 'Uredi model',
+    'update'				=> 'Ažuriraj model imovine',
+    'clone'				=> 'Kloniraj model',
+    'edit'				=> 'Uredi model',
 );

@@ -16,7 +16,7 @@ return array(
     'seats'             => 'Počet licencí',
     'termination_date'  => 'Platná do',
     'to_email'          => 'Registrováno na Email',
-    'to_name'           => 'Registrováno na',
+    'to_name'           => 'Registrace na jméno',
     'update'            => 'Úprava licence',
     'checkout_help'     => 'Licence musí být přidělena majetku nebo uživateli. Pokud zvolíte obojí, uživatel zvoleného majetku musí souhlasit se zvoleným uživatelem.'
 );

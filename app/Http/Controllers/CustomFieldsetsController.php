@@ -74,7 +74,7 @@ class CustomFieldsetsController extends Controller
     {
         $this->authorize('create', CustomField::class);
 
-        return view('custom_fields.fieldsets.view')->with('custom_fieldset', new CustomFieldset());
+        return view('custom_fields.fieldsets.edit')->with('item', new CustomFieldset());
     }
 
     /**
@@ -91,7 +91,7 @@ class CustomFieldsetsController extends Controller
         $this->authorize('create', CustomField::class);
 
         $fieldset = new CustomFieldset([
-                'name' => $request->input('name'),
+                'name' => $request->get('name'),
                 'created_by' => auth()->id(),
         ]);
 
@@ -127,7 +127,7 @@ class CustomFieldsetsController extends Controller
     public function edit(CustomFieldset $fieldset) : View | RedirectResponse
     {
         $this->authorize('create', CustomField::class);
-        return view('custom_fields.fieldsets.view')->with('custom_fieldset', $fieldset);
+        return view('custom_fields.fieldsets.edit')->with('item', $fieldset);
     }
 
     /**

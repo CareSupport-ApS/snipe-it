@@ -23,15 +23,14 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
+            'name' => $this->faker->catchPhrase(),
             'category_type' => 'asset',
             'checkin_email' => true,
-            'created_by' => User::factory()->superuser(),
             'eula_text' => $this->faker->paragraph(),
-            'name' => $this->faker->catchPhrase(),
-            'notes'   => 'Created by DB seeder',
             'require_acceptance' => false,
-            'tag_color' => $this->faker->hexColor(),
             'use_default_eula' => false,
+            'created_by' => User::factory()->superuser(),
+            'notes'   => 'Created by DB seeder',
         ];
     }
 

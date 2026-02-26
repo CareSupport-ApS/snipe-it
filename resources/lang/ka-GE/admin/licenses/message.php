@@ -25,7 +25,7 @@ return array(
     'upload' => array(
         'error'   => 'File(s) not uploaded. Please try again.',
         'success' => 'File(s) successfully uploaded.',
-        'nofiles' => 'თქვენ არ მიუთითეთ ფაილები ასატვირთად, ან ფაილი რომელსაც ცდილობთ ატვირთოთ, ძალიან დიდია.',
+        'nofiles' => 'You did not select any files for upload, or the file you are trying to upload is too large',
         'invalidfiles' => 'One or more of your files is too large or is a filetype that is not allowed. Allowed filetypes are png, gif, jpg, jpeg, doc, docx, pdf, txt, zip, rar, rtf, xml, and lic.',
     ),
 
@@ -46,12 +46,11 @@ return array(
         'not_enough_seats' => 'Not enough license seats available for checkout',
         'mismatch' => 'The license seat provided does not match the license',
         'unavailable' => 'This seat is not available for checkout.',
-        'license_is_inactive' => 'This license is expired or terminated.',
     ),
 
     'checkin' => array(
         'error'   => 'There was an issue checking in the license. Please try again.',
-        'not_reassignable' => 'Seat has been used',
+        'not_reassignable' => 'License not reassignable',
         'success' => 'The license was checked in successfully'
     ),
 

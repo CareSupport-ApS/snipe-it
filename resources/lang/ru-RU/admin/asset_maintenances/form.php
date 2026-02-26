@@ -1,9 +1,9 @@
 <?php
 
     return [
-        'select_type'            => 'Выберите тип обслуживания',
+        'select_type'            => 'Select Maintenance Type',
         'asset_maintenance_type' => 'Вид обслуживания актива',
-        'title'                  => 'Название',
+        'title'                  => 'Заголовок',
         'start_date'             => 'Дата начала',
         'completion_date'        => 'Дата завершения',
         'cost'                   => 'Стоимость',

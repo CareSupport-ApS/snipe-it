@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Actions\Categories\DestroyCategoryAction;
-use App\Exceptions\ItemStillHasChildren;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Transformers\CategoriesTransformer;
@@ -40,10 +38,7 @@ class CategoriesController extends Controller
             'consumables_count',
             'components_count',
             'licenses_count',
-            'created_at',
-            'updated_at',
             'image',
-            'tag_color',
             'notes',
         ];
 
@@ -58,29 +53,11 @@ class CategoriesController extends Controller
             'require_acceptance',
             'checkin_email',
             'image',
-            'tag_color',
             'notes',
             ])
             ->with('adminuser')
             ->withCount('accessories as accessories_count', 'consumables as consumables_count', 'components as components_count', 'licenses as licenses_count', 'models as models_count');
 
-
-        $filter = [];
-
-        if ($request->filled('filter')) {
-            $filter = json_decode($request->input('filter'), true);
-
-            $filter = array_filter($filter, function ($key) use ($allowed_columns) {
-                return in_array($key, $allowed_columns);
-            }, ARRAY_FILTER_USE_KEY);
-
-        }
-
-        if ((! is_null($filter)) && (count($filter)) > 0) {
-            $categories->ByFilter($filter);
-        } elseif ($request->filled('search')) {
-            $categories->TextSearch($request->input('search'));
-        }
 
         /*
          * This checks to see if we should override the Admin Setting to show archived assets in list.
@@ -93,6 +70,10 @@ class CategoriesController extends Controller
             $categories = $categories->withCount('assets as assets_count');
         } else {
             $categories = $categories->withCount('showableAssets as assets_count');
+        }
+
+        if ($request->filled('search')) {
+            $categories = $categories->TextSearch($request->input('search'));
         }
 
         if ($request->filled('name')) {
@@ -228,21 +209,17 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category): JsonResponse
+    public function destroy($id) : JsonResponse
     {
         $this->authorize('delete', Category::class);
-        try {
-            DestroyCategoryAction::run(category: $category);
-        } catch (ItemStillHasChildren $e) {
+        $category = Category::withCount('assets as assets_count', 'accessories as accessories_count', 'consumables as consumables_count', 'components as components_count', 'licenses as licenses_count', 'models as models_count')->findOrFail($id);
+
+        if (! $category->isDeletable()) {
             return response()->json(
-                Helper::formatStandardApiResponse('error', null, trans('general.bulk_delete_associations.general_assoc_warning', ['asset_type' => $category->category_type]))
-            );
-        } catch (\Exception $e) {
-            report($e);
-            return response()->json(
-                Helper::formatStandardApiResponse('error', null, trans('general.something_went_wrong'))
+                Helper::formatStandardApiResponse('error', null, trans('admin/categories/message.assoc_items', ['asset_type'=>$category->category_type]))
             );
         }
+        $category->delete();
 
         return response()->json(Helper::formatStandardApiResponse('success', null, trans('admin/categories/message.delete.success')));
     }
@@ -265,7 +242,7 @@ class CategoriesController extends Controller
         ]);
 
         if ($request->filled('search')) {
-            $categories = $categories->where('name', 'LIKE', '%'.$request->input('search').'%');
+            $categories = $categories->where('name', 'LIKE', '%'.$request->get('search').'%');
         }
 
         $categories = $categories->where('category_type', $category_type)->orderBy('name', 'ASC')->paginate(50);

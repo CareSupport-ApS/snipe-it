@@ -11,6 +11,7 @@ return array(
     'title'					=> 'Modeller',
     'update'				=> 'Endre modell',
     'view'					=> 'Vis modell',
-    'clone'				    => 'Klon modell',
-    'edit'				    => 'Endre modell',
+    'update'				=> 'Endre modell',
+    'clone'				=> 'Klon modell',
+    'edit'				=> 'Endre modell',
 );

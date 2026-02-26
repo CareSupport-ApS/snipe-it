@@ -2,12 +2,11 @@
 
 return array(
 
-    'accepted'                  => 'You have successfully accepted this item.',
-    'declined'                  => 'You have successfully declined this item.',
+    'accepted'                  => 'Olet hyväksynyt tämän laitteen.',
+    'declined'                  => 'Olet onnistuneesti hylännyt tämän laitteen.',
     'bulk_manager_warn'	        => 'Käyttäjät on onnistuneesti päivitetty, mutta esimies-merkintää ei tallennettu, koska valitsemasi esimies oli mukana käyttäjäluettelossa, eikä käyttäjä voi olla itsensä esimies. Valitse käyttäjät uudelleen, poislukien esimies.',
     'user_exists'               => 'Käyttäjä on jo luotu!',
-    'cannot_delete'             => 'User does not exist or you do not have permission to delete them.',
-    'user_not_found'            => 'Käyttäjää ei ole olemassa tai sinulla ei ole oikeuksia tarkastella niitä.',
+    'user_not_found'            => 'User does not exist or you do not have permission view them.',
     'user_login_required'       => 'Käyttäjätunnus vaaditaan',
     'user_has_no_assets_assigned' => 'Käyttäjälle ei tällä hetkellä ole määritetty omaisuutta.',
     'user_password_required'    => 'Salasana vaaditaan.',

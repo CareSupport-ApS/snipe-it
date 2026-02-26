@@ -22,7 +22,6 @@ return [
     'add_maintenance'           => 'Dodaj konserwację',
     'append'                    => 'Dołącz',
     'new'                       => 'Nowy',
-    'show_hide_info'            => 'Show/Hide More Information',
     'var' => [
         'clone'     => 'Powiel :item_type',
         'edit'      => 'Edytuj :item_type',

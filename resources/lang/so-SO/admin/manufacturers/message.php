@@ -22,11 +22,9 @@ return array(
     ),
 
     'delete' => array(
-        'confirm' => 'Ma hubtaa inaad rabto inaad tirtirto soo saarahan?',
+        'confirm'   => 'Ma hubtaa inaad rabto inaad tirtirto soo saarahan?',
         'error'   => 'Cillad ayaa kajirta tir-tiradda soo saaraha. Fadlan iskuday markale.',
-        'success'                => 'Manufacturer deleted successfully.',
-        'bulk_success'           => 'Manufacturers deleted successfully.',
-        'partial_success'        => 'Manufacturer deleted successfully. See additional information below. | :count manufacturers were deleted successfully. See additional information below.',
+        'success' => 'Soo saaraha si guul leh ayaa loo tirtiray.'
     )
 
 );

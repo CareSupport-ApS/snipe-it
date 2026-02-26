@@ -31,7 +31,7 @@ return [
         'numeric' => ':attribute 字段必须在 :min 到 :max 之间。',
         'string' => ':attribute 字段必须在 :min 和 :max 字符之间。',
     ],
-    'valid_regex' => '正则表达式无效。',
+    'valid_regex' => 'The regular expression is invalid.',
     'boolean' => '：属性字段必须为true或false。',
     'can' => ':attribute 字段包含一个未授权的值。',
     'confirmed' => ':attribute 字段确认不匹配。',
@@ -174,7 +174,7 @@ return [
     'ulid' => ':attribute 字段必须是个有效的 ULID。',
     'uuid' => ':attribute 字段必须是一个有效的 UUID。',
     'fmcs_location' => '管理设置中已启用完整的多公司支持及位置范围限定功能，但当前选择的位置与公司不兼容。',
-    'is_unique_across_company_and_location' => '在所选的公司和地点范围内，:attribute 必须是唯一的。',
+
 
     /*
     |--------------------------------------------------------------------------
@@ -230,10 +230,7 @@ return [
     |
     */
 
-    'attributes' => [
-        'serials.*' => '序列号',
-        'asset_tags.*' => '资产标签',
-    ],
+    'attributes' => [],
 
     /*
     |--------------------------------------------------------------------------

@@ -28,12 +28,11 @@ class AssetModelFactory extends Factory
     public function definition()
     {
         return [
-            'category_id' => Category::factory(),
             'created_by' => User::factory()->superuser(),
-            'model_number' => $this->faker->creditCardNumber(),
             'name' => $this->faker->catchPhrase(),
+            'category_id' => Category::factory(),
+            'model_number' => $this->faker->creditCardNumber(),
             'notes' => 'Created by demo seeder',
-            'require_serial' => 0,
 
         ];
     }

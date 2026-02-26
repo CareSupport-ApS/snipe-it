@@ -22,7 +22,6 @@ return [
     'add_maintenance'           => 'إضافة صيانة',
     'append'                    => 'إلحاق',
     'new'                       => 'جديد',
-    'show_hide_info'            => 'Show/Hide More Information',
     'var' => [
         'clone'     => 'Clone :item_type',
         'edit'      => 'Edit :item_type',

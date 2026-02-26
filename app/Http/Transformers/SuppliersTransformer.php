@@ -43,7 +43,6 @@ class SuppliersTransformer
                 'licenses_count' => (int) $supplier->licenses_count,
                 'consumables_count' => (int) $supplier->consumables_count,
                 'components_count' => (int) $supplier->components_count,
-                'tag_color' => $supplier->tag_color ? e($supplier->tag_color) : null,
                 'notes' => ($supplier->notes) ? Helper::parseEscapedMarkedownInline($supplier->notes) : null,
                 'created_at' => Helper::getFormattedDateObject($supplier->created_at, 'datetime'),
                 'created_by' => $supplier->adminuser ? [
@@ -56,7 +55,7 @@ class SuppliersTransformer
 
             $permissions_array['available_actions'] = [
                 'update' => Gate::allows('update', Supplier::class),
-                'delete' => (Gate::allows('delete', Supplier::class) && ($supplier->isDeletable())),
+                'delete' => (Gate::allows('delete', Supplier::class) && ($supplier->assets_count == 0) && ($supplier->licenses_count == 0) && ($supplier->accessories_count == 0)),
             ];
 
             $array += $permissions_array;

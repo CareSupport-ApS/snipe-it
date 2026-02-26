@@ -2,14 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Manufacturers\DeleteManufacturerAction;
-use App\Exceptions\ItemStillHasAccessories;
-use App\Exceptions\ItemStillHasAssets;
-use App\Exceptions\ItemStillHasChildren;
-use App\Exceptions\ItemStillHasComponents;
-use App\Exceptions\ItemStillHasConsumables;
-use App\Exceptions\ItemStillHasLicenses;
-use App\Helpers\Helper;
 use App\Http\Requests\ImageUploadRequest;
 use App\Models\Actionlog;
 use App\Models\Manufacturer;
@@ -59,7 +51,7 @@ class ManufacturersController extends Controller
         $manufacturers_count = Manufacturer::withTrashed()->count();
 
         if ($manufacturers_count == 0) {
-            Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\ManufacturerSeeder', '--force' => true]);
+            Artisan::call('db:seed', ['--class' => 'ManufacturerSeeder']);
             return redirect()->route('manufacturers.index')->with('success', trans('general.seeding.manufacturers.success'));
         }
 
@@ -101,7 +93,6 @@ class ManufacturersController extends Controller
         $manufacturer->support_email = $request->input('support_email');
         $manufacturer->notes = $request->input('notes');
         $manufacturer = $request->handleImages($manufacturer);
-        $manufacturer->tag_color  = $request->input('tag_color');
 
         if ($manufacturer->save()) {
             return redirect()->route('manufacturers.index')->with('success', trans('admin/manufacturers/message.create.success'));
@@ -143,7 +134,6 @@ class ManufacturersController extends Controller
         $manufacturer->warranty_lookup_url = $request->input('warranty_lookup_url');
         $manufacturer->support_phone = $request->input('support_phone');
         $manufacturer->support_email = $request->input('support_email');
-        $manufacturer->tag_color  = $request->input('tag_color');
         $manufacturer->notes = $request->input('notes');
 
         // Set the model's image property to null if the image is being deleted
@@ -167,18 +157,32 @@ class ManufacturersController extends Controller
      * @param int $manufacturerId
      * @since [v1.0]
      */
-    public function destroy(Manufacturer $manufacturer): RedirectResponse
+    public function destroy($manufacturerId) : RedirectResponse
     {
-        $this->authorize('delete', $manufacturer);
-        try {
-            DeleteManufacturerAction::run($manufacturer);
-        } catch (ItemStillHasChildren $e) {
-            return redirect()->route('manufacturers.index')->with('error', trans('general.bulk_delete_associations.general_assoc_warning', ['item' => trans('general.manufacturer')]));
-        } catch (\Exception $e) {
-            report($e);
-            return redirect()->route('manufacturers.index')->with('error', trans('general.something_went_wrong'));
+        $this->authorize('delete', Manufacturer::class);
+        if (is_null($manufacturer = Manufacturer::withTrashed()->withCount('models as models_count')->find($manufacturerId))) {
+            return redirect()->route('manufacturers.index')->with('error', trans('admin/manufacturers/message.not_found'));
         }
 
+        if (! $manufacturer->isDeletable()) {
+            return redirect()->route('manufacturers.index')->with('error', trans('admin/manufacturers/message.assoc_users'));
+        }
+
+        if ($manufacturer->image) {
+            try {
+                Storage::disk('public')->delete('manufacturers/'.$manufacturer->image);
+            } catch (\Exception $e) {
+                Log::info($e);
+            }
+        }
+
+        // Soft delete the manufacturer if active, permanent delete if is already deleted
+        if ($manufacturer->deleted_at === null) {
+            $manufacturer->delete();
+        } else {
+            $manufacturer->forceDelete();
+        }
+        // Redirect to the manufacturers management page
         return redirect()->route('manufacturers.index')->with('success', trans('admin/manufacturers/message.delete.success'));
     }
 

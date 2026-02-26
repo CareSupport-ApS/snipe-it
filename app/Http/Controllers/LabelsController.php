@@ -81,7 +81,7 @@ class LabelsController extends Controller
 
         $settings = Setting::getSettings();
         if (request()->has('settings')) {
-            $overrides = request()->input('settings');
+            $overrides = request()->get('settings');
             foreach ($overrides as $key => $value) {
                 $settings->$key = $value;
             }

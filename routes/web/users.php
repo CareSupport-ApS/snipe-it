@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Users;
+use App\Http\Controllers\Users\UserFilesController;
 use Illuminate\Support\Facades\Route;
-use Tabuna\Breadcrumbs\Trail;
 
 // User Management
 
@@ -14,10 +14,7 @@ Route::group(['prefix' => 'users', 'middleware' => ['auth']], function () {
             Users\LDAPImportController::class, 
             'create'
         ]
-    )->name('ldap/user')
-        ->breadcrumbs(fn (Trail $trail) =>
-        $trail->parent('users.index')
-            ->push(trans('general.ldap_user_sync'), route('ldap/user')));
+    )->name('ldap/user');
 
     Route::post(
         'ldap',
@@ -68,6 +65,30 @@ Route::group(['prefix' => 'users', 'middleware' => ['auth']], function () {
     )->name('unsuspend/user');
 
     Route::post(
+        '{user}/upload',
+        [
+            Users\UserFilesController::class, 
+            'store'
+        ]
+    )->name('upload/user')->withTrashed();
+
+    Route::delete(
+        '{userId}/deletefile/{fileId}',
+        [
+            Users\UserFilesController::class, 
+            'destroy'
+        ]
+    )->name('userfile.destroy');
+
+    Route::get(
+        '{user}/showfile/{fileId}',
+        [
+            Users\UserFilesController::class, 
+            'show'
+        ]
+    )->name('show/userfile')->withTrashed();
+
+    Route::post(
         '{userId}/password',
         [
             Users\UsersController::class, 
@@ -97,10 +118,7 @@ Route::group(['prefix' => 'users', 'middleware' => ['auth']], function () {
             Users\BulkUsersController::class, 
             'edit'
         ]
-    )->name('users/bulkedit')
-        ->breadcrumbs(fn (Trail $trail) =>
-        $trail->parent('users.index')
-            ->push(trans('general.bulk_checkin_delete'), route('users.index')));
+    )->name('users/bulkedit');
 
     Route::post(
         'merge',

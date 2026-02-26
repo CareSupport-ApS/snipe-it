@@ -49,8 +49,7 @@ class UserObserver
             'end_date',
             'autoassign_licenses',
             'vip',
-            'password',
-            'permissions'
+            'password'
         ];
         
         $changed = [];

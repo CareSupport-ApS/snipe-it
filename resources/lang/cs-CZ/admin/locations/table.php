@@ -12,8 +12,7 @@ return [
     'create'                    => 'Vytvořit umístění',
     'update'                    => 'Upravit umístění',
     'print_assigned'            => 'Vytisknout přiřazené',
-    'print_inventory'           => 'Print Inventory',
-    'print_all_assigned'        => 'Print Inventory and Assigned',
+    'print_all_assigned'        => 'Vytisknout všechny přiřazené',
     'name'                      => 'Název umístění',
     'address'                   => 'Adresa',
     'address2'                   => 'Adresa 2',
@@ -40,5 +39,5 @@ return [
     'signed_by_finance_auditor' => 'Podepsáno (Finanční auditor):',
     'signed_by_location_manager' => 'Podepsáno (Manager):',
     'signed_by'                 => 'Odepsal:',
-    'clone'  					=> 'Duplikovat umístění',
+    'clone'  					=> 'Clone Location',
 ];

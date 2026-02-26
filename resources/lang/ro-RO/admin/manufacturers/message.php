@@ -22,11 +22,9 @@ return array(
     ),
 
     'delete' => array(
-        'confirm' => 'Sunteti sigur ca vreti sa stergeti producatorul?',
+        'confirm'   => 'Sunteti sigur ca vreti sa stergeti producatorul?',
         'error'   => 'A aparut o problema la stergerea producatorului. Va rugam incercati iar.',
-        'success'                => 'Manufacturer deleted successfully.',
-        'bulk_success'           => 'Manufacturers deleted successfully.',
-        'partial_success'        => 'Manufacturer deleted successfully. See additional information below. | :count manufacturers were deleted successfully. See additional information below.',
+        'success' => 'Producatorul a fost sters.'
     )
 
 );

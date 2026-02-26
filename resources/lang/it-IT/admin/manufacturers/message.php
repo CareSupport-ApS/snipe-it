@@ -22,11 +22,9 @@ return array(
     ),
 
     'delete' => array(
-        'confirm' => 'Sei sicuro di voler eliminare questo produttore?',
+        'confirm'   => 'Sei sicuro di voler eliminare questo produttore?',
         'error'   => 'C\'è stato un problema nell\'eliminazione del produttore. Riprova.',
-        'success'                => 'Produttore eliminato con successo.',
-        'bulk_success'           => 'Produttori eliminati con successo.',
-        'partial_success'        => 'Produttore eliminato con successo. Leggi le informazioni aggiuntive qui sotto. | :count produttori eliminati con successo. Leggi le informazioni aggiuntive qui sotto.',
+        'success' => 'Il produttore è stato eliminato con successo.'
     )
 
 );

@@ -46,12 +46,11 @@ return array(
         'not_enough_seats' => 'Lisenssipaikkoja ei ole riittävästi saatavilla kassalle',
         'mismatch' => 'The license seat provided does not match the license',
         'unavailable' => 'This seat is not available for checkout.',
-        'license_is_inactive' => 'Tämä lisenssi on vanhentunut tai päätetty.',
     ),
 
     'checkin' => array(
         'error'   => 'Lisenssin palautuksessa tapahtui virhe. Yritä uudelleen.',
-        'not_reassignable' => 'Seat has been used',
+        'not_reassignable' => 'License not reassignable',
         'success' => 'Lisenssi palautettiin onnistuneesti'
     ),
 

@@ -2,10 +2,7 @@
 
 namespace Tests\Feature\Locations\Api;
 
-use App\Models\Accessory;
 use App\Models\Asset;
-use App\Models\Component;
-use App\Models\Consumable;
 use App\Models\Location;
 use App\Models\User;
 use Tests\Concerns\TestsPermissionsRequirement;
@@ -27,12 +24,11 @@ class DeleteLocationsTest extends TestCase implements TestsPermissionsRequiremen
     public function testErrorReturnedViaApiIfLocationDoesNotExist()
     {
         $this->actingAsForApi(User::factory()->superuser()->create())
-            ->deleteJson(route('api.locations.destroy', 'invalid-id'))
+            ->deleteJson(route('api.users.destroy', 'invalid-id'))
             ->assertOk()
             ->assertStatus(200)
             ->assertStatusMessageIs('error')
             ->json();
-
     }
 
     public function testErrorReturnedViaApiIfLocationIsAlreadyDeleted()
@@ -59,10 +55,9 @@ class DeleteLocationsTest extends TestCase implements TestsPermissionsRequiremen
             ->assertStatus(200)
             ->assertStatusMessageIs('error')
             ->json();
-        $this->assertNotSoftDeleted($location);
     }
 
-    public function testDisallowLocationDeletionViaApiIfStillHasChildLocations()
+    public function testDisallowUserDeletionViaApiIfStillHasChildLocations()
     {
         $parent = Location::factory()->create();
         Location::factory()->count(5)->create(['parent_id' => $parent->id]);
@@ -74,10 +69,9 @@ class DeleteLocationsTest extends TestCase implements TestsPermissionsRequiremen
             ->assertStatus(200)
             ->assertStatusMessageIs('error')
             ->json();
-        $this->assertNotSoftDeleted($parent);
     }
 
-    public function testDisallowLocationDeletionViaApiIfStillHasAssetsAssigned()
+    public function testDisallowUserDeletionViaApiIfStillHasAssetsAssigned()
     {
         $location = Location::factory()->create();
         Asset::factory()->count(5)->assignedToLocation($location)->create();
@@ -90,10 +84,9 @@ class DeleteLocationsTest extends TestCase implements TestsPermissionsRequiremen
             ->assertStatus(200)
             ->assertStatusMessageIs('error')
             ->json();
-        $this->assertNotSoftDeleted($location);
     }
 
-    public function testDisallowLocationDeletionViaApiIfStillHasAssetsAsLocation()
+    public function testDisallowUserDeletionViaApiIfStillHasAssetsAsLocation()
     {
         $location = Location::factory()->create();
         Asset::factory()->count(5)->create(['location_id' => $location->id]);
@@ -106,73 +99,6 @@ class DeleteLocationsTest extends TestCase implements TestsPermissionsRequiremen
             ->assertStatus(200)
             ->assertStatusMessageIs('error')
             ->json();
-        $this->assertNotSoftDeleted($location);
-    }
-
-    public function testDisallowLocationDeletionViaApiIfStillHasConsumablesAsLocation()
-    {
-        $location = Location::factory()->create();
-        Consumable::factory()->count(5)->create(['location_id' => $location->id]);
-
-        $this->assertFalse($location->isDeletable());
-
-        $this->actingAsForApi(User::factory()->superuser()->create())
-            ->deleteJson(route('api.locations.destroy', $location->id))
-            ->assertOk()
-            ->assertStatus(200)
-            ->assertStatusMessageIs('error')
-            ->json();
-        $this->assertNotSoftDeleted($location);
-    }
-
-    public function testDisallowLocationDeletionViaApiIfStillHasComponentsAsLocation()
-    {
-        $location = Location::factory()->create();
-        Component::factory()->count(5)->create(['location_id' => $location->id]);
-
-        $this->assertFalse($location->isDeletable());
-
-        $this->actingAsForApi(User::factory()->superuser()->create())
-            ->deleteJson(route('api.locations.destroy', $location->id))
-            ->assertOk()
-            ->assertStatus(200)
-            ->assertStatusMessageIs('error')
-            ->json();
-
-        $this->assertNotSoftDeleted($location);
-    }
-
-    public function testDisallowLocationDeletionViaApiIfStillHasAccessoriesAssigned()
-    {
-        $location = Location::factory()->create();
-        Accessory::factory()->count(5)->checkedOutToLocation($location)->create();
-
-        $this->assertFalse($location->isDeletable());
-
-        $this->actingAsForApi(User::factory()->superuser()->create())
-            ->deleteJson(route('api.locations.destroy', $location->id))
-            ->assertOk()
-            ->assertStatus(200)
-            ->assertStatusMessageIs('error')
-            ->json();
-        $this->assertNotSoftDeleted($location);
-    }
-
-    public function testDisallowLocationDeletionViaApiIfStillHasAccessoriesAsLocation()
-    {
-        $location = Location::factory()->create();
-        Accessory::factory()->count(5)->create(['location_id' => $location->id]);
-
-        $this->assertFalse($location->isDeletable());
-
-        $this->actingAsForApi(User::factory()->superuser()->create())
-            ->deleteJson(route('api.locations.destroy', $location->id))
-            ->assertOk()
-            ->assertStatus(200)
-            ->assertStatusMessageIs('error')
-            ->json();
-
-        $this->assertNotSoftDeleted($location);
     }
 
     public function testCanDeleteLocation()

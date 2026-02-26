@@ -11,6 +11,7 @@ return array(
     'title'					=> 'Aktīvu modeļi',
     'update'				=> 'Atjaunināt aktīvu modeli',
     'view'					=> 'Skatīt aktīvu modeli',
-    'clone'				    => 'Klona modelis',
-    'edit'				    => 'Rediģēt modeli',
+    'update'				=> 'Atjaunināt aktīvu modeli',
+    'clone'				=> 'Klona modelis',
+    'edit'				=> 'Rediģēt modeli',
 );

@@ -13,8 +13,6 @@ return array(
     |
     */
 
-    'week_start_select' => 'Seleziona il giorno della settimana',
-    'week_start' => 'Giorno di inizio della settimana',
     'today' => 'Oggi',
     'clear' => 'Svuota',
     'days' => [

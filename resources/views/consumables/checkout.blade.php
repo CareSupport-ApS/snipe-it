@@ -36,28 +36,15 @@
             </div>
           </div>
           @endif
-
-          @if ($consumable->company)
-              <!-- accessory name -->
-              <div class="form-group">
-                  <label class="col-sm-3 control-label">{{ trans('general.company') }}</label>
-                  <div class="col-md-6">
-                      <p class="form-control-static">{!! $consumable->company->present()->formattedNameLink  !!}</p>
-                  </div>
-              </div>
-          @endif
-
-
           @if ($consumable->category)
-              <!-- category name -->
+              <!-- consumable name -->
               <div class="form-group">
                   <label class="col-sm-3 control-label">{{ trans('general.category') }}</label>
                   <div class="col-md-6">
-                      <p class="form-control-static">{!! $consumable->category->present()->formattedNameLink  !!}</p>
+                      <p class="form-control-static">{{ $consumable->category->name }}</p>
                   </div>
               </div>
           @endif
-
 
           <!-- total -->
           <div class="form-group">

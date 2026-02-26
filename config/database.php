@@ -18,10 +18,9 @@ $dump_options = [
     //'add_extra_option' => '--optionname=optionvalue',
 ];
 
-// For modern versions of mysqldump, use --ssl-mode=DISABLED
+// Some versions of mysql do not support the --skip-ssl option and will fail if it is
 if (env('DB_DUMP_SKIP_SSL') == 'true') {
-    // Correctly add the option as a string to the 'add_extra_option' key.
-    $dump_options['add_extra_option'] = '--ssl-mode=DISABLED';
+    $dump_options['skip_ssl'] = true;
 }
 
 
@@ -86,7 +85,7 @@ return [
         'mysql' => [
             'driver'    => 'mysql',
             'host'      => env('DB_HOST', 'localhost'),
-            'port'      => (int) env('DB_PORT', 3306),
+            'port'      => env('DB_PORT', 3306),
             'database'  => env('DB_DATABASE', 'forge'),
             'username'  => env('DB_USERNAME', 'forge'),
             'password'  => env('DB_PASSWORD', ''),
@@ -101,13 +100,12 @@ return [
             'dump_using_single_transaction' => true, // perform dump using a single transaction
             'options' => (env('DB_SSL')) ? ((env('DB_SSL_IS_PAAS')) ? [
                 PDO::MYSQL_ATTR_SSL_CA                  => env('DB_SSL_CA_PATH'),   // /path/to/ca.pem
-                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT  => env('DB_SSL_VERIFY_SERVER', false), //true/false
             ] : [
                 PDO::MYSQL_ATTR_SSL_KEY                 => env('DB_SSL_KEY_PATH'),  // /path/to/key.pem
                 PDO::MYSQL_ATTR_SSL_CERT                => env('DB_SSL_CERT_PATH'), // /path/to/cert.pem
                 PDO::MYSQL_ATTR_SSL_CA                  => env('DB_SSL_CA_PATH'),   // /path/to/ca.pem
                 PDO::MYSQL_ATTR_SSL_CIPHER              => env('DB_SSL_CIPHER'),
-                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT  => env('DB_SSL_VERIFY_SERVER', false), //true/false
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT  => env('DB_SSL_VERIFY_SERVER'), //true/false
             ]) : [],
         ],
 

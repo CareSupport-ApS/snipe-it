@@ -2,7 +2,7 @@
 
 return [
 
-    'select_language' => 'აირჩიეთ ენა',
+    'select_language' => 'Select a Language',
     'languages' => [
         'en-US'=> 'English, US',
         'en-GB'=> 'English, UK',
@@ -68,7 +68,7 @@ return [
         'zu-ZA'=> 'Zulu',
     ],
 
-    'select_country' => 'აირჩიეთ ქვეყანა',
+    'select_country' => 'Select a Country',
     
     'countries' => [
         'AC'=>'Ascension Island',

@@ -22,7 +22,6 @@ return [
     'add_maintenance'           => 'Inventarieunderhåll',
     'append'                    => 'Lägg till',
     'new'                       => 'Ny',
-    'show_hide_info'            => 'Show/Hide More Information',
     'var' => [
         'clone'     => 'Kopiera :item_type',
         'edit'      => 'Redigera :item_type',

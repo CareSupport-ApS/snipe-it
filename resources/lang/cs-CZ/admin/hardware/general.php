@@ -22,8 +22,6 @@ return [
     'requested'				    => 'Požadováno',
     'not_requestable'           => 'Nelze vyžádat',
     'requestable_status_warning' => 'Neměnit stav K vyžádání',
-    'require_serial'       => 'Vyžadovat sériové číslo',
-    'require_serial_help'       => 'Bude vyžadováno sériové číslo při vytváření majetku tohoto modelu.',
     'restore'  					=> 'Obnovit zařízení',
     'pending'  					=> 'Čekající',
     'undeployable'  			=> 'Nelze vyskladnit',

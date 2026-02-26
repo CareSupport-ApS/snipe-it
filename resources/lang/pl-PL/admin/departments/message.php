@@ -2,21 +2,21 @@
 
 return array(
 
-    'does_not_exist' => 'Dział nie istnieje',
+    'does_not_exist' => 'Wydział nie istnieje.',
     'department_already_exists' => 'W tej lokalizacji firmy istnieje już dział o tej nazwie. Możesz też wybrać bardziej szczegółową nazwę dla tego działu. ',
-    'assoc_users'	 => 'Ten dział obecnie jest skojarzony z co najmniej jednym użytkownikiem i nie może zostać usunięty. Uaktualnij użytkowników tak, aby nie było relacji z tym działem i spróbuj ponownie. ',
+    'assoc_users'	 => 'Ten wydział obecnie jest skojarzony z co najmniej jednym użytkownikiem i nie może zostać usunięty. Uaktualnij użytkowników tak, aby nie było relacji z tym wydziałem i spróbuj ponownie. ',
     'create' => array(
-        'error'   => 'Oddział nie został utworzony. Spróbuj ponownie.',
-        'success' => 'Oddział utworzony pomyślnie.'
+        'error'   => 'Wydział nie został utworzony. Spróbuj ponownie.',
+        'success' => 'Wydział utworzony pomyślnie.'
     ),
     'update' => array(
-        'error'   => 'Dział nie został utworzony. Spróbuj ponownie.',
-        'success' => 'Dział został utworzony pomyślnie.'
+        'error'   => 'Wydział nie został utworzony. Spróbuj ponownie',
+        'success' => 'Wydział utworzony pomyślnie.'
     ),
     'delete' => array(
-        'confirm'   	=> 'Czy na pewno usunąć wybrany oddział?',
-        'error'   => 'Podczas usuwania oddziału napotkano problem. Spróbuj ponownie.',
-        'success' => 'Oddział usunięty pomyślnie.'
+        'confirm'   	=> 'Czy na pewno usunąć wybrany wydział?',
+        'error'   => 'Podczas usuwania wydziału napotkano problem. Spróbuj ponownie.',
+        'success' => 'Wydział usunięty pomyślnie.'
     )
 
 );

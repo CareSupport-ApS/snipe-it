@@ -2,7 +2,7 @@
 
 return [
 
-    'undeployable' 		 => 'Tyto položky nebylo možné přiřadit, proto byly odstraněny z výdeje: :asset_tags',
+    'undeployable' 		 => 'The following assets cannot be deployed and have been removed from checkout: :asset_tags',
     'does_not_exist' 	 => 'Majetek nenalezen.',
     'does_not_exist_var' => 'Majetek se štítkem :asset_tag nebyl nalezen.',
     'no_tag' 	         => 'Nebyl zadán žádný štítek',
@@ -17,13 +17,12 @@ return [
         'error'   		=> 'Majetek se nepodařilo vytvořit, zkuste to prosím znovu.',
         'success' 		=> 'Majetek byl v pořádku vytvořen.',
         'success_linked' => 'Zařízení se štítkem :tag byl úspěšně vytvořen. <strong><a href=":link" style="color: white;">Klidni zde pro zobrazení</a></strong>.',
-        'multi_success_linked' => 'Zařízení se štítkem :links bylo úspěšně vytvořeno.|:count zařízení bylo úspěšně vytvořeno. :links.
-',
-        'partial_failure' => 'Zařízení se nepodařilo vytvořit. Důvod: :failures|:count zařízení se nepodařilo vytvořit. Důvody: :failures',
+        'multi_success_linked' => 'Asset with tag :links was created successfully.|:count assets were created succesfully. :links.',
+        'partial_failure' => 'An asset was unable to be created. Reason: :failures|:count assets were unable to be created. Reasons: :failures',
         'target_not_found' => [
-            'user' => 'Přidělený uživatel nebyl nalezen.',
-            'asset' => 'Přidělené zařízení nebylo nalezeno.',
-            'location' => 'Přiřazené umístění se nepodařilo najít.',
+            'user' => 'The assigned user could not be found.',
+            'asset' => 'The assigned asset could not be found.',
+            'location' => 'The assigned location could not be found.',
         ],
     ],
 
@@ -44,7 +43,7 @@ return [
     ],
 
     'audit' => [
-        'error'   		=> 'Audit zařízení byl neúspěšný: :error',
+        'error'   		=> 'Asset audit unsuccessful: :error ',
         'success' 		=> 'Audit aktiv byl úspěšně zaznamenáván.',
     ],
 
@@ -62,24 +61,24 @@ return [
     ],
 
     'import' => [
-        'import_button'         => 'Import procesu',
+        'import_button'         => 'Process Import',
         'error'                 => 'Některé položky nebyly správně importovány.',
         'errorDetail'           => 'Následující položky nebyly importovány kvůli chybám.',
         'success'               => 'Váš soubor byl importován',
         'file_delete_success'   => 'Váš soubor byl úspěšně odstraněn',
         'file_delete_error'      => 'Soubor nelze odstranit',
         'file_missing' => 'Vybraný soubor chybí',
-        'file_already_deleted' => 'Vybraný soubor již byl odstraněn',
+        'file_already_deleted' => 'The file selected was already deleted',
         'header_row_has_malformed_characters' => 'Jeden nebo více sloupců obsahuje v záhlaví poškozené UTF-8 znaky',
         'content_row_has_malformed_characters' => 'Jedna nebo více hodnot v prvním řádku obsahu obsahuje poškozené UTF-8 znaky',
-        'transliterate_failure' => 'Přepis z :encoding do UTF-8 selhal kvůli neplatným znakům ve vstupu.'
+        'transliterate_failure' => 'Transliteration from :encoding to UTF-8 failed due to invalid characters in input'
     ],
 
 
     'delete' => [
         'confirm'   	=> 'Opravdu si přejete tento majetek odstranit?',
         'error'   		=> 'Nepodařilo se nám tento majetek odstranit. Zkuste to prosím znovu.',
-        'assigned_to_error' => '{1}Zařízení s označením :asset_tag je právě zapůjčeno. Před odstraněním je nutné ho vrátit.|[2,*]Zařízení s označeními :asset_tag jsou právě zapůjčena. Před odstraněním je nutné je vrátit.',
+        'assigned_to_error' => '{1}Asset Tag: :asset_tag is currently checked out. Check in this device before deletion.|[2,*]Asset Tags: :asset_tag are currently checked out. Check in these devices before deletion.',
         'nothing_updated'   => 'Žádný majetek nebyl vybrán, takže nic nebylo odstraněno.',
         'success' 		=> 'Majetek byl úspěšně smazán.',
     ],
@@ -93,10 +92,8 @@ return [
     ],
 
     'multi-checkout' => [
-        'error'   => 'Zařízení nebylo zapůjčeno, zkuste to prosím znovu|Zařízení nebyla zapůjčena, zkuste to prosím znovu
-
-',
-        'success' => 'Zařízení bylo úspěšně zapůjčeno.|Zařízení byla úspěšně zapůjčena.',
+        'error'   => 'Asset was not checked out, please try again|Assets were not checked out, please try again',
+        'success' => 'Asset checked out successfully.|Assets checked out successfully.',
     ],
 
     'checkin' => [
@@ -108,9 +105,9 @@ return [
     ],
 
     'requests' => [
-        'error'   		=> 'Požadavek nebyl úspěšný, zkuste to prosím znovu.',
-        'success' 		=> 'Žádost byla úspěšně odeslána.',
-        'canceled'      => 'Žádost byla úspěšně zrušena.',
+        'error'   		=> 'Request was not successful, please try again.',
+        'success' 		=> 'Request successfully submitted.',
+        'canceled'      => 'Request successfully canceled.',
         'cancel'        => 'Zrušit tuto žádost o položku',
     ],
 

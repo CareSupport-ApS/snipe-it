@@ -10,7 +10,7 @@ return array(
     'support_email'   		=> 'อีเมลสนับสนุน',
     'support_phone'   		=> 'โทรศัพท์สนับสนุน',
     'support_url'   		=> 'URL การสนับสนุน',
-    'warranty_lookup_url'   => 'URL ของการรับประกัน',
+    'warranty_lookup_url'   => 'Warranty Lookup URL',
     'update'				=> 'ปรับปรุงผู้ผลิต',
 
 );
