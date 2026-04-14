@@ -1,0 +1,6 @@
+{
+    "i18n-ally.localesPaths": [
+        "resources/lang",
+        "public/js/select2/i18n"
+    ]
+}
