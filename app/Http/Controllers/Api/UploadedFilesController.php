@@ -10,6 +10,7 @@ use App\Http\Transformers\UploadedFilesTransformer;
 use App\Models\Actionlog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -140,7 +141,7 @@ class UploadedFilesController extends Controller
      * @since  [v8.1.17]
      * @author [A. Gianotto <snipe@snipe.net>]
      */
-    public function show($object_type, $id, $file_id) : JsonResponse | StreamedResponse | Storage | StorageHelper | BinaryFileResponse
+    public function show($object_type, $id, $file_id) : JsonResponse | StreamedResponse | Storage | StorageHelper | BinaryFileResponse | RedirectResponse
     {
         // Check the permissions to make sure the user can view the object
         $object = self::$map_object_type[$object_type]::withTrashed()->find($id);
