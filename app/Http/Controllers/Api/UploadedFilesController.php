@@ -18,6 +18,17 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class UploadedFilesController extends Controller
 {
+    protected static function joinStoragePath(string $directory, string $filename = ''): string
+    {
+        $directory = trim($directory, '/');
+        $filename = ltrim($filename, '/');
+
+        if ($filename === '') {
+            return $directory;
+        }
+
+        return $directory.'/'.$filename;
+    }
 
 
     /**
@@ -159,7 +170,7 @@ class UploadedFilesController extends Controller
         }
 
 
-        if (! Storage::exists(self::$map_storage_path[$object_type].'/'.$log->filename)) {
+        if (! Storage::exists(self::joinStoragePath(self::$map_storage_path[$object_type], $log->filename))) {
             return response()->json(Helper::formatStandardApiResponse('error', null, trans('general.file_upload_status.file_not_found'), 200));
         }
 
@@ -167,10 +178,10 @@ class UploadedFilesController extends Controller
             $headers = [
                 'Content-Disposition' => 'inline',
             ];
-            return Storage::download(self::$map_storage_path[$object_type].'/'.$log->filename, $log->filename, $headers);
+            return Storage::download(self::joinStoragePath(self::$map_storage_path[$object_type], $log->filename), $log->filename, $headers);
         }
 
-        return StorageHelper::downloader(self::$map_storage_path[$object_type].'/'.$log->filename);
+        return StorageHelper::downloader(self::joinStoragePath(self::$map_storage_path[$object_type], $log->filename));
 
     }
 
@@ -206,8 +217,8 @@ class UploadedFilesController extends Controller
 
         if ($log) {
             // Check the file actually exists, and delete it
-            if (Storage::exists(self::$map_storage_path[$object_type].'/'.$log->filename)) {
-                Storage::delete(self::$map_storage_path[$object_type].'/'.$log->filename);
+            if (Storage::exists(self::joinStoragePath(self::$map_storage_path[$object_type], $log->filename))) {
+                Storage::delete(self::joinStoragePath(self::$map_storage_path[$object_type], $log->filename));
             }
             // Delete the record of the file
             if ($log->logUploadDelete($object, $log->filename)) {
